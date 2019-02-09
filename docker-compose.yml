@@ -3,17 +3,30 @@ services:
     mysql:
         image: mysql:8.0
         restart: on-failure
+        command: --default-authentication-plugin=mysql_native_password
+        ports:
+          - 3306:3306
         environment:
-            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
             MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
     php:
         build:
           context: .
           dockerfile: docker/php/Dockerfile
         restart: on-failure
         user: ${LOCAL_USER}
+        links:
+          - mysql
     nginx:
         image: nginx:1.15.3-alpine
         restart: on-failure
         depends_on:
             - php
+
+    yarn:
+        build:
+          context: .
+          dockerfile: docker/yarn/Dockerfile
+        user: ${LOCAL_USER}
