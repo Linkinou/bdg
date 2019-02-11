@@ -22,6 +22,6 @@ USER appuser
 
 WORKDIR /usr/src/app
 
-COPY app /usr/src/app
+COPY ./app /usr/src/app
 
 RUN PATH=$PATH:/usr/src/apps/vendor/bin:bin
