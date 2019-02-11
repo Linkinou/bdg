@@ -1,12 +1,51 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="_nK">
+    <title>{% block page_title %}La Bataille des Guildes{% endblock %}</title>
+    <link rel="icon" type="image/png" href="{{ asset('build/images/favicon.png') }}">
+
+    {% block stylesheets %}
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300i,400,400i,700%7cMarcellus+SC" rel="stylesheet">
+
+        <!-- Revolution Slider -->
+        <link rel="stylesheet" href="{{ asset('build/vendor/revolution/css/settings.css') }}">
+        <link rel="stylesheet" href="{{ asset('build/vendor/revolution/css/layers.css') }}">
+        <link rel="stylesheet" href="{{ asset('build/vendor/revolution/css/navigation.css') }}">
+
+        {{ encore_entry_link_tags('template') }}
+    {% endblock %}
+</head>
+
+{% block header %}
+    {% embed '_common/header.html.twig' %}{% endembed %}
+{% endblock %}
+
+{% block body %}{% endblock %}
+
+{% block footer %}
+    {% embed '_common/footer.html.twig' %}{% endembed %}
+{% endblock %}
+
+
+{% block javascripts %}
+
+    {{ encore_entry_script_tags('template') }}
+
+    <!-- Revolution Slider -->
+    <script src="{{ asset('build/vendor/revolution/js/jquery.themepunch.tools.min.js') }}"></script>
+    <script src="{{ asset('build/vendor/revolution/js/jquery.themepunch.revolution.min.js') }}"></script>
+    <script src="{{ asset('build/vendor/revolution/js/extensions/revolution.extension.video.min.js') }}"></script>
+    <script src="{{ asset('build/vendor/revolution/js/extensions/revolution.extension.carousel.min.js') }}"></script>
+    <script src="{{ asset('build/vendor/revolution/js/extensions/revolution.extension.navigation.min.js') }}"></script>
+
+    <!-- END: Scripts -->
+{% endblock %}
+
+</body>
 </html>

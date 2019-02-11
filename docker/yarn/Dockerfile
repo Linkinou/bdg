@@ -3,7 +3,7 @@ FROM debian:stretch-slim
 # Setup the base OS
 RUN apt-get update -qq \
  && apt-get install -y --no-install-recommends build-essential  \
-    apt-transport-https curl ca-certificates gnupg2 apt-utils nodejs
+    apt-transport-https curl ca-certificates gnupg2 apt-utils git nodejs
 
 RUN useradd -mr -u 1001 -g sudo yarn
 

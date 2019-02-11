@@ -19,13 +19,13 @@ npm-install:
 	$(YARN) npm install
 
 encore:
-	$(YARN) encore dev
+	$(YARN) yarn encore dev
 
 encore-watch:
-	$(APP) ./node_modules/.bin/encore dev --watch
+	$(YARN) yarn encore dev --watch
 
 encore-prod:
-	$(APP) ./node_modules/.bin/encore production
+	$(YARN) yarn encore production
 
 cache-clear:
 	$(APP) $(CONSOLE) cache:clear --no-warmup || rm -rf var/cache/*
