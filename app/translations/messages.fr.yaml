@@ -1,0 +1,10 @@
+common:
+    bdg: Bataille des Guildes
+    login: Connexion
+    register: S'inscrire
+    password: Mot de passe
+    remember_me: Se souvenir de moi
+    password_lost: Mot de passe perdu ?
+    get_new_password: Récuperer mon mot de passe
+    username: Pseudonyme
+    email_will_be_sent: Un email vous sera envoyé

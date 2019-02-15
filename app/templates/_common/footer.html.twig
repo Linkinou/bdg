@@ -234,55 +234,72 @@ Additional Classes:
     <div class="nk-gap-5"></div>
     <div class="container">
         <div class="row">
+            {% if error %}
+                <div class="col-lg-4 offset-lg-4 col-md-6 offset-md-3">
+                    <div class="nk-info-box bg-danger">
+                        <div class="nk-info-box-icon">
+                            <i class="ion-alert-circled"></i>
+                        </div>
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    </div>
+                </div>
+            {% endif %}
             <div class="col-lg-4 offset-lg-4 col-md-6 offset-md-3">
                 <div class="nk-sign-form-container">
                     <div class="nk-sign-form-toggle h3">
-                        <a href="#" class="nk-sign-form-login-toggle active">Log In</a>
-                        <a href="#" class="nk-sign-form-register-toggle">Register</a>
+                        <a href="#" class="nk-sign-form-login-toggle active">{{ 'common.login'|trans }}</a>
+                        <a href="#" class="nk-sign-form-register-toggle">{{ 'common.register'|trans }}</a>
                     </div>
                     <div class="nk-gap-2"></div>
 
                     <!-- START: Login Form -->
-                    <form class="nk-sign-form-login active" action="#">
-                        <input class="form-control" type="text" placeholder="Username or Email">
+                    <form class="nk-sign-form-login active" method="post" action="{{ path('app_login') }}">
+                        <input id="inputEmail" name="email" class="form-control" type="text" placeholder="Email" value="{{ last_username }}" required>
                         <div class="nk-gap-2"></div>
 
-                        <input class="form-control" type="password" placeholder="Password">
+                        <input name="password" id="inputPassword" class="form-control" type="password" placeholder="{{ 'common.password'|trans }}" required>
                         <div class="nk-gap-2"></div>
+
+                        <input type="hidden" name="_csrf_token"
+                               value="{{ csrf_token('authenticate') }}"
+                        >
 
                         <div class="form-check float-left">
                             <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input">
-                                Remember Me
+                                <input type="checkbox" name="_remember_me" class="form-check-input">
+                                {{ 'common.remember_me'|trans }}
                             </label>
                         </div>
-                        <button class="nk-btn nk-btn-color-white link-effect-4 float-right">Log In</button>
+                        <button class="nk-btn nk-btn-color-white link-effect-4 float-right" type="submit">{{ 'common.login'|trans }}</button>
 
                         <div class="clearfix"></div>
                         <div class="nk-gap-1"></div>
-                        <a class="nk-sign-form-lost-toggle float-right" href="#">Lost Password?</a>
+                        <a class="nk-sign-form-lost-toggle float-right" href="#">{{ 'common.password_lost'|trans }}</a>
                     </form>
                     <!-- END: Login Form -->
 
                     <!-- START: Lost Password Form -->
                     <form class="nk-sign-form-lost" action="#">
-                        <input class="form-control" type="text" placeholder="Username or Email">
+                        <input class="form-control" type="text" placeholder="Email">
                         <div class="nk-gap-2"></div>
 
-                        <button class="nk-btn nk-btn-color-white link-effect-4 float-right">Get New Password</button>
+                        <button class="nk-btn nk-btn-color-white link-effect-4 float-right">{{ 'common.get_new_password'|trans }}</button>
                     </form>
                     <!-- END: Lost Password Form -->
 
                     <!-- START: Register Form -->
                     <form class="nk-sign-form-register" action="#">
-                        <input class="form-control" type="text" placeholder="Username">
+                        <input class="form-control" type="text" placeholder="{{ 'common.username'|trans }}">
                         <div class="nk-gap-2"></div>
 
                         <input class="form-control" type="email" placeholder="Email">
                         <div class="nk-gap-2"></div>
 
-                        <div class="float-left">A password will be emailed to you.</div>
-                        <button class="nk-btn nk-btn-color-white link-effect-4 float-right">Register</button>
+                        <input class="form-control" type="password" placeholder="{{ 'common.password'|trans }}">
+                        <div class="nk-gap-2"></div>
+
+                        <div class="float-left">{{ 'common.email_will_be_sent'|trans }}</div>
+                        <button class="nk-btn nk-btn-color-white link-effect-4 float-right">{{ 'common.register'|trans }}</button>
                     </form>
                     <!-- END: Register Form -->
                 </div>
