@@ -1,3 +1,3 @@
-  const $signForm = $('.nk-icon-toggle-front');
+const $signToggle = $('.nk-sign-toggle');
 
-  $signForm.click();
+$signToggle.click();

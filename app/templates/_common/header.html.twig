@@ -523,18 +523,20 @@ data-video-pause-on-page-leave - pause video when the page not in focus (true/fa
                     </li>
 
 
-                    <li class="single-icon">
-                        <a href="#" class="nk-sign-toggle no-link-effect">
-                            <span class="nk-icon-toggle">
-                                <span class="nk-icon-toggle-front">
-                                    <span class="fa fa-sign-in"></span>
+                    {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                        <li class="single-icon">
+                            <a href="#" class="nk-sign-toggle no-link-effect">
+                                <span class="nk-icon-toggle">
+                                    <span class="nk-icon-toggle-front">
+                                        <span class="fa fa-sign-in"></span>
+                                    </span>
+                                    <span class="nk-icon-toggle-back">
+                                        <span class="nk-icon-close"></span>
+                                    </span>
                                 </span>
-                                <span class="nk-icon-toggle-back">
-                                    <span class="nk-icon-close"></span>
-                                </span>
-                            </span>
-                        </a>
-                    </li>
+                            </a>
+                        </li>
+                    {% endif %}
 
 
 

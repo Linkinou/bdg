@@ -20,6 +20,7 @@ Encore
      */
     .addEntry('template', './assets/js/godlike-init.js')
     .addEntry('login', './assets/js/login.js')
+    .addEntry('register', './assets/js/register.js')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 

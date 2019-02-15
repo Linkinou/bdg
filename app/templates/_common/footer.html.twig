@@ -234,7 +234,7 @@ Additional Classes:
     <div class="nk-gap-5"></div>
     <div class="container">
         <div class="row">
-            {% if error %}
+            {% if error is defined and error %}
                 <div class="col-lg-4 offset-lg-4 col-md-6 offset-md-3">
                     <div class="nk-info-box bg-danger">
                         <div class="nk-info-box-icon">
@@ -254,10 +254,10 @@ Additional Classes:
 
                     <!-- START: Login Form -->
                     <form class="nk-sign-form-login active" method="post" action="{{ path('app_login') }}">
-                        <input id="inputEmail" name="email" class="form-control" type="text" placeholder="Email" value="{{ last_username }}" required>
+                        <input id="loginInputEmail" name="email" class="form-control" type="text" placeholder="Email" value="{% if last_username is defined %}{{ last_username }}{% endif %}" required>
                         <div class="nk-gap-2"></div>
 
-                        <input name="password" id="inputPassword" class="form-control" type="password" placeholder="{{ 'common.password'|trans }}" required>
+                        <input name="password" id="loginInputPassword" class="form-control" type="password" placeholder="{{ 'common.password'|trans }}" required>
                         <div class="nk-gap-2"></div>
 
                         <input type="hidden" name="_csrf_token"
@@ -288,18 +288,18 @@ Additional Classes:
                     <!-- END: Lost Password Form -->
 
                     <!-- START: Register Form -->
-                    <form class="nk-sign-form-register" action="#">
-                        <input class="form-control" type="text" placeholder="{{ 'common.username'|trans }}">
+                    <form class="nk-sign-form-register" action="{{ path('app_register') }}" method="post">
+                        <input name="nickname" id="registerInputNickname" class="form-control" type="text" placeholder="{{ 'common.username'|trans }}" required>
                         <div class="nk-gap-2"></div>
 
-                        <input class="form-control" type="email" placeholder="Email">
+                        <input name="email" id="registerInputEmail" class="form-control" type="email" placeholder="Email" required>
                         <div class="nk-gap-2"></div>
 
-                        <input class="form-control" type="password" placeholder="{{ 'common.password'|trans }}">
+                        <input name="password" id="registerInputPassword" class="form-control" type="password" placeholder="{{ 'common.password'|trans }}" required>
                         <div class="nk-gap-2"></div>
 
                         <div class="float-left">{{ 'common.email_will_be_sent'|trans }}</div>
-                        <button class="nk-btn nk-btn-color-white link-effect-4 float-right">{{ 'common.register'|trans }}</button>
+                        <button class="nk-btn nk-btn-color-white link-effect-4 float-right" type="submit">{{ 'common.register'|trans }}</button>
                     </form>
                     <!-- END: Register Form -->
                 </div>
