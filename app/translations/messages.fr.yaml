@@ -1,0 +1,26 @@
+common:
+    bdg: Bataille des Guildes
+    login: Connexion
+    register: S'inscrire
+    password: Mot de passe
+    remember_me: Se souvenir de moi
+    password_lost: Mot de passe perdu ?
+    get_new_password: Récuperer mon mot de passe
+    username: Pseudonyme
+    email_will_be_sent: Un email vous sera envoyé
+    submit: Confirmer
+    logout: Se déconnecter
+register:
+    success: Votre compte a bien été créé ! Vous pouvez vous connecter avec vos identifiants.
+forgotten_password:
+    email_sent: Un email avec un lien de réintialisation vient de vous être envoyé.
+    email_not_found: Aucune correspondance pour cette adresse email.
+reset_password:
+    page_title: Reintialiser votre mot de passe
+    invalid_token: Le lien de réintialisation de mot de passe n'est plus disponible. Merci de réessayer.
+    text:
+        after_reset_warn: Vous devrez vous reconnecter avec votre nouveau mot de passe
+    button:
+        reset_submit: Appliquer les changements
+    placeholder:
+        new_password: Nouveau mot de passe

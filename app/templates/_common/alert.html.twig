@@ -1,0 +1,16 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="nk-info-box bg-{{ label }}">
+                        <div class="nk-info-box-icon">
+                            <i class="ion-information-circled"></i>
+                        </div>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+</div>

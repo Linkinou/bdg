@@ -34,7 +34,7 @@ migrations:
 	$(APP) $(CONSOLE) doctrine:migrations:migrate
 
 migrations-diff:
-	$(APP) $(CONSOLE) doctrine:migrations:diff
+	$(APP) $(CONSOLE) make:migration
 
 fix-permissions:
 	sudo chown -R linkinou:linkinou ./app/var/cache/* ./app/var/log/* ./app/src/Migrations/*
