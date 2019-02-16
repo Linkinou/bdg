@@ -279,11 +279,11 @@ Additional Classes:
                     <!-- END: Login Form -->
 
                     <!-- START: Lost Password Form -->
-                    <form class="nk-sign-form-lost" action="#">
-                        <input class="form-control" type="text" placeholder="Email">
+                    <form class="nk-sign-form-lost" action="{{ path('app_forgotten_password') }}" method="post">
+                        <input class="form-control" name="email" id="lostPasswordInputEmail" type="text" placeholder="Email">
                         <div class="nk-gap-2"></div>
 
-                        <button class="nk-btn nk-btn-color-white link-effect-4 float-right">{{ 'common.get_new_password'|trans }}</button>
+                        <button class="nk-btn nk-btn-color-white link-effect-4 float-right" type="submit">{{ 'common.get_new_password'|trans }}</button>
                     </form>
                     <!-- END: Lost Password Form -->
 

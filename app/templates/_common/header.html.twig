@@ -522,6 +522,12 @@ data-video-pause-on-page-leave - pause video when the page not in focus (true/fa
                         </a>
                     </li>
 
+                    <li class="single-icon">
+                        <a href="{{ path('app_logout') }}" class="no-link-effect">
+                            <span class="ion-log-out"></span>
+                        </a>
+                    </li>
+
 
                     {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                         <li class="single-icon">
