@@ -9,9 +9,9 @@ common:
     username: Pseudonyme
     email_will_be_sent: Un email vous sera envoyé
     submit: Confirmer
+    logout: Se déconnecter
 register:
     success: Votre compte a bien été créé ! Vous pouvez vous connecter avec vos identifiants.
-
 forgotten_password:
     email_sent: Un email avec un lien de réintialisation vient de vous être envoyé.
     email_not_found: Aucune correspondance pour cette adresse email.
