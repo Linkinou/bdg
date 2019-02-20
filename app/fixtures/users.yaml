@@ -1,9 +1,9 @@
 App\Entity\User:
     user_1:
         email: rootkid@epotato.net
-        nickname: Link
+        username: Link
         plainPassword: 'password'
     user_{2..11}:
         email: <email()>
-        nickname: <username()>
+        username: <username()>
         plainPassword: 'password'
