@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -47,6 +49,16 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $resetToken;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Topic", mappedBy="author")
+     */
+    private $topics;
+
+    public function __construct()
+    {
+        $this->topics = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -154,6 +166,37 @@ class User implements UserInterface
     public function setResetToken(?string $resetToken): self
     {
         $this->resetToken = $resetToken;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Topic[]
+     */
+    public function getTopics(): Collection
+    {
+        return $this->topics;
+    }
+
+    public function addTopic(Topic $topic): self
+    {
+        if (!$this->topics->contains($topic)) {
+            $this->topics[] = $topic;
+            $topic->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTopic(Topic $topic): self
+    {
+        if ($this->topics->contains($topic)) {
+            $this->topics->removeElement($topic);
+            // set the owning side to null (unless already changed)
+            if ($topic->getAuthor() === $this) {
+                $topic->setAuthor(null);
+            }
+        }
 
         return $this;
     }

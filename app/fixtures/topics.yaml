@@ -1,0 +1,4 @@
+App\Entity\Topic:
+    topic_{1..10}:
+        title: <sentence()>
+        author: '@user_*'

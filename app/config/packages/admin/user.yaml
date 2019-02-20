@@ -12,5 +12,5 @@ easy_admin:
                 fields:
                     - username
                     - email
-                    - { property: roles, type: choice, type_options: { expanded: true, multiple: true } }
                     - resetToken
+                    - { property: topics, type_options: { choice_label: title } }
