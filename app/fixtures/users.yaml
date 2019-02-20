@@ -3,6 +3,7 @@ App\Entity\User:
         email: rootkid@epotato.net
         username: Link
         plainPassword: 'password'
+        roles: ["ROLE_ADMIN"]
     user_{2..11}:
         email: <email()>
         username: <username()>

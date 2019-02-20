@@ -6,6 +6,10 @@
 parameters:
     locale: 'en'
     contact_email: cedric.merouani@gmail.com
+    game_categories:
+        Category: 'category'
+        Forum: 'forum'
+        Link: 'link'
 
 services:
     # default configuration for services in *this* file
