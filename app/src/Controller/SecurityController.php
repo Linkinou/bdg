@@ -47,7 +47,7 @@ class SecurityController extends AbstractController
         if ($request->isMethod('POST')) {
             $user = new User();
             $user->setEmail($request->request->get('email'));
-            $user->setNickname($request->request->get('nickname'));
+            $user->setUsername($request->request->get('username'));
             $user->setPassword($passwordEncoder->encodePassword($user, $request->request->get('password')));
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
@@ -113,7 +113,7 @@ class SecurityController extends AbstractController
                         'emails/lost_password.html.twig',
                         [
                             'resetPasswordUrl' => $resetPasswordUrl,
-                            'username' => $user->getNickname()
+                            'username' => $user->getUsername()
                         ]
                     ),
                     'text/html'
