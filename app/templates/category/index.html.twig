@@ -23,28 +23,18 @@
                     </div>
                     <div class="nk-forum-title">
                         <h3><a href="forum-single-topic.html">{{ cat.name }}</a></h3>
-                        <div class="nk-forum-title-sub">Started by <a href="#">nK</a> on January 17, 2017</div>
-                    </div>
-                    <div class="nk-forum-count">
-                        178 posts
                     </div>
                     <div class="nk-forum-activity-avatar">
                         <img src="assets/images/avatar-1-sm.jpg" alt="Lesa Cruz">
                     </div>
-                    <div class="nk-forum-activity">
-                        <div class="nk-forum-activity-title" title="Lesa Cruz">
-                            <a href="#">Lesa Cruz</a>
-                        </div>
-                        <div class="nk-forum-activity-date">
-                            September 11, 2017
-                        </div>
-                    </div>
                 </li>
             {% endfor %}
         </ul>
+    </div>
 
-        <div class="nk-gap-10"></div>
+    <div class="nk-gap-2"></div>
 
+    <div class="container">
         <ul class="nk-forum">
             {% for topic in category.topics%}
                 <li>
@@ -52,22 +42,14 @@
                         <span class="ion-pin"></span>
                     </div>
                     <div class="nk-forum-title">
-                        <h3><a href="forum-single-topic.html">{{ topic.title }}</a></h3>
-                        <div class="nk-forum-title-sub">Started by <a href="#">nK</a> on January 17, 2017</div>
+                        <h3><a href="{{ path('topic_view', {'id': topic.id}) }}">{{ topic.title }}</a></h3>
+                        <div class="nk-forum-title-sub">Started by <a href="#">{{ topic.author.username }}</a> on January 17, 2017</div>
                     </div>
                     <div class="nk-forum-count">
-                        178 posts
+                        {{ topic.posts|length }} posts
                     </div>
                     <div class="nk-forum-activity-avatar">
                         <img src="assets/images/avatar-1-sm.jpg" alt="Lesa Cruz">
-                    </div>
-                    <div class="nk-forum-activity">
-                        <div class="nk-forum-activity-title" title="Lesa Cruz">
-                            <a href="#">Lesa Cruz</a>
-                        </div>
-                        <div class="nk-forum-activity-date">
-                            September 11, 2017
-                        </div>
                     </div>
                 </li>
             {% endfor %}

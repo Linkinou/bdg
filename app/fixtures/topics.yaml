@@ -1,5 +1,9 @@
 App\Entity\Topic:
-    topic_{1..100}:
+    topic_{1..15}:
         title: <sentence()>
         author: '@user_*'
         category: '@category_*'
+    children_topic_{1..15}:
+        title: <sentence()>
+        author: '@user_*'
+        category: '@children_category_*'

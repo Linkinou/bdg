@@ -1,0 +1,5 @@
+App\Entity\Post:
+    post_{1..100}:
+        content: <realText()>
+        author: '@user_*'
+        topic: '@topic_*'
