@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\GameCategoryRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
  */
-class GameCategory
+class Category
 {
     const TYPE_CATEGORY = 'category';
     const TYPE_FORUM = 'forum';
@@ -38,18 +38,24 @@ class GameCategory
     private $type = self::TYPE_CATEGORY;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\GameCategory", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="children")
      */
     private $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\GameCategory", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="App\Entity\Category", mappedBy="parent")
      */
     private $children;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Topic", mappedBy="category")
+     */
+    private $topics;
 
     public function __construct()
     {
         $this->children = new ArrayCollection();
+        $this->topics = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -132,6 +138,37 @@ class GameCategory
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Topic[]
+     */
+    public function getTopics(): Collection
+    {
+        return $this->topics;
+    }
+
+    public function addTopic(Topic $topic): self
+    {
+        if (!$this->topics->contains($topic)) {
+            $this->topics[] = $topic;
+            $topic->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTopic(Topic $topic): self
+    {
+        if ($this->topics->contains($topic)) {
+            $this->topics->removeElement($topic);
+            // set the owning side to null (unless already changed)
+            if ($topic->getCategory() === $this) {
+                $topic->setCategory(null);
+            }
+        }
 
         return $this;
     }

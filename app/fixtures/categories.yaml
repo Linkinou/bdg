@@ -1,0 +1,8 @@
+App\Entity\Category:
+    category_{1..10}:
+        name: <sentence()>
+        description: <paragraph()>
+    children_{1..20}:
+        name: <sentence()>
+        description: <paragraph()>
+        parent: '@category_*'
