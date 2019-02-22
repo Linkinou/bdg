@@ -26,6 +26,8 @@ class Topic
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="topics")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @var User
      */
     private $author;
 
@@ -43,6 +45,15 @@ class Topic
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+    }
+
+    /**
+     * @param User $user
+     * @return bool
+     */
+    public function hasSameAuthorAs(User $user)
+    {
+        return $this->getAuthor()->isSameAs($user);
     }
 
     public function getId(): ?int

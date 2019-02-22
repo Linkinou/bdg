@@ -24,3 +24,8 @@ reset_password:
         reset_submit: Appliquer les changements
     placeholder:
         new_password: Nouveau mot de passe
+post:
+    flash:
+        not_found: Oops ! Ce sujet de discussion n'existe pas ou plus.
+    action:
+        edit: Editer

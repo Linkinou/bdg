@@ -2,12 +2,32 @@
 
 namespace App\Model;
 
+use App\Entity\Post;
+
 class TopicPost
 {
     /**
      * @var string
      */
     protected $content;
+
+    /**
+     * TopicPost constructor.
+     * @param string $content
+     */
+    public function __construct($content)
+    {
+        $this->content = $content;
+    }
+
+    /**
+     * @param Post $post
+     * @return TopicPost
+     */
+    public static function createFromPost(Post $post)
+    {
+        return new self($post->getContent());
+    }
 
     /**
      * @return string

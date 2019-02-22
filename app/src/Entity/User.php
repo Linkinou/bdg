@@ -66,6 +66,15 @@ class User implements UserInterface
         $this->posts = new ArrayCollection();
     }
 
+    /**
+     * @param User $user
+     * @return bool
+     */
+    public function isSameAs(User $user)
+    {
+        return $user->getEmail() === $this->email;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

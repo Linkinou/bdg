@@ -64,19 +64,10 @@
                             <span class="nk-forum-topic-date">June 18, 2017</span>
 
                             <span class="nk-forum-action-btn">
-                            <a href="#forum-reply" class="nk-anchor"><span class="fa fa-reply"></span> Reply</a>
-                        </span>
-                            <span class="nk-forum-action-btn">
-                            <a href="#"><span class="fa fa-flag"></span> Spam</a>
-                        </span>
-                            <span class="nk-forum-action-btn">
-                            <span class="nk-action-heart">
-                                <span class="num">18</span>
-                                <span class="like-icon ion-android-favorite-outline"></span>
-                                <span class="liked-icon ion-android-favorite"></span>
-                                Like
+                                {% if app.user is not empty and app.user.id is same as(post.author.id) %}
+                                    <a href="{{ path('post_edit', {'id': post.id}) }}" class="nk-anchor"><span class="fa fa-reply"></span> {{ 'post.action.edit'|trans }}</a>
+                                {% endif %}
                             </span>
-                        </span>
                         </div>
                     </li>
                 {% endfor %}
@@ -86,36 +77,31 @@
             <div class="nk-gap-2"></div>
 
             <!-- START: Pagination -->
-            <div class="nk-pagination nk-pagination-left">
-                <a href="#" class="nk-pagination-prev disabled">
-                    <span class="nk-icon-arrow-left"></span>
-                </a>
-                <nav>
-                    <a class="nk-pagination-current-white" href="#">1</a>
-                    <a href="#">2</a>
-                    <a href="#">3</a>
-                    <a href="#">4</a>
-                    <span>...</span>
-                </nav>
-                <a href="#" class="nk-pagination-next">
-                    <span class="nk-icon-arrow-right"></span>
-                </a>
+            <div class="row">
+                <div class="col-md-3 order-md-2 text-right">
+                    <a href="{{ path('topic_reply', {'id': topic.id}) }}" class="nk-btn nk-btn-lg link-effect-4 nk-anchor">Reply</a>
+                </div>
+                <div class="col-md-9 ">
+                    <div class="nk-pagination nk-pagination-left">
+                        <a href="#" class="nk-pagination-prev disabled">
+                            <span class="nk-icon-arrow-left"></span>
+                        </a>
+                        <nav>
+                            <a class="nk-pagination-current-white" href="#">1</a>
+                            <a href="#">2</a>
+                            <a href="#">3</a>
+                            <a href="#">4</a>
+                            <span>...</span>
+                        </nav>
+                        <a href="#" class="nk-pagination-next">
+                            <span class="nk-icon-arrow-right"></span>
+                        </a>
+                    </div>
+                </div>
             </div>
             <!-- END: Pagination -->
-
-            <div id="forum-reply"></div>
-            <div class="nk-gap-4"></div>
-            <!-- START: Reply -->
-            <h3 class="h4">Reply</h3>
-            <form action="#">
-                <div class="nk-gap-1"></div>
-                <textarea class="nk-summernote" name="content"></textarea>
-                <div class="nk-gap-1"></div>
-                <button class="nk-btn nk-btn-lg link-effect-4">Reply</button>
-            </form>
-            <!-- END: Reply -->
         </div>
 
-        <div class="nk-gap-4"></div>
+        <div class="nk-gap-6"></div>
     </div>
 {% endblock %}
