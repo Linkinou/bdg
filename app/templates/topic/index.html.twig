@@ -54,14 +54,14 @@
                             </div>
                             <div class="nk-forum-topic-author-role">Keymaster</div>
                             <div class="nk-forum-topic-author-since">
-                                Member since January 13, 2017
+                                Member since {{ post.author.createdAt|localizeddate }}
                             </div>
                         </div>
                         <div class="nk-forum-topic-content">
                             {{ post.content|raw }}
                         </div>
                         <div class="nk-forum-topic-footer">
-                            <span class="nk-forum-topic-date">June 18, 2017</span>
+                            <span class="nk-forum-topic-date">{{ post.createdAt|localizeddate }}</span>
 
                             <span class="nk-forum-action-btn">
                                 {% if app.user is not empty and app.user.id is same as(post.author.id) %}

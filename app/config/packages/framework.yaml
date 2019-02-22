@@ -2,8 +2,7 @@ framework:
     assets:
         json_manifest_path: '%kernel.root_dir%/../public/build/manifest.json'
     secret: '%env(APP_SECRET)%'
-    translator: { fallbacks: [ "fr" ] }
-    #default_locale: en
+    default_locale: fr
     #csrf_protection: true
     #http_method_override: true
 
