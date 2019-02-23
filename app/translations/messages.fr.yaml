@@ -29,3 +29,5 @@ post:
         not_found: Oops ! Ce sujet de discussion n'existe pas ou plus.
     action:
         edit: Editer
+homepage:
+    title: Accueil

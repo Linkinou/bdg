@@ -7,6 +7,13 @@
             {% block banner_title %}{{ topic.title }}{% endblock %}
         {% endembed %}
 
+        {% embed '_common/breadcrumbs.html.twig' %}
+            {% block items %}
+                <li><a href="{{ path('view_category', {'slug': topic.category.slug}) }}">{{ topic.category.name }}</a></li>
+                <li><span>{{ topic.title }}</span></li>
+            {% endblock %}
+        {% endembed %}
+
         <div class="nk-gap-2"></div>
 
         {% include '_common/alert.html.twig' %}

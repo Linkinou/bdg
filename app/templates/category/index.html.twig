@@ -9,6 +9,15 @@
         {% block banner_title %}{{ category.name }}{% endblock %}
     {% endembed %}
 
+    {% embed '_common/breadcrumbs.html.twig' %}
+        {% block items %}
+            {% if category.parent %}
+                <li><a href="{{ path('view_category', {'slug': category.parent.slug}) }}">{{ category.parent.name }}</a></li>
+            {% endif %}
+            <li><span>{{ category.name }}</span></li>
+        {% endblock %}
+    {% endembed %}
+
     <div class="nk-gap-2"></div>
 
     {% include '_common/alert.html.twig' %}
@@ -22,10 +31,10 @@
                         <span class="ion-pin"></span>
                     </div>
                     <div class="nk-forum-title">
-                        <h3><a href="forum-single-topic.html">{{ cat.name }}</a></h3>
+                        <h3><a href="{{ path('view_category', {'slug': cat.slug}) }}">{{ cat.name }}</a></h3>
                     </div>
                     <div class="nk-forum-activity-avatar">
-                        <img src="assets/images/avatar-1-sm.jpg" alt="Lesa Cruz">
+                        <img src="{{ asset('build/images/avatar-1-sm.jpg') }}" alt="Lesa Cruz">
                     </div>
                 </li>
             {% endfor %}
