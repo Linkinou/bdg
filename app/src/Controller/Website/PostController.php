@@ -39,7 +39,7 @@ class PostController extends AbstractController
             $entityManager->flush();
 
             return $this->redirectToRoute('topic_view', [
-                'id' => $post->getTopic()->getId(),
+                'slug' => $post->getTopic()->getSlug(),
                 '_fragment' => $post->getId()
             ]);
         }

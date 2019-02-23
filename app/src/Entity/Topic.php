@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TopicRepository")
@@ -44,6 +45,12 @@ class Topic
      * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="topic", orphanRemoval=true)
      */
     private $posts;
+
+    /**
+     * @Gedmo\Slug(fields={"title", "id"})
+     * @ORM\Column(type="string", length=128, unique=true)
+     */
+    private $slug;
 
     public function __construct()
     {
@@ -127,6 +134,18 @@ class Topic
                 $post->setTopic(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

@@ -13,25 +13,22 @@ use Symfony\Component\Routing\Annotation\Route;
 class TopicController extends AbstractController
 {
     /**
-     * @Route("/topic/{id}", name="topic_view")
+     * @Route("/topic/{slug}", name="topic_view")
      */
-    public function index($id)
+    public function index(Topic $topic)
     {
-        $topic = $this->getDoctrine()->getRepository(Topic::class)->find($id);
-
         return $this->render('topic/index.html.twig', [
             'topic' => $topic,
         ]);
     }
 
     /**
-     * @Route("/topic/{id}/reply", name="topic_reply")
+     * @Route("/topic/{slug}/reply", name="topic_reply")
      */
-    public function reply(Request $request, $id)
+    public function reply(Request $request, Topic $topic)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $topic = $this->getDoctrine()->getRepository(Topic::class)->find($id);
         $topicPost = new TopicPost();
         $form = $this->createForm(TopicReplyFormType::class, $topicPost);
 
@@ -50,7 +47,7 @@ class TopicController extends AbstractController
             $entityManager->flush();
 
             return $this->redirectToRoute('topic_view', [
-                'id' => $topic->getId(),
+                'slug' => $topic->getSlug(),
                 '_fragment' => 'last'
             ]);
         }

@@ -15,7 +15,7 @@ class TopicPost
      * TopicPost constructor.
      * @param string $content
      */
-    public function __construct($content)
+    public function __construct($content = null)
     {
         $this->content = $content;
     }

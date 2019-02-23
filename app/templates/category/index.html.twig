@@ -36,20 +36,20 @@
 
     <div class="container">
         <ul class="nk-forum">
-            {% for topic in category.topics%}
+            {% for topic in category.topics %}
                 <li>
                     <div class="nk-forum-icon">
                         <span class="ion-pin"></span>
                     </div>
                     <div class="nk-forum-title">
-                        <h3><a href="{{ path('topic_view', {'id': topic.id}) }}">{{ topic.title }}</a></h3>
-                        <div class="nk-forum-title-sub">Started by <a href="#">{{ topic.author.username }}</a> on January 17, 2017</div>
+                        <h3><a href="{{ path('topic_view', {'slug': topic.slug}) }}">{{ topic.title }}</a></h3>
+                        <div class="nk-forum-title-sub">Started by <a href="#">{{ topic.author.username }}</a> on {{ topic.createdAt|localizeddate }}</div>
                     </div>
                     <div class="nk-forum-count">
                         {{ topic.posts|length }} posts
                     </div>
                     <div class="nk-forum-activity-avatar">
-                        <img src="assets/images/avatar-1-sm.jpg" alt="Lesa Cruz">
+                        <img src="{{ asset('build/images/avatar-1-sm.jpg') }}" alt="Lesa Cruz">
                     </div>
                 </li>
             {% endfor %}
