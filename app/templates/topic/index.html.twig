@@ -20,28 +20,14 @@
                     <a href="{{ path('topic_reply', {'slug': topic.slug}) }}" class="nk-btn nk-btn-lg link-effect-4 nk-anchor">Reply</a>
                 </div>
                 <div class="col-md-9 ">
-                    <div class="nk-pagination nk-pagination-left">
-                        <a href="#" class="nk-pagination-prev disabled">
-                            <span class="nk-icon-arrow-left"></span>
-                        </a>
-                        <nav>
-                            <a class="nk-pagination-current-white" href="#">1</a>
-                            <a href="#">2</a>
-                            <a href="#">3</a>
-                            <a href="#">4</a>
-                            <span>...</span>
-                        </nav>
-                        <a href="#" class="nk-pagination-next">
-                            <span class="nk-icon-arrow-right"></span>
-                        </a>
-                    </div>
+                    {{ knp_pagination_render(posts) }}
                 </div>
             </div>
             <!-- END: Pagination -->
 
             <!-- START: Forums List -->
             <ul class="nk-forum nk-forum-topic">
-                {% for post in topic.posts %}
+                    {% for post in posts %}
                     <li>
                         <a name="{{ post.id }}"></a>
                         {% if loop.last %}
@@ -82,21 +68,7 @@
                     <a href="{{ path('topic_reply', {'slug': topic.slug}) }}" class="nk-btn nk-btn-lg link-effect-4 nk-anchor">Reply</a>
                 </div>
                 <div class="col-md-9 ">
-                    <div class="nk-pagination nk-pagination-left">
-                        <a href="#" class="nk-pagination-prev disabled">
-                            <span class="nk-icon-arrow-left"></span>
-                        </a>
-                        <nav>
-                            <a class="nk-pagination-current-white" href="#">1</a>
-                            <a href="#">2</a>
-                            <a href="#">3</a>
-                            <a href="#">4</a>
-                            <span>...</span>
-                        </nav>
-                        <a href="#" class="nk-pagination-next">
-                            <span class="nk-icon-arrow-right"></span>
-                        </a>
-                    </div>
+                    {{ knp_pagination_render(posts) }}
                 </div>
             </div>
             <!-- END: Pagination -->

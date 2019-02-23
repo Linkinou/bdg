@@ -14,7 +14,7 @@ class PostController extends AbstractController
     /**
      * @Route("/post/{id}/edit", name="post_edit")
      */
-    public function index(Request $request, Post $post)
+    public function edit(Request $request, Post $post)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -44,7 +44,7 @@ class PostController extends AbstractController
             ]);
         }
 
-        return $this->render('topic/reply.html.twig', [
+        return $this->render('@App/topic/reply.html.twig', [
             'topic' => $post->getTopic(),
             'form' => $form->createView()
         ]);

@@ -13,12 +13,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class TopicController extends AbstractController
 {
     /**
-     * @Route("/topic/{slug}", name="topic_view")
+     * @Route("/topic/{slug}", defaults={"page": "1"}, methods={"GET"}, name="topic_view")
+     * @Route("/topic/{slug}/{page<[1-9]\d*>}", methods={"GET"}, name="topic_view_paginated")
      */
-    public function index(Topic $topic)
+    public function index(Topic $topic, int $page)
     {
-        return $this->render('topic/index.html.twig', [
+        $latestPosts = $this->getDoctrine()->getRepository(Post::class)->findLatest($page);
+
+        return $this->render('/topic/index.html.twig', [
             'topic' => $topic,
+            'posts' => $latestPosts
         ]);
     }
 
@@ -52,7 +56,7 @@ class TopicController extends AbstractController
             ]);
         }
 
-        return $this->render('topic/reply.html.twig', [
+        return $this->render('@App/topic/reply.html.twig', [
             'topic' => $topic,
             'form' => $form->createView()
         ]);
