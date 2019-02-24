@@ -35,11 +35,13 @@ class PostRepository extends ServiceEntityRepository
      * @param int $page
      * @return PaginationInterface
      */
-    public function findLatest(int $page = 1) : PaginationInterface
+    public function findLatest(int $topic, int $page = 1) : PaginationInterface
     {
         $qb = $this->createQueryBuilder('p')
             ->addSelect('a')
             ->innerJoin('p.author', 'a')
+            ->where('p.topic = :topic')
+            ->setParameter('topic', $topic)
         ;
 
         return $this->createPaginator($qb->getQuery(), $page);

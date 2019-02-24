@@ -9,14 +9,21 @@ class TopicPost
     /**
      * @var string
      */
+    protected $topicTitle;
+
+    /**
+     * @var string
+     */
     protected $content;
 
     /**
      * TopicPost constructor.
+     * @param null $topicTitle
      * @param string $content
      */
-    public function __construct($content = null)
+    public function __construct($topicTitle = null, $content = null)
     {
+        $this->topicTitle = $topicTitle;
         $this->content = $content;
     }
 
@@ -24,24 +31,45 @@ class TopicPost
      * @param Post $post
      * @return TopicPost
      */
-    public static function createFromPost(Post $post)
+    public static function createFromPost(Post $post) : TopicPost
     {
-        return new self($post->getContent());
+        return new self(null, $post->getContent());
     }
 
     /**
      * @return string
      */
-    public function getContent()
+    public function getContent() : ?string
     {
         return $this->content;
     }
 
     /**
      * @param string $content
+     * @return $this
      */
-    public function setContent(string $content)
+    public function setContent(string $content) : TopicPost
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTopicTitle(): ?string
+    {
+        return $this->topicTitle;
+    }
+
+    /**
+     * @param string $topicTitle
+     * @return TopicPost
+     */
+    public function setTopicTitle(string $topicTitle): TopicPost
+    {
+        $this->topicTitle = $topicTitle;
+        return $this;
     }
 }

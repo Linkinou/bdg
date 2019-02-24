@@ -12,7 +12,7 @@
     {% embed '_common/breadcrumbs.html.twig' %}
         {% block items %}
             {% if category.parent %}
-                <li><a href="{{ path('view_category', {'slug': category.parent.slug}) }}">{{ category.parent.name }}</a></li>
+                <li><a href="{{ path('category_view', {'slug': category.parent.slug}) }}">{{ category.parent.name }}</a></li>
             {% endif %}
             <li><span>{{ category.name }}</span></li>
         {% endblock %}
@@ -31,7 +31,7 @@
                         <span class="ion-pin"></span>
                     </div>
                     <div class="nk-forum-title">
-                        <h3><a href="{{ path('view_category', {'slug': cat.slug}) }}">{{ cat.name }}</a></h3>
+                        <h3><a href="{{ path('category_view', {'slug': cat.slug}) }}">{{ cat.name }}</a></h3>
                     </div>
                     <div class="nk-forum-activity-avatar">
                         <img src="{{ asset('build/images/avatar-1-sm.jpg') }}" alt="Lesa Cruz">
@@ -44,8 +44,20 @@
     <div class="nk-gap-2"></div>
 
     <div class="container">
+        <!-- START: Pagination -->
+        <div class="row">
+            <div class="col-md-3 order-md-2 text-right">
+                <a href="{{ path('category_new_topic', {'slug': category.slug}) }}" class="nk-btn nk-btn-lg link-effect-1 nk-btn-color-warning">{{ 'topic.actions.new'|trans }}</a>
+            </div>
+            <div class="col-md-9 ">
+                {{ knp_pagination_render(topics) }}
+            </div>
+        </div>
+        <!-- END: Pagination -->
+        <div class="nk-gap-2"></div>
+
         <ul class="nk-forum">
-            {% for topic in category.topics %}
+            {% for topic in topics %}
                 <li>
                     <div class="nk-forum-icon">
                         <span class="ion-pin"></span>

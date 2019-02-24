@@ -19,7 +19,13 @@
                         {{ form_widget(form.content) }}
                     </div>
                     <div class="col-12 p-4 text-right">
-                        <button type="submit" class="nk-btn nk-btn-lg link-effect-4 nk-anchor">Reply</button>
+                        <button type="submit" class="nk-btn nk-btn-lg link-effect-4 nk-anchor">
+                            {% if submitText is defined and submitText is not empty %}
+                                {{ submitText }}
+                            {% else %}
+                                {{ 'common.reply'|trans }}
+                            {% endif %}
+                        </button>
                     </div>
                 </div>
             {{ form_end(form) }}

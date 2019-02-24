@@ -9,7 +9,7 @@
 
         {% embed '_common/breadcrumbs.html.twig' %}
             {% block items %}
-                <li><a href="{{ path('view_category', {'slug': topic.category.slug}) }}">{{ topic.category.name }}</a></li>
+                <li><a href="{{ path('category_view', {'slug': topic.category.slug}) }}">{{ topic.category.name }}</a></li>
                 <li><span>{{ topic.title }}</span></li>
             {% endblock %}
         {% endembed %}

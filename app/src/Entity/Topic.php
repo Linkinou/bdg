@@ -13,6 +13,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Topic
 {
+    const MAX_PER_PAGE = 5;
+
     use TimestampableEntity;
 
     /**

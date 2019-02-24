@@ -18,7 +18,7 @@ class TopicController extends AbstractController
      */
     public function index(Topic $topic, int $page)
     {
-        $latestPosts = $this->getDoctrine()->getRepository(Post::class)->findLatest($page);
+        $latestPosts = $this->getDoctrine()->getRepository(Post::class)->findLatest($topic->getId(), $page);
 
         return $this->render('/topic/index.html.twig', [
             'topic' => $topic,
@@ -56,7 +56,7 @@ class TopicController extends AbstractController
             ]);
         }
 
-        return $this->render('@App/topic/reply.html.twig', [
+        return $this->render('/topic/reply.html.twig', [
             'topic' => $topic,
             'form' => $form->createView()
         ]);

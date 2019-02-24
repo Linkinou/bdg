@@ -8,18 +8,19 @@ use App\Model\TopicPost;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class PostController extends AbstractController
 {
     /**
      * @Route("/post/{id}/edit", name="post_edit")
      */
-    public function edit(Request $request, Post $post)
+    public function edit(Request $request, Post $post, TranslatorInterface $translator)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         if (null === $post) {
-            $this->addFlash('info', $this->get('translator')->trans('post.flash.not_found'));
+            $this->addFlash('info', $translator->trans('post.flash.not_found'));
 
             return $this->redirectToRoute('home');
         }
@@ -44,9 +45,10 @@ class PostController extends AbstractController
             ]);
         }
 
-        return $this->render('@App/topic/reply.html.twig', [
+        return $this->render('/topic/reply.html.twig', [
             'topic' => $post->getTopic(),
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'submitText' => $translator->trans('post.action.edit')
         ]);
     }
 }

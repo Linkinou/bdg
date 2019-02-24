@@ -4,6 +4,9 @@ namespace App\Repository;
 
 use App\Entity\Topic;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -14,37 +17,46 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class TopicRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    /**
+     * @var PaginatorInterface
+     */
+    protected $paginator;
+
+    public function __construct(RegistryInterface $registry, PaginatorInterface $paginator)
     {
+        $this->paginator = $paginator;
         parent::__construct($registry, Topic::class);
     }
 
-    // /**
-    //  * @return Topic[] Returns an array of Topic objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param int $page
+     * @return PaginationInterface
+     */
+    public function findLatest(int $category, int $page = 1) : PaginationInterface
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+        $qb = $this->createQueryBuilder('p')
+            ->addSelect('a')
+            ->innerJoin('p.author', 'a')
+            ->where('p.category = :category')
+            ->setParameter('category', $category)
         ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Topic
-    {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $this->createPaginator($qb->getQuery(), $page);
     }
-    */
+
+    /**
+     * @param Query $query
+     * @param int $page
+     * @return PaginationInterface
+     */
+    private function createPaginator(Query $query, int $page) : PaginationInterface
+    {
+        $paginator = $this->paginator->paginate(
+            $query,
+            $page,
+            Topic::MAX_PER_PAGE
+        );
+
+        return $paginator;
+    }
 }
