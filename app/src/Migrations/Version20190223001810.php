@@ -8,14 +8,17 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190216021505 extends AbstractMigration
+final class Version20190223001810 extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE user ADD reset_token VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE topic ADD slug VARCHAR(128) NOT NULL');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_9D40DE1B989D9B62 ON topic (slug)');
+        $this->addSql('ALTER TABLE category ADD slug VARCHAR(128) NOT NULL');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_64C19C1989D9B62 ON category (slug)');
     }
 
     public function down(Schema $schema) : void
@@ -23,6 +26,9 @@ final class Version20190216021505 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE user DROP reset_token');
+        $this->addSql('DROP INDEX UNIQ_64C19C1989D9B62 ON category');
+        $this->addSql('ALTER TABLE category DROP slug');
+        $this->addSql('DROP INDEX UNIQ_9D40DE1B989D9B62 ON topic');
+        $this->addSql('ALTER TABLE topic DROP slug');
     }
 }

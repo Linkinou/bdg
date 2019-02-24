@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="nk-main">
+
+        {% embed '_common/head_banner.html.twig' %}
+            {% block banner_title %}{{ topic.title }}{% endblock %}
+        {% endembed %}
+
+        {% embed '_common/breadcrumbs.html.twig' %}
+            {% block items %}
+                <li><a href="{{ path('category_view', {'slug': topic.category.slug}) }}">{{ topic.category.name }}</a></li>
+                <li><span>{{ topic.title }}</span></li>
+            {% endblock %}
+        {% endembed %}
+
+        <div class="nk-gap-2"></div>
+
+        {% include '_common/alert.html.twig' %}
+
+
+        <div class="container">
+
+            <!-- START: Pagination -->
+            <div class="row">
+                <div class="col-md-3 order-md-2 text-right">
+                    <a href="{{ path('topic_reply', {'slug': topic.slug}) }}" class="nk-btn nk-btn-lg link-effect-4 nk-anchor">Reply</a>
+                </div>
+                <div class="col-md-9 ">
+                    {{ knp_pagination_render(posts) }}
+                </div>
+            </div>
+            <!-- END: Pagination -->
+
+            <!-- START: Forums List -->
+            <ul class="nk-forum nk-forum-topic">
+                    {% for post in posts %}
+                    <li>
+                        <a name="{{ post.id }}"></a>
+                        {% if loop.last %}
+                            <a name="last"></a>
+                        {% endif %}
+                        <div class="nk-forum-topic-author">
+                            <img src="{{ asset('build/images/avatar-1-sm.jpg') }}" alt="Lesa Cruz">
+                            <div class="nk-forum-topic-author-name" title="Lesa Cruz">
+                                <a href="#">{{ post.author.username }}</a>
+                            </div>
+                            <div class="nk-forum-topic-author-role">Keymaster</div>
+                            <div class="nk-forum-topic-author-since">
+                                Member since {{ post.author.createdAt|localizeddate }}
+                            </div>
+                        </div>
+                        <div class="nk-forum-topic-content">
+                            {{ post.content|raw }}
+                        </div>
+                        <div class="nk-forum-topic-footer">
+                            <span class="nk-forum-topic-date">{{ post.createdAt|localizeddate }}</span>
+
+                            <span class="nk-forum-action-btn">
+                                {% if app.user is not empty and app.user.id is same as(post.author.id) %}
+                                    <a href="{{ path('post_edit', {'id': post.id}) }}" class="nk-anchor"><span class="fa fa-reply"></span> {{ 'post.action.edit'|trans }}</a>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+            <!-- END: Forums List -->
+
+            <div class="nk-gap-2"></div>
+
+            <!-- START: Pagination -->
+            <div class="row">
+                <div class="col-md-3 order-md-2 text-right">
+                    <a href="{{ path('topic_reply', {'slug': topic.slug}) }}" class="nk-btn nk-btn-lg link-effect-4 nk-anchor">Reply</a>
+                </div>
+                <div class="col-md-9 ">
+                    {{ knp_pagination_render(posts) }}
+                </div>
+            </div>
+            <!-- END: Pagination -->
+        </div>
+
+        <div class="nk-gap-6"></div>
+    </div>
+{% endblock %}

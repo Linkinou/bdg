@@ -13,3 +13,4 @@ easy_admin:
                     - username
                     - email
                     - resetToken
+                    - { property: topics, type_options: { choice_label: title } }

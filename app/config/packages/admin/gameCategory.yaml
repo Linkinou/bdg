@@ -1,0 +1,16 @@
+easy_admin:
+    entities:
+        GameCategory:
+            class: App\Entity\GameCategory
+            list:
+                fields:
+                    - id
+                    - name
+                    - type
+                    - parent
+            form:
+                fields:
+                    - name
+                    - description
+                    - { property: type, type: choice, type_options: { expanded: true, choices: '%game_categories%' } }
+                    - { property: parent, type_options: { choice_label: name } }

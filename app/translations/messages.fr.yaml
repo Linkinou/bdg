@@ -10,6 +10,7 @@ common:
     email_will_be_sent: Un email vous sera envoyé
     submit: Confirmer
     logout: Se déconnecter
+    reply: Répondre
 register:
     success: Votre compte a bien été créé ! Vous pouvez vous connecter avec vos identifiants.
 forgotten_password:
@@ -24,3 +25,20 @@ reset_password:
         reset_submit: Appliquer les changements
     placeholder:
         new_password: Nouveau mot de passe
+post:
+    flash:
+        not_found: Oops ! Ce sujet de discussion n'existe pas ou plus.
+    action:
+        edit: Éditer
+homepage:
+    title: Accueil
+topic:
+    actions:
+        new: Nouveau sujet
+        submit: Créer le sujet
+    label:
+        new: 'Titre du sujet :'
+    breadcrumbs:
+        current: "Écriture d'un nouveau sujet"
+    alert:
+        success: Votre sujet a bien été créé !

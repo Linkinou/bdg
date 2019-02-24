@@ -1,10 +1,12 @@
 FROM php:7.2-fpm
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends git zip unzip zlib1g-dev yarn gnupg \
+    && apt-get install -y --no-install-recommends zlib1g-dev libicu-dev git zip unzip zlib1g-dev yarn gnupg \
     apt-transport-https apt-utils
 
 RUN docker-php-ext-install pdo_mysql zip
+
+RUN docker-php-ext-configure intl && docker-php-ext-install intl
 
 RUN pecl install apcu-5.1.8
 RUN docker-php-ext-enable apcu
