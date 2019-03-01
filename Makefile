@@ -3,11 +3,17 @@ YARN = docker-compose run --rm yarn
 CONSOLE = bin/console
 COMPOSER = composer
 
+prepare-env:
+	mv docker-compose.test.yml docker-compose.yml && mv app/.env.test app/.env
+
+prepare-ci: prepare-env
+	docker-compose build && docker-compose up -d
+
 assets:
 	$(APP) $(CONSOLE) assets:install
 
 install:
-	$(APP) $(COMPOSER) install
+	$(APP) $(COMPOSER) install -n
 
 yarn-install:
 	$(YARN) yarn install
@@ -31,7 +37,7 @@ cache-clear:
 	$(APP) $(CONSOLE) cache:clear --no-warmup || rm -rf var/cache/*
 
 migrations:
-	$(APP) $(CONSOLE) doctrine:migrations:migrate
+	$(APP) $(CONSOLE) doctrine:migrations:migrate -n
 
 migrations-diff:
 	$(APP) $(CONSOLE) make:migration
@@ -44,7 +50,7 @@ fix-images-permission:
 	docker-compose exec app chown -R www-data web/bundles/front/images
 
 fixtures:
-	$(APP) $(CONSOLE) hautelook:fixtures:load --purge-with-truncate
+	$(APP) $(CONSOLE) hautelook:fixtures:load --purge-with-truncate -n
 
 fixtures-test:
 	$(APP) $(CONSOLE) hautelook:fixtures:load --env=test --purge-with-truncate
@@ -57,3 +63,8 @@ watch-logs:
 
 test:
 	$(APP) ./bin/phpunit tests
+
+wait-mysql:
+	echo "Let's wait for MySQL to get ready..." && sleep 15
+
+launch-ci: wait-mysql install assets migrations fixtures npm-install encore test

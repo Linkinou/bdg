@@ -5,7 +5,7 @@ RUN apt-get update -qq \
  && apt-get install -y --no-install-recommends build-essential  \
     apt-transport-https curl ca-certificates gnupg2 apt-utils git nodejs
 
-RUN useradd -mr -u 1001 -g sudo yarn
+#RUN useradd -mr -u 1001 -g sudo yarn
 
 # Install node from nodesource
 # uncomment the next 2 lines for fix
@@ -18,6 +18,6 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
  && apt-get update -qq \
  && apt-get install -y yarn
 
-USER yarn
+#USER yarn
 
 WORKDIR /usr/src/app
