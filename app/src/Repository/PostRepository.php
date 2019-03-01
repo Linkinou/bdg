@@ -5,11 +5,8 @@ namespace App\Repository;
 use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
-use Pagerfanta\Pagerfanta;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -54,12 +51,12 @@ class PostRepository extends ServiceEntityRepository
      */
     private function createPaginator(Query $query, int $page) : PaginationInterface
     {
-        $paginator = $this->paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $query,
             $page,
             Post::MAX_PER_PAGE
         );
 
-        return $paginator;
+        return $pagination;
     }
 }

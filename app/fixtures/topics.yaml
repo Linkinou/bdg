@@ -1,5 +1,9 @@
 App\Entity\Topic:
-    topic_{1..15}:
+    topic_1:
+        title: 'Mon sujet test'
+        author: '@user_1'
+        category: '@category_1'
+    topic_{2..15}:
         title: <sentence()>
         author: '@user_*'
         category: '@category_*'

@@ -1,7 +1,7 @@
 {% if pageCount > 1 %}
     <div class="nk-pagination nk-pagination-left">
         {% if first is defined and current != first %}
-            <a href="{{ path(route, query|merge({(pageParameterName): first})) }}" class="nk-pagination-prev mr-5 mt-5">
+            <a id="first-page" href="{{ path(route, query|merge({(pageParameterName): first})) }}" class="nk-pagination-prev mr-5 mt-5">
                 <span class="ion-arrow-left-c"></span>
             </a>
         {% endif %}
@@ -37,7 +37,7 @@
         {% endif %}
 
         {% if last is defined and current != last %}
-            <a href="{{ path(route, query|merge({(pageParameterName): last})) }}" class="nk-pagination-next ml-5 mt-5">
+            <a id="last-page" href="{{ path(route, query|merge({(pageParameterName): last})) }}" class="nk-pagination-next ml-5 mt-5">
                 <span class="ion-arrow-right-c"></span>
             </a>
         {% endif %}

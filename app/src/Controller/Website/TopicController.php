@@ -13,11 +13,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class TopicController extends AbstractController
 {
     /**
-     * @Route("/topic/{slug}", defaults={"page": "1"}, methods={"GET"}, name="topic_view")
-     * @Route("/topic/{slug}/{page<[1-9]\d*>}", methods={"GET"}, name="topic_view_paginated")
+     * @Route("/topic/{slug}", methods={"GET"}, name="topic_view")
      */
-    public function index(Topic $topic, int $page)
+    public function index(Request $request, Topic $topic)
     {
+        $page = $request->query->get('page', 1);
         $latestPosts = $this->getDoctrine()->getRepository(Post::class)->findLatest($topic->getId(), $page);
 
         return $this->render('/topic/index.html.twig', [
