@@ -46,8 +46,14 @@ fix-images-permission:
 fixtures:
 	$(APP) $(CONSOLE) hautelook:fixtures:load --purge-with-truncate
 
+fixtures-test:
+	$(APP) $(CONSOLE) hautelook:fixtures:load --env=test --purge-with-truncate
+
 show-logs:
 	tail ./app/var/log/*
 
 watch-logs:
 	tail -f ./app/var/log/*
+
+test:
+	$(APP) ./bin/phpunit tests

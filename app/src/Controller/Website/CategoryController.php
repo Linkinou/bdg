@@ -17,7 +17,7 @@ class CategoryController extends AbstractController
     /**
      * @Route("/category/{slug}/new-topic", name="category_new_topic")
      */
-    public function new(Request $request, Category $category, TranslatorInterface $translator)
+    public function createTopic(Request $request, Category $category, TranslatorInterface $translator)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -63,9 +63,10 @@ class CategoryController extends AbstractController
     /**
      * @Route("/category/{slug}", name="category_view")
      */
-    public function index(Category $category)
+    public function index(Request $request, Category $category)
     {
-        $topics = $this->getDoctrine()->getRepository(Topic::class)->findLatest($category->getId());
+        $page = $request->query->get('page', 1);
+        $topics = $this->getDoctrine()->getRepository(Topic::class)->findLatest($category->getId(), $page);
 
         return $this->render('category/index.html.twig', [
             'category' => $category,

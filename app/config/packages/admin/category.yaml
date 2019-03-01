@@ -1,7 +1,7 @@
 easy_admin:
     entities:
-        GameCategory:
-            class: App\Entity\GameCategory
+        Category:
+            class: App\Entity\Category
             list:
                 fields:
                     - id

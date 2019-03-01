@@ -24,7 +24,7 @@
             <!-- START: Pagination -->
             <div class="row">
                 <div class="col-md-3 order-md-2 text-right">
-                    <a href="{{ path('topic_reply', {'slug': topic.slug}) }}" class="nk-btn nk-btn-lg link-effect-4 nk-anchor">Reply</a>
+                    <a href="{{ path('topic_reply', {'slug': topic.slug}) }}" class="nk-btn nk-btn-lg link-effect-4 nk-anchor">{{ 'common.reply'|trans }}</a>
                 </div>
                 <div class="col-md-9 ">
                     {{ knp_pagination_render(posts) }}
@@ -72,7 +72,7 @@
             <!-- START: Pagination -->
             <div class="row">
                 <div class="col-md-3 order-md-2 text-right">
-                    <a href="{{ path('topic_reply', {'slug': topic.slug}) }}" class="nk-btn nk-btn-lg link-effect-4 nk-anchor">Reply</a>
+                    <a href="{{ path('topic_reply', {'slug': topic.slug}) }}" class="nk-btn nk-btn-lg link-effect-4 nk-anchor">{{ 'common.reply'|trans }}</a>
                 </div>
                 <div class="col-md-9 ">
                     {{ knp_pagination_render(posts) }}
