@@ -11,7 +11,7 @@ RUN docker-php-ext-configure intl && docker-php-ext-install intl
 RUN pecl install apcu-5.1.8
 RUN docker-php-ext-enable apcu
 
-RUN useradd -mr -u 1001 -g sudo appuser
+#RUN useradd -mr -u travis -g sudo appuser
 
 # Install Composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
@@ -20,10 +20,11 @@ RUN php composer-setup.php
 RUN php -r "unlink('composer-setup.php');"
 RUN mv composer.phar /usr/local/bin/composer
 
-USER appuser
+#USER appuser
+
+COPY wait-for.sh /usr/src/app/bin/wait-for.sh
+RUN chmod a+x /usr/src/app/bin/wait-for.sh
 
 WORKDIR /usr/src/app
 
-COPY ./app /usr/src/app
-
-RUN PATH=$PATH:/usr/src/apps/vendor/bin:bin
+RUN PATH=$PATH:/usr/src/app/vendor/bin:bin
