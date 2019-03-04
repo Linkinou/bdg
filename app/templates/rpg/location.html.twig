@@ -23,13 +23,13 @@
 
     <div class="container">
         <ul class="nk-forum">
-            {% for cat in category.children %}
+            {% for cat in location.children %}
                 <li>
                     <div class="nk-forum-icon">
                         <span class="ion-pin"></span>
                     </div>
                     <div class="nk-forum-title">
-                        <h3><a href="{{ path('category_view', {'slug': cat.slug}) }}">{{ cat.name }}</a></h3>
+                        <h3><a href="{{ path('rpg_view_location', {'slug': cat.slug}) }}">{{ cat.name }}</a></h3>
                     </div>
                     <div class="nk-forum-activity-avatar">
                         <img src="{{ asset('build/images/avatar-1-sm.jpg') }}" alt="Lesa Cruz">

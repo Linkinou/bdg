@@ -102,23 +102,23 @@ class Category
         return $this->children;
     }
 
-    public function addGameCategory(self $gameCategory): self
+    public function addChild(self $child): self
     {
-        if (!$this->children->contains($gameCategory)) {
-            $this->children[] = $gameCategory;
-            $gameCategory->setParent($this);
+        if (!$this->children->contains($child)) {
+            $this->children[] = $child;
+            $child->setParent($this);
         }
 
         return $this;
     }
 
-    public function removeGameCategory(self $gameCategory): self
+    public function removeChild(self $child): self
     {
-        if ($this->children->contains($gameCategory)) {
-            $this->children->removeElement($gameCategory);
+        if ($this->children->contains($child)) {
+            $this->children->removeElement($child);
             // set the owning side to null (unless already changed)
-            if ($gameCategory->getParent() === $this) {
-                $gameCategory->setParent(null);
+            if ($child->getParent() === $this) {
+                $child->setParent(null);
             }
         }
 

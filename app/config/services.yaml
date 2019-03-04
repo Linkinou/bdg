@@ -6,7 +6,7 @@
 parameters:
     locale: 'en'
     contact_email: cedric.merouani@gmail.com
-    game_categories:
+    category_types:
         Category: 'category'
         Forum: 'forum'
         Link: 'link'

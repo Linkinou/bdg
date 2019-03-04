@@ -1,16 +1,13 @@
 easy_admin:
     entities:
-        Category:
-            class: App\Entity\Category
+        Location:
+            class: App\Entity\Location
             list:
                 fields:
                     - id
                     - name
-                    - type
                     - parent
             form:
                 fields:
                     - name
-                    - description
-                    - { property: type, type: choice, type_options: { expanded: true, choices: '%category_types%' } }
                     - { property: parent, type_options: { choice_label: name } }

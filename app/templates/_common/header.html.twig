@@ -131,25 +131,16 @@ data-video-pause-on-page-leave - pause video when the page not in focus (true/fa
             <div class="nk-nav-table">
 
                 <a href="{{ path('home') }}" class="nk-nav-logo">
-                    <img src="{{ asset('build/images/logo.svg') }}" alt="" width="90">
+                    <img src="{{ asset('build/images/logo.png') }}" alt="" width="90">
                 </a>
 
 
                 <ul class="nk-nav nk-nav-right d-none d-lg-block" data-nav-mobile="#nk-nav-mobile">
                     <li class="nk-drop-item">
-                        <a href="index.html">Forum</a>
-                        <ul class="dropdown">
-                            <li class="  ">
-                                <a href="index.html">
-                                    Landing</a>
-                            </li><li class="  ">
-                                <a href="index-main.html">
-                                    Main</a>
-                            </li><li class="  ">
-                                <a href="index-game-promo.html">
-                                    Game Promo</a>
-                            </li>
-                        </ul>
+                        <a href="{{ path('home') }}">Forum</a>
+                    </li>
+                    <li class="nk-drop-item">
+                        <a href="{{ path('rpg_homepage') }}">Jeu de rôle</a>
                     </li>
                 </ul>
 

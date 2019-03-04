@@ -1,0 +1,5 @@
+App\Entity\Persona:
+    persona_{1..10}:
+        name: <name()>
+        user: '@user_*'
+

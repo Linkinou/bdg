@@ -63,10 +63,16 @@ class User implements UserInterface
      */
     private $posts;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Persona", mappedBy="user")
+     */
+    private $personas;
+
     public function __construct()
     {
         $this->topics = new ArrayCollection();
         $this->posts = new ArrayCollection();
+        $this->personas = new ArrayCollection();
     }
 
     /**
@@ -244,6 +250,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($post->getAuthor() === $this) {
                 $post->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Persona[]
+     */
+    public function getPersonas(): Collection
+    {
+        return $this->personas;
+    }
+
+    public function addPersona(Persona $persona): self
+    {
+        if (!$this->personas->contains($persona)) {
+            $this->personas[] = $persona;
+            $persona->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePersona(Persona $persona): self
+    {
+        if ($this->personas->contains($persona)) {
+            $this->personas->removeElement($persona);
+            // set the owning side to null (unless already changed)
+            if ($persona->getUser() === $this) {
+                $persona->setUser(null);
             }
         }
 
