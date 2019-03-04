@@ -4,15 +4,16 @@
 <div class="nk-main">
 
     {% embed '_common/head_banner.html.twig' %}
-        {% block banner_title %}{{ category.name }}{% endblock %}
+        {% block banner_title %}{{ location.name }}{% endblock %}
     {% endembed %}
 
     {% embed '_common/breadcrumbs.html.twig' %}
         {% block items %}
-            {% if category.parent %}
-                <li><a href="{{ path('category_view', {'slug': category.parent.slug}) }}">{{ category.parent.name }}</a></li>
+            <li><a href="{{ path('rpg_homepage') }}">JDR</a></li>
+            {% if location.parent %}
+                <li><a href="{{ path('rpg_location_view', {'slug': location.parent.slug}) }}">{{ location.parent.name }}</a></li>
             {% endif %}
-            <li><span>{{ category.name }}</span></li>
+            <li><span>{{ location.name }}</span></li>
         {% endblock %}
     {% endembed %}
 
@@ -23,13 +24,13 @@
 
     <div class="container">
         <ul class="nk-forum">
-            {% for cat in location.children %}
+            {% for loc in location.children %}
                 <li>
                     <div class="nk-forum-icon">
                         <span class="ion-pin"></span>
                     </div>
                     <div class="nk-forum-title">
-                        <h3><a href="{{ path('rpg_view_location', {'slug': cat.slug}) }}">{{ cat.name }}</a></h3>
+                        <h3><a href="{{ path('rpg_location_view', {'slug': loc.slug}) }}">{{ loc.name }}</a></h3>
                     </div>
                     <div class="nk-forum-activity-avatar">
                         <img src="{{ asset('build/images/avatar-1-sm.jpg') }}" alt="Lesa Cruz">
@@ -44,28 +45,28 @@
     <div class="container">
         <!-- START: Pagination -->
         <div class="row">
-            <div class="col-md-3 order-md-2 text-right">
-                <a href="{{ path('category_new_topic', {'slug': category.slug}) }}" class="nk-btn nk-btn-lg link-effect-1 nk-btn-color-warning">{{ 'topic.actions.new'|trans }}</a>
-            </div>
+            {#<div class="col-md-3 order-md-2 text-right">#}
+                {#<a href="{{ path('category_new_topic', {'slug': location.slug}) }}" class="nk-btn nk-btn-lg link-effect-1 nk-btn-color-warning">{{ 'topic.actions.new'|trans }}</a>#}
+            {#</div>#}
             <div class="col-md-9 ">
-                {{ knp_pagination_render(topics) }}
+                {{ knp_pagination_render(games) }}
             </div>
         </div>
         <!-- END: Pagination -->
         <div class="nk-gap-2"></div>
 
         <ul class="nk-forum">
-            {% for topic in topics %}
+            {% for game in games %}
                 <li>
                     <div class="nk-forum-icon">
                         <span class="ion-pin"></span>
                     </div>
                     <div class="nk-forum-title">
-                        <h3><a href="{{ path('topic_view', {'slug': topic.slug}) }}">{{ topic.title }}</a></h3>
-                        <div class="nk-forum-title-sub">Started by <a href="#">{{ topic.author.username }}</a> on {{ topic.createdAt|localizeddate }}</div>
+                        <h3><a href="#">{{ game.title }}</a></h3>
+                        <div class="nk-forum-title-sub">Started by <a href="#">{{ game.gameMaster.username }}</a> on {{ game.createdAt|localizeddate }}</div>
                     </div>
                     <div class="nk-forum-count">
-                        {{ topic.posts|length }} posts
+                        {{ game.rolePlays|length }} posts
                     </div>
                     <div class="nk-forum-activity-avatar">
                         <img src="{{ asset('build/images/avatar-1-sm.jpg') }}" alt="Lesa Cruz">

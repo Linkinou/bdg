@@ -9,7 +9,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CharacterRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\PersonaRepository")
  */
 class Persona
 {

@@ -13,6 +13,8 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
  */
 class Game
 {
+    const MAX_PER_PAGE = 5;
+
     use TimestampableEntity;
 
     /**

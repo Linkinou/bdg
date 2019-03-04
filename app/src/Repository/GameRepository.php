@@ -4,6 +4,9 @@ namespace App\Repository;
 
 use App\Entity\Game;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -14,37 +17,46 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class GameRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    /**
+     * @var PaginatorInterface
+     */
+    protected $paginator;
+
+    public function __construct(RegistryInterface $registry, PaginatorInterface $paginator)
     {
+        $this->paginator = $paginator;
         parent::__construct($registry, Game::class);
     }
 
-    // /**
-    //  * @return Game[] Returns an array of Game objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param int $page
+     * @return PaginationInterface
+     */
+    public function findLatest(int $location, int $page = 1) : PaginationInterface
     {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('g.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+        $qb = $this->createQueryBuilder('g')
+            ->addSelect('gm')
+            ->innerJoin('g.gameMaster', 'gm')
+            ->where('g.location = :location')
+            ->setParameter('location', $location)
         ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Game
-    {
-        return $this->createQueryBuilder('g')
-            ->andWhere('g.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $this->createPaginator($qb->getQuery(), $page);
     }
-    */
+
+    /**
+     * @param Query $query
+     * @param int $page
+     * @return PaginationInterface
+     */
+    private function createPaginator(Query $query, int $page) : PaginationInterface
+    {
+        $paginator = $this->paginator->paginate(
+            $query,
+            $page,
+            Game::MAX_PER_PAGE
+        );
+
+        return $paginator;
+    }
 }

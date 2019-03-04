@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Persona[]    findAll()
  * @method Persona[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CharacterRepository extends ServiceEntityRepository
+class PersonaRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {

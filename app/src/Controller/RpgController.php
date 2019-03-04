@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Game;
 use App\Entity\Location;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -24,12 +26,16 @@ class RpgController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}", name="rpg_view_location")
+     * @Route("/{slug}", name="rpg_location_view")
      */
-    public function viewLocation(Location $location)
+    public function viewLocation(Request $request, Location $location)
     {
-        return $this->render('rpg/index.html.twig', [
-            'locations' => $locations,
+        $page = $request->query->get('page', 1);
+        $games = $this->getDoctrine()->getRepository(Game::class)->findLatest($location->getId(), $page);
+
+        return $this->render('rpg/location.html.twig', [
+            'location' => $location,
+            'games' => $games
         ]);
     }
 }
