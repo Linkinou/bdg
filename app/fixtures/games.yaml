@@ -1,8 +1,8 @@
 App\Entity\Game:
     game_{1..10}:
-        title: <realText(20)>
+        title: <catchPhrase()>
         location: '@location_*'
-        description: <realText(20)>
-        goal: <realText()>
+        description: <paragraph()>
+        story: <realText(500)>
         maxPlayingPersonas: <randomDigitNotNull()>
         gameMaster: '@user_*'

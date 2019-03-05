@@ -36,14 +36,14 @@ class Game
     private $location;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="text")
      */
     private $description;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="text")
      */
-    private $goal;
+    private $story;
 
     /**
      * @ORM\Column(type="integer")
@@ -127,14 +127,14 @@ class Game
         return $this;
     }
 
-    public function getGoal(): ?string
+    public function getStory(): ?string
     {
-        return $this->goal;
+        return $this->story;
     }
 
-    public function setGoal(?string $goal): self
+    public function setStory(?string $story): self
     {
-        $this->goal = $goal;
+        $this->story = $story;
 
         return $this;
     }

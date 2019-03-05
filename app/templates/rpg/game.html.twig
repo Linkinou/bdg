@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="nk-main">
+
+        {% embed '_common/head_banner.html.twig' %}
+            {% block banner_title %}{{ game.title }}{% endblock %}
+        {% endembed %}
+
+        {% embed '_common/breadcrumbs.html.twig' %}
+            {% block items %}
+                <li><a href="{{ path('rpg_location_view', {'slug': game.location.slug}) }}">{{ game.location.name }}</a></li>
+                <li><span>{{ game.title }}</span></li>
+            {% endblock %}
+        {% endembed %}
+
+        <div class="nk-gap-2"></div>
+
+        {% include '_common/alert.html.twig' %}
+
+
+        <div class="container">
+
+            <!-- START: Pagination -->
+            <div class="row">
+                <div class="col-md-9 ">
+                    {{ knp_pagination_render(rolePlays) }}
+                </div>
+            </div>
+            <!-- END: Pagination -->
+
+            <!-- START: Forums List -->
+            <ul class="nk-forum nk-forum-topic">
+
+                <li>
+                    <a name="game-details"></a>
+                    <div class="nk-forum-topic-author">
+                        <img src="{{ asset('build/images/avatar-1-sm.jpg') }}" alt="Lesa Cruz">
+                        <div class="nk-forum-topic-author-name" title="Lesa Cruz">
+                            <a href="#">{{ game.gameMaster.username }}</a>
+                        </div>
+                        <div class="nk-forum-topic-author-role">Maitre du jeu</div>
+                    </div>
+                    <div class="nk-forum-topic-content">
+                        <div class="nk-social-profile">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="nk-social-profile-info">
+                                        <div class="nk-social-profile-info-last-seen">Place restantes : {{ game.maxPlayingPersonas - game.playingPersonas|length }}</div>
+                                        <h1 class="nk-social-profile-info-name">{{ game.title }}</h1>
+                                        <div class="nk-social-profile-info-admins">
+                                            <h2>Participants</h2>
+                                            <ul>
+                                            {% for persona in game.playingPersonas %}
+                                                <li>
+                                                    <a href="#"><img src="{{ asset('build/images/avatar-1-sm.jpg') }}" alt="nK"></a>
+                                                </li>
+                                            {% else %}
+                                                <li>Aucun joueurs pour le moment</li>
+                                            {% endfor %}
+                                            </ul>
+                                        </div>
+                                        <div class="nk-social-profile-info-username">État : En attente de joueurs</div>
+                                        <div class="nk-social-profile-info-actions">
+                                            <a href="#" class="nk-btn link-effect-4">Rejoindre la partie</a>
+                                        </div>
+                                        <div class="nk-social-profile-info-description">
+                                            {{ game.description|raw }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="nk-gap-2"></div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <blockquote class="nk-blockquote">
+                                        <div class="nk-blockquote-icon">&ldquo;</div>
+                                        <em>{{ game.story|raw }}</em>
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nk-forum-topic-footer">
+                        <span class="nk-forum-topic-date">{{ game.createdAt|localizeddate }}</span>
+
+                        <span class="nk-forum-action-btn">
+                                {% if app.user is not empty and app.user.id is same as(game.gameMaster.id) %}
+                                    <a href="#" class="nk-anchor"><span class="fa fa-reply"></span> {{ 'post.action.edit'|trans }}</a>
+                                {% endif %}
+                            </span>
+                    </div>
+                </li>
+
+                {% for rolePlay in rolePlays %}
+                    <li>
+                        <a name="{{ rolePlay.id }}"></a>
+                        {% if loop.last %}
+                            <a name="last"></a>
+                        {% endif %}
+                        <div class="nk-forum-topic-author">
+                            <img src="{{ asset('build/images/avatar-1-sm.jpg') }}" alt="Lesa Cruz">
+                            <div class="nk-forum-topic-author-name" title="Lesa Cruz">
+                                <a href="#">{{ rolePlay.persona.name }}</a>
+                            </div>
+                            <div class="nk-forum-topic-author-role">Keymaster</div>
+                            <div class="nk-forum-topic-author-since">
+                                Member since {{ rolePlay.persona.createdAt|localizeddate }}
+                            </div>
+                        </div>
+                        <div class="nk-forum-topic-content">
+                            {{ rolePlay.content|raw }}
+                        </div>
+                        <div class="nk-forum-topic-footer">
+                            <span class="nk-forum-topic-date">{{ rolePlay.createdAt|localizeddate }}</span>
+
+                            <span class="nk-forum-action-btn">
+                                {% if app.user is not empty and app.user.id is same as(rolePlay.persona.user.id) %}
+                                    <a href="#" class="nk-anchor"><span class="fa fa-reply"></span> {{ 'post.action.edit'|trans }}</a>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+            <!-- END: Forums List -->
+
+            <div class="nk-gap-2"></div>
+
+            <!-- START: Pagination -->
+            <div class="row">
+                <div class="col-md-9 ">
+                    {{ knp_pagination_render(rolePlays) }}
+                </div>
+            </div>
+            <!-- END: Pagination -->
+        </div>
+
+        <div class="nk-gap-6"></div>
+    </div>
+{% endblock %}

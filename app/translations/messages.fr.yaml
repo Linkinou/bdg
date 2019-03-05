@@ -11,6 +11,8 @@ common:
     submit: Confirmer
     logout: Se déconnecter
     reply: Répondre
+    flash:
+        not_found: Je pense que vous vous êtes perdu... Mais on ne dira rien, cela reste entre nous.
 register:
     success: Votre compte a bien été créé ! Vous pouvez vous connecter avec vos identifiants.
 forgotten_password:
@@ -42,3 +44,15 @@ topic:
         current: "Écriture d'un nouveau sujet"
     alert:
         success: Votre sujet a bien été créé !
+game:
+    breadcrumbs:
+        new: "Nouvelle partie"
+    label:
+        title: 'Titre de la partie : '
+        max_players: 'Nombre maximum de joueurs : '
+        location: 'Lieu de la partie :'
+        description: 'Introduction :'
+        story: 'Histoire :'
+    actions:
+        new: 'Nouvelle partie'
+        submit: 'Créer la partie'

@@ -2,8 +2,12 @@
 
 namespace App\Repository;
 
+use App\Entity\Game;
 use App\Entity\RolePlay;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -14,37 +18,49 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class RolePlayRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    /**
+     * @var PaginatorInterface
+     */
+    protected $paginator;
+
+    public function __construct(RegistryInterface $registry, PaginatorInterface $paginator)
     {
+        $this->paginator = $paginator;
         parent::__construct($registry, RolePlay::class);
     }
 
-    // /**
-    //  * @return RolePlay[] Returns an array of RolePlay objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param Game $game
+     * @param int $page
+     * @return PaginationInterface
+     */
+    public function findLatest(Game $game, int $page = 1) : PaginationInterface
     {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+        $qb = $this->createQueryBuilder('rp')
+            ->addSelect('persona')
+            ->innerJoin('rp.persona', 'persona')
+            ->where('rp.game = :game')
+            ->setParameter('game', $game)
         ;
-    }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?RolePlay
-    {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        return $this->createPaginator($qb->getQuery(), $page);
     }
-    */
+
+    /**
+     * @param Query $query
+     * @param int $page
+     * @return PaginationInterface
+     */
+    private function createPaginator(Query $query, int $page) : PaginationInterface
+    {
+        $paginator = $this->paginator->paginate(
+            $query,
+            $page,
+            RolePlay::MAX_PER_PAGE
+        );
+
+        return $paginator;
+    }
+
+
 }

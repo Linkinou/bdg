@@ -1,16 +1,20 @@
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            {% for label, messages in app.flashes %}
-                {% for message in messages %}
-                    <div class="nk-info-box bg-{{ label }}">
-                        <div class="nk-info-box-icon">
-                            <i class="ion-information-circled"></i>
+{% if app.flashes is defined and app.flashes is not empty %}
+    <div class="nk-gap-2"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                {% for label, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="nk-info-box bg-{{ label }}">
+                            <div class="nk-info-box-icon">
+                                <i class="ion-information-circled"></i>
+                            </div>
+                            {{ message }}
                         </div>
-                        {{ message }}
-                    </div>
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
+            </div>
         </div>
     </div>
-</div>
+    <div class="nk-gap-2"></div>
+{% endif %}
