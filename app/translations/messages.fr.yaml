@@ -56,3 +56,13 @@ game:
     actions:
         new: 'Nouvelle partie'
         submit: 'Créer la partie'
+    text:
+        leave_group: 'Quitter le groupe'
+        join_group: 'Rejoindre le groupe'
+        pending_validation: 'En attente de validation'
+        can_join: 'Eligible'
+        accepted: 'En groupe'
+    flash:
+        already_joined: 'Votre personnage est déjà inscrit'
+        joined: 'Votre demande est maintenant en attente de validation'
+        left: 'Votre personnage a bien été retiré du groupe'

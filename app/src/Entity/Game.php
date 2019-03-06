@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Faker\Provider\Person;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
@@ -262,5 +263,55 @@ class Game
     {
         $this->slug = $slug;
         return $this;
+    }
+
+    /**
+     * @param Persona $persona
+     * @return bool
+     */
+    public function isCurrentlyPlaying(Persona $persona)
+    {
+        /** @var Persona $playingPersona */
+        foreach ($this->playingPersonas as $playingPersona) {
+            if ($persona->getId() === $playingPersona->getId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param Persona $persona
+     * @return bool
+     */
+    public function isPendingPlaying(Persona $persona)
+    {
+        /** @var Persona $pendingPersona */
+        foreach ($this->pendingPersonas as $pendingPersona) {
+            if ($persona->getId() === $pendingPersona->getId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param Persona $persona
+     * @return bool
+     */
+    public function isAlreadyRegistered(Persona $persona)
+    {
+        $registeredPersonas = array_merge($this->getPlayingPersonas(), $this->getPendingPersonas());
+
+        /** @var Persona $pendingPersona */
+        foreach ($registeredPersonas as $pendingPersona) {
+            if ($persona->getId() === $pendingPersona->getId()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

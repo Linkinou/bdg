@@ -14,8 +14,6 @@
             {% endblock %}
         {% endembed %}
 
-        <div class="nk-gap-2"></div>
-
         {% include '_common/alert.html.twig' %}
 
 
@@ -46,24 +44,26 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="nk-social-profile-info">
-                                        <div class="nk-social-profile-info-last-seen">Place restantes : {{ game.maxPlayingPersonas - game.playingPersonas|length }}</div>
+                                        <div class="nk-social-profile-info-last-seen">Place restantes : {{ game.maxPlayingPersonas - game.pendingPersonas|length }}</div>
                                         <h1 class="nk-social-profile-info-name">{{ game.title }}</h1>
                                         <div class="nk-social-profile-info-admins">
                                             <h2>Participants</h2>
                                             <ul>
-                                            {% for persona in game.playingPersonas %}
+                                            {% for persona in game.pendingPersonas %}
                                                 <li>
-                                                    <a href="#"><img src="{{ asset('build/images/avatar-1-sm.jpg') }}" alt="nK"></a>
+                                                    <a href="#"><img src="{{ asset('build/images/avatar-1-sm.jpg') }}" alt="{{ persona.name }}" title="{{ persona.name }}"></a>
                                                 </li>
                                             {% else %}
                                                 <li>Aucun joueurs pour le moment</li>
                                             {% endfor %}
                                             </ul>
                                         </div>
-                                        <div class="nk-social-profile-info-username">État : En attente de joueurs</div>
-                                        <div class="nk-social-profile-info-actions">
-                                            <a href="#" class="nk-btn link-effect-4">Rejoindre la partie</a>
-                                        </div>
+                                        {% if gameStateButton %}
+                                            <div class="nk-social-profile-info-username">État : {{ gameStateButton.currentGameState }}</div>
+                                            <div class="nk-social-profile-info-actions">
+                                                <a href="{{ gameStateButton.buttonUrl }}" class="nk-btn link-effect-4">{{ gameStateButton.buttonLabel }}</a>
+                                            </div>
+                                        {% endif %}
                                         <div class="nk-social-profile-info-description">
                                             {{ game.description|raw }}
                                         </div>
