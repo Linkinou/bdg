@@ -58,10 +58,26 @@
                                             {% endfor %}
                                             </ul>
                                         </div>
-                                        {% if gameStateButton %}
-                                            <div class="nk-social-profile-info-username">État : {{ gameStateButton.currentGameState }}</div>
+                                        <div class="nk-social-profile-info-username">État : {{ game.state }}</div>
+                                        {% if app.user %}
                                             <div class="nk-social-profile-info-actions">
-                                                <a href="{{ gameStateButton.buttonUrl }}" class="nk-btn link-effect-4">{{ gameStateButton.buttonLabel }}</a>
+                                                {% if game.gameMaster != app.user and 'published' in workflow_marked_places(game) %}
+                                                    {% if personaInPendingGame(game)  %}
+                                                        <a href="{{ path('rpg_leave_game', {'locationSlug': game.location.slug, 'gameSlug': game.slug}) }}" class="nk-btn link-effect-4">
+                                                            Annuler la demande
+                                                        </a>
+                                                    {% elseif personaJoinedGame(game) %}
+                                                        <a href="{{ path('rpg_leave_game', {'locationSlug': game.location.slug, 'gameSlug': game.slug}) }}" class="nk-btn link-effect-4">
+                                                            Quitter le groupe
+                                                        </a>
+                                                    {% else %}
+                                                        <a href="{{ path('rpg_join_game', {'locationSlug': game.location.slug, 'gameSlug': game.slug}) }}" class="nk-btn link-effect-4">
+                                                            Rejoindre le groupe
+                                                        </a>
+                                                    {% endif %}
+                                                {% else %}
+
+                                                {% endif %}
                                             </div>
                                         {% endif %}
                                         <div class="nk-social-profile-info-description">

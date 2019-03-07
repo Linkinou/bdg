@@ -31,6 +31,11 @@ class Game
     private $title;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $state;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Location", inversedBy="games")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -66,6 +71,7 @@ class Game
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(nullable=false)
+     * @var User
      */
     private $gameMaster;
 
@@ -85,6 +91,7 @@ class Game
         $this->pendingPersonas = new ArrayCollection();
         $this->playingPersonas = new ArrayCollection();
         $this->rolePlays = new ArrayCollection();
+        $this->state = 'draft';
     }
 
     public function getId(): ?int
@@ -100,6 +107,18 @@ class Game
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function setState(string $state): self
+    {
+        $this->state = $state;
 
         return $this;
     }
@@ -313,5 +332,14 @@ class Game
         }
 
         return false;
+    }
+
+    /**
+     * @param User $user
+     * @return bool
+     */
+    public function isGameMaster(User $user)
+    {
+        return $this->gameMaster->getId() === $user->getId();
     }
 }

@@ -64,6 +64,11 @@ class Persona
         $this->rolePlays = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->name . $this->getId();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

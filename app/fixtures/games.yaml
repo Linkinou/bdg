@@ -1,6 +1,7 @@
 App\Entity\Game:
     game_{1..10}:
         title: <catchPhrase()>
+        state: 'draft'
         location: '@location_*'
         description: <paragraph()>
         story: <realText(500)>

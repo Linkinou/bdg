@@ -1,0 +1,28 @@
+framework:
+    workflows:
+        game_life:
+            type: 'workflow'
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'single_state'
+                arguments:
+                    - 'state'
+            supports:
+                - App\Entity\Game
+            initial_place: draft
+            places:
+                - draft
+                - published
+                - in_progress
+                - completed
+            transitions:
+                publish:
+                    from: draft
+                    to:   published
+                start:
+                    from: published
+                    to:   in_progress
+                finish:
+                    from: in_progress
+                    to:   completed

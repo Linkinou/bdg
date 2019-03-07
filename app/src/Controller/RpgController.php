@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Workflow\Registry;
 
 /**
  * @Route("/rpg")
@@ -95,8 +96,12 @@ class RpgController extends AbstractController
     /**
      * @Route("/{locationSlug}/{gameSlug}", name="rpg_view_game")
      */
-    public function viewGame(Request $request, TranslatorInterface $translator, $locationSlug, $gameSlug)
-    {
+    public function viewGame(
+        Request $request,
+        TranslatorInterface $translator,
+        $locationSlug,
+        $gameSlug
+    ){
         $location = $this->getDoctrine()->getRepository(Location::class)->findOneBy(['slug' => $locationSlug]);
         if (null === $location) {
             $this->addFlash('warning', $translator->trans('common.flash.not_found'));
@@ -110,6 +115,12 @@ class RpgController extends AbstractController
 
             return $this->redirectToRoute('rpg_location_view', ['slug' => $locationSlug]);
         }
+
+//        if ($game->getState() === 'draft' && !$game->isGameMaster($this->getUser())) {
+//            $this->addFlash('warning', $translator->trans('common.flash.not_found'));
+//
+//            return $this->redirectToRoute('rpg_location_view', ['slug' => $locationSlug]);
+//        }
 
         $page = $request->query->get('page', 1);
         $rolePlays = $this->getDoctrine()->getRepository(RolePlay::class)->findLatest($game, $page);
