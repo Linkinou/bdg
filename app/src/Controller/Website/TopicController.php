@@ -6,6 +6,7 @@ use App\Entity\Post;
 use App\Entity\Topic;
 use App\FormType\TopicReplyFormType;
 use App\Model\TopicPost;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,8 +29,12 @@ class TopicController extends AbstractController
 
     /**
      * @Route("/topic/{slug}/reply", name="topic_reply")
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param Topic $topic
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function reply(Request $request, Topic $topic)
+    public function reply(Request $request, EntityManagerInterface $entityManager, Topic $topic)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
@@ -45,8 +50,7 @@ class TopicController extends AbstractController
                 ->setTopic($topic)
                 ->setAuthor($this->getUser())
             ;
-
-            $entityManager = $this->getDoctrine()->getManager();
+            $topic->setLastPostCreatedAt(new \DateTime());
             $entityManager->persist($reply);
             $entityManager->flush();
 

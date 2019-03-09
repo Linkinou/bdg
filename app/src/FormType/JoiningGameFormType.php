@@ -29,7 +29,7 @@ class JoiningGameFormType extends AbstractType
         $builder
             ->add('persona', ChoiceType::class, [
                 'choices' => $userPersonas,
-                'choice_label' => function(Persona $persona, $key, $value) {
+                'choice_label' => function(Persona $persona) {
                     return $persona->getName();
                 },
                 'choice_value' => function(Persona $persona = null) {

@@ -38,6 +38,7 @@ class TopicRepository extends ServiceEntityRepository
             ->addSelect('a')
             ->innerJoin('p.author', 'a')
             ->where('p.category = :category')
+            ->orderBy('p.lastPostCreatedAt', 'DESC')
             ->setParameter('category', $category)
         ;
 
