@@ -65,4 +65,19 @@ game:
     flash:
         already_joined: 'Votre personnage est déjà inscrit'
         joined: 'Votre demande est maintenant en attente de validation'
+        joined_without_persona: 'Merci de choisir un de vos personnages pour rejoindre la partie'
         left: 'Votre personnage a bien été retiré du groupe'
+        game_published: 'La partie est mainteant ouverte aux joueurs'
+        game_started: 'La partie commence, bon RP !'
+        players_required: 'Il vous faut un minimum de 2 joueurs pour démarrer la partie'
+exception:
+    not_found: La ressource que vous demandez n'existe pas
+404:
+    title: 'Oops, vous avez trêbuché sur un caillou...'
+    description: La page que vous recherche n'existe pas ou plus. Cela peut-être dû à une erreur de notre part. Mais nous nous penchons plus sur un abus d'hydromel de votre part.
+    go_home: Page d'accueil
+workflow:
+    guard:
+        start_game:
+            not_gamemaster: 'Seul le Maître du Jeu est autorisé à effectuer cette action'
+            not_enough_players: 'Vous devez avoir au minimum %min% joueurs dans votre groupe pour démarrer la partie'

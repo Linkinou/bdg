@@ -84,6 +84,11 @@ class User implements UserInterface
         return $user->getEmail() === $this->email;
     }
 
+    public function hasPersona()
+    {
+        return ($this->getPersonas()->count() > 0);
+    }
+
     public function getId(): ?int
     {
         return $this->id;

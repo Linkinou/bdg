@@ -1,5 +1,0 @@
-App\Entity\RolePlay:
-    roleplay_{1..100}:
-        content: <realText()>
-        persona: '@persona_*'
-        game: '@game_*'

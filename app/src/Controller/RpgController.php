@@ -8,12 +8,23 @@ use App\Entity\Persona;
 use App\Entity\RolePlay;
 use App\Entity\User;
 use App\FormType\GameCreationFormType;
+use App\FormType\JoiningGameFormType;
 use App\Model\GameModel;
 use App\Model\GameStateButton;
+use App\Model\JoiningGameModel;
+use App\Repository\GameRepository;
+use App\Repository\LocationRepository;
+use App\Repository\RolePlayRepository;
+use App\Service\GameService;
+use App\Validator\Constraints\JoiningGame;
+use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Workflow\Registry;
 
 /**
@@ -23,10 +34,13 @@ class RpgController extends AbstractController
 {
     /**
      * @Route("/", name="rpg_homepage")
+     *
+     * @param LocationRepository $locationRepository
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index()
+    public function index(LocationRepository $locationRepository)
     {
-        $locations = $this->getDoctrine()->getRepository(Location::class)->findAll();
+        $locations = $locationRepository->findAll();
 
         return $this->render('rpg/index.html.twig', [
             'locations' => $locations,
@@ -36,10 +50,10 @@ class RpgController extends AbstractController
     /**
      * @Route("/{slug}", name="rpg_location_view")
      */
-    public function viewLocation(Request $request, Location $location)
+    public function viewLocation(Request $request, GameRepository $gameRepository, Location $location)
     {
         $page = $request->query->get('page', 1);
-        $games = $this->getDoctrine()->getRepository(Game::class)->findLatest($location->getId(), $page);
+        $games = $gameRepository->findLatest($location->getId(), $page);
 
         return $this->render('rpg/location.html.twig', [
             'location' => $location,
@@ -51,39 +65,40 @@ class RpgController extends AbstractController
     /**
      * @Route("/new-game", name="rpg_new_game")
      * @Route("/{slug}/new-game", name="rpg_new_game_from_location")
+     *
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @param GameService $gameService
+     * @param EntityManagerInterface $em
+     * @param Location|null $location
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function createGame(Request $request, TranslatorInterface $translator, Location $location = null)
-    {
+    public function createGame(
+        Request $request,
+        TranslatorInterface $translator,
+        GameService $gameService,
+        EntityManagerInterface $em,
+        Location $location = null
+    ){
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $gameModel = new GameModel();
-
         if (null !== $location) {
             $gameModel->setLocation($location);
         }
 
         $form = $this->createForm(GameCreationFormType::class, $gameModel);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $newGame = new Game();
-            $newGame
-                ->setLocation($gameModel->getLocation())
-                ->setTitle($gameModel->getTitle())
-                ->setDescription($gameModel->getDescription())
-                ->setStory($gameModel->getStory())
-                ->setMaxPlayingPersonas($gameModel->getMaxPlayingPersonas())
-                ->setGameMaster($this->getUser());
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($newGame);
+            $game = $gameService->create($gameModel, $this->getUser());
+            $em->persist($game);
             $em->flush();
 
             $this->addFlash('success', $translator->trans('topic.alert.success'));
 
             return $this->redirectToRoute('rpg_location_view', [
-                'slug' => $newGame->getLocation()->getSlug()
+                'slug' => $game->getLocation()->getSlug()
             ]);
         }
 
@@ -95,176 +110,164 @@ class RpgController extends AbstractController
 
     /**
      * @Route("/{locationSlug}/{gameSlug}", name="rpg_view_game")
+     * @ParamConverter("location", options={"mapping": {"locationSlug": "slug"}})
+     * @ParamConverter("game", options={"mapping": {"gameSlug": "slug"}})
+     *
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @param RolePlayRepository $rolePlayRepository
+     * @param Location $location
+     * @param Game $game
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function viewGame(
         Request $request,
         TranslatorInterface $translator,
-        $locationSlug,
-        $gameSlug
+        RolePlayRepository $rolePlayRepository,
+        Location $location,
+        Game $game
     ){
-        $location = $this->getDoctrine()->getRepository(Location::class)->findOneBy(['slug' => $locationSlug]);
-        if (null === $location) {
-            $this->addFlash('warning', $translator->trans('common.flash.not_found'));
-
-            return $this->redirectToRoute('home');
+        // If draft and not owner
+        if ($game->getState() === 'draft' && !$game->isGameMaster($this->getUser())) {
+            throw $this->createNotFoundException($translator->trans('common.flash.not_found'));
         }
-
-        $game = $this->getDoctrine()->getRepository(Game::class)->findOneBy(['slug' => $gameSlug]);
-        if (null === $game) {
-            $this->addFlash('warning', $translator->trans('common.flash.not_found'));
-
-            return $this->redirectToRoute('rpg_location_view', ['slug' => $locationSlug]);
-        }
-
-//        if ($game->getState() === 'draft' && !$game->isGameMaster($this->getUser())) {
-//            $this->addFlash('warning', $translator->trans('common.flash.not_found'));
-//
-//            return $this->redirectToRoute('rpg_location_view', ['slug' => $locationSlug]);
-//        }
 
         $page = $request->query->get('page', 1);
-        $rolePlays = $this->getDoctrine()->getRepository(RolePlay::class)->findLatest($game, $page);
+        $rolePlays = $rolePlayRepository->findLatest($game, $page);
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $joiningFormView = null;
+        if (null !== $user) {
+            $joiningGame = new JoiningGameModel();
+            $joiningFormView = $this->createForm(JoiningGameFormType::class, $joiningGame, [
+                'user_personas' => $user->getPersonas(),
+                'action_url' => $this->generateUrl('rpg_join_game', [
+                    'locationSlug' => $location->getSlug(),
+                    'gameSlug' => $game->getSlug()
+                ])
+            ]);
+        }
 
         return $this->render('rpg/game.html.twig', [
             'game' => $game,
+            'joiningForm' => $joiningFormView ? $joiningFormView->createView() : null,
             'rolePlays' => $rolePlays,
-            'gameStateButton' => $this->getGameStateButton($translator, $game)
+        ]);
+    }
+
+    /**
+     * @Route("/{locationSlug}/{gameSlug}/start", name="rpg_start_game")
+     * @ParamConverter("location", options={"mapping": {"locationSlug": "slug"}})
+     * @ParamConverter("game", options={"mapping": {"gameSlug": "slug"}})
+     * @param TranslatorInterface $translator
+     * @param GameService $gameService
+     * @param Location $location
+     * @param Game $game
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @internal param Registry $workflows
+     * @internal param EntityManagerInterface $em
+     */
+    public function startGame(
+        TranslatorInterface $translator,
+        GameService $gameService,
+        Location $location,
+        Game $game
+    ){
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        if ($gameService->applyTransition($game, 'start')) {
+            $this->addFlash('success', $translator->trans('game.flash.game_started'));
+        }
+
+        return $this->redirectToRoute('rpg_view_game', [
+            'locationSlug' => $location->getSlug(),
+            'gameSlug' => $game->getSlug()
+        ]);
+    }
+
+    /**
+     * @Route("/{locationSlug}/{gameSlug}/publish", name="rpg_publish_game")
+     * @ParamConverter("location", options={"mapping": {"locationSlug": "slug"}})
+     * @ParamConverter("game", options={"mapping": {"gameSlug": "slug"}})
+     */
+    public function publishGame(
+        TranslatorInterface $translator,
+        GameService $gameService,
+        Location $location,
+        Game $game
+    ){
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        if ($gameService->applyTransition($game, 'publish')) {
+            $this->addFlash('success', $translator->trans('game.flash.game_published'));
+        }
+
+        return $this->redirectToRoute('rpg_view_game', [
+            'locationSlug' => $location->getSlug(),
+            'gameSlug' => $game->getSlug()
         ]);
     }
 
     /**
      * @Route("/{locationSlug}/{gameSlug}/leave", name="rpg_leave_game")
+     * @ParamConverter("location", options={"mapping": {"locationSlug": "slug"}})
+     * @ParamConverter("game", options={"mapping": {"gameSlug": "slug"}})
      */
-    public function leaveGame(TranslatorInterface $translator, $locationSlug, $gameSlug)
+    public function leaveGame(TranslatorInterface $translator, GameService $gameService, Location $location, Game $game)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $location = $this->getDoctrine()->getRepository(Location::class)->findOneBy(['slug' => $locationSlug]);
-        if (null === $location) {
-            $this->addFlash('warning', $translator->trans('common.flash.not_found'));
-
-            return $this->redirectToRoute('home');
-        }
-
-        $game = $this->getDoctrine()->getRepository(Game::class)->findOneBy(['slug' => $gameSlug]);
-        if (null === $game) {
-            $this->addFlash('warning', $translator->trans('common.flash.not_found'));
-
-            return $this->redirectToRoute('rpg_location_view', ['slug' => $locationSlug]);
-        }
-
         /** @var User $user */
         $user = $this->getUser();
-        $game->removePendingPersona($user->getPersonas()->first());
-        $game->removePlayingPersona($user->getPersonas()->first());
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($game);
-        $em->flush();
 
-        $this->addFlash('success', $translator->trans('game.flash.left'));
+        if ($gameService->leave($game, $user)) {
+            $this->addFlash('success', $translator->trans('game.flash.left'));
+        }
 
         return $this->redirectToRoute('rpg_view_game', [
-            'locationSlug' => $locationSlug,
-            'gameSlug' => $gameSlug
+            'locationSlug' => $location->getSlug(),
+            'gameSlug' => $game->getSlug()
         ]);
     }
 
     /**
-     * @Route("/{locationSlug}/{gameSlug}/join", name="rpg_join_game")
+     * @Route("/{locationSlug}/{gameSlug}/join", name="rpg_join_game", methods={"POST"})
+     * @ParamConverter("location", options={"mapping": {"locationSlug": "slug"}})
+     * @ParamConverter("game", options={"mapping": {"gameSlug": "slug"}})
      */
-    public function joinGame(TranslatorInterface $translator, $locationSlug, $gameSlug)
-    {
+    public function joinGame(
+        Request $request,
+        TranslatorInterface $translator,
+        GameService $gameService,
+        Location $location,
+        Game $game
+    ){
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $location = $this->getDoctrine()->getRepository(Location::class)->findOneBy(['slug' => $locationSlug]);
-        if (null === $location) {
-            $this->addFlash('warning', $translator->trans('common.flash.not_found'));
-
-            return $this->redirectToRoute('home');
-        }
-
-        $game = $this->getDoctrine()->getRepository(Game::class)->findOneBy(['slug' => $gameSlug]);
-        if (null === $game) {
-            $this->addFlash('warning', $translator->trans('common.flash.not_found'));
-
-            return $this->redirectToRoute('rpg_location_view', ['slug' => $locationSlug]);
-        }
-
         /** @var User $user */
         $user = $this->getUser();
-        $registeredPersonas = array_merge($game->getPendingPersonas()->toArray(), $game->getPlayingPersonas()->toArray());
-        if (!empty(array_intersect($registeredPersonas, $user->getPersonas()->toArray()))) {
-            $this->addFlash('warning', $translator->trans('game.flash.already_joined'));
 
-            return $this->redirectToRoute('rpg_view_game', [
-                'locationSlug' => $locationSlug,
-                'gameSlug' => $gameSlug
-            ]);
-        }
-
-        $game->addPendingPersona($user->getPersonas()->first());
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($game);
-        $em->flush();
-
-        $this->addFlash('success', $translator->trans('game.flash.joined'));
-
-        return $this->redirectToRoute('rpg_view_game', [
-            'locationSlug' => $locationSlug,
-            'gameSlug' => $gameSlug
-        ]);
-    }
-
-    /**
-     * @param TranslatorInterface $translator
-     * @param Game $game
-     * @return GameStateButton|null
-     */
-    private function getGameStateButton(TranslatorInterface $translator, Game $game)
-    {
-        /** @var User $user */
-        $user = $this->getUser();
-        if (null === $user) {
-            return null;
-        }
-
-        $playingPersonas = $game->getPlayingPersonas();
-        /** @var Persona $persona */
-        foreach ($playingPersonas as $persona) {
-            if ($persona->getUser() === $user) {
-                return new GameStateButton(
-                    $translator->trans('game.text.leave_group'),
-                    $translator->trans('game.text.accepted'),
-                    $this->generateUrl('rpg_leave_game', [
-                        'locationSlug' => $game->getLocation()->getSlug(),
-                        'gameSlug' => $game->getSlug()
-                    ])
-                );
-            }
-        }
-
-        $pendingPersonas = $game->getPendingPersonas();
-        /** @var Persona $persona */
-        foreach ($pendingPersonas as $persona) {
-            if ($persona->getUser() === $user) {
-                return new GameStateButton(
-                    $translator->trans('game.text.leave_group'),
-                    $translator->trans('game.text.pending_validation'),
-                    $this->generateUrl('rpg_leave_game', [
-                        'locationSlug' => $game->getLocation()->getSlug(),
-                        'gameSlug' => $game->getSlug()
-                    ])
-                );
-            }
-        }
-
-        return new GameStateButton(
-            $translator->trans('game.text.join_group'),
-            $translator->trans('game.text.can_join'),
-            $this->generateUrl('rpg_join_game', [
-                'locationSlug' => $game->getLocation()->getSlug(),
+        $joiningGame = new JoiningGameModel();
+        $form = $this->createForm(JoiningGameFormType::class, $joiningGame, [
+            'user_personas' => $user->getPersonas(),
+            'action_url' => $this->generateUrl('rpg_join_game', [
+                'locationSlug' => $location->getSlug(),
                 'gameSlug' => $game->getSlug()
             ])
-        );
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($gameService->join($game, $user, $joiningGame->getPersona())) {
+                $this->addFlash('success', $translator->trans('game.flash.joined'));
+            }
+        }
+
+        return $this->redirectToRoute('rpg_view_game', [
+            'locationSlug' => $location->getSlug(),
+            'gameSlug' => $game->getSlug()
+        ]);
     }
 }

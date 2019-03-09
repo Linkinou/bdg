@@ -14,6 +14,8 @@
             {% endblock %}
         {% endembed %}
 
+        <div class="nk-gap-3"></div>
+
         {% include '_common/alert.html.twig' %}
 
 
@@ -71,12 +73,21 @@
                                                             Quitter le groupe
                                                         </a>
                                                     {% else %}
-                                                        <a href="{{ path('rpg_join_game', {'locationSlug': game.location.slug, 'gameSlug': game.slug}) }}" class="nk-btn link-effect-4">
-                                                            Rejoindre le groupe
-                                                        </a>
+                                                        {{ form_start(joiningForm) }}
+                                                            {{ form_widget(joiningForm.persona) }}
+                                                            <button type="submit" class="nk-btn link-effect-4">
+                                                                Rejoindre le groupe
+                                                            </button>
+                                                        {{ form_end(joiningForm) }}
                                                     {% endif %}
-                                                {% else %}
-
+                                                {% elseif game.gameMaster == app.user and 'draft' in workflow_marked_places(game) %}
+                                                    <a href="{{ path('rpg_publish_game', {'locationSlug': game.location.slug, 'gameSlug': game.slug}) }}" class="nk-btn link-effect-4">
+                                                        Publier la partie
+                                                    </a>
+                                                {% elseif game.gameMaster == app.user and 'published' in workflow_marked_places(game) %}
+                                                    <a href="{{ path('rpg_start_game', {'locationSlug': game.location.slug, 'gameSlug': game.slug}) }}" class="nk-btn link-effect-4">
+                                                        Démarrer la partie
+                                                    </a>
                                                 {% endif %}
                                             </div>
                                         {% endif %}
@@ -141,7 +152,17 @@
             </ul>
             <!-- END: Forums List -->
 
-            <div class="nk-gap-2"></div>
+            <div class="nk-gap-3"></div>
+
+            {% if app.user and 'in_progress' in workflow_marked_places(game) %}
+                {% if personaJoinedGame(game) %}
+                    <a href="#" class="nk-btn nk-btn-x4 nk-btn-block nk-btn-rounded nk-btn-color-dark-1 nk-btn-bg-white">Jouer votre tour</a>
+                {% elseif game.gameMaster == app.user %}
+                    <a href="#" class="nk-btn nk-btn-x4 nk-btn-block nk-btn-rounded nk-btn-color-dark-1 nk-btn-bg-white">Jouer un évenement</a>
+                {% endif %}
+            {% endif %}
+
+            <div class="nk-gap-3"></div>
 
             <!-- START: Pagination -->
             <div class="row">

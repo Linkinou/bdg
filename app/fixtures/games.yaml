@@ -1,7 +1,7 @@
 App\Entity\Game:
-    game_{1..10}:
+    game_{1..20}:
         title: <catchPhrase()>
-        state: 'draft'
+        state: <randomElement(['draft', 'published', 'in_progress', 'completed'])>
         location: '@location_*'
         description: <paragraph()>
         story: <realText(500)>
