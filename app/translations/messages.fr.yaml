@@ -59,7 +59,7 @@ game:
         submit: 'Créer la partie'
     text:
         leave_group: 'Quitter le groupe'
-        join_group: 'Rejoindre le groupe'
+        join_group: 'Rejoindre'
         cancel_group: 'Annuler la demande'
         pending_validation: 'En attente de validation'
         play_turn: 'Jouer votre tour'

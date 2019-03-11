@@ -34,28 +34,35 @@
         <div class="col-3">
             <h4>{{ 'game.text.group_number'|trans({'%current%': game.playingPersonas|length, '%max%': game.maxPlayingPersonas}) }}</h4>
         </div>
-        <div class="col-3">
+
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 {% if game.gameMaster != app.user and 'published' in workflow_marked_places(game) %}
-                    {% if personaInPendingGame(game)  %}
-                        <a href="{{ path('rpg_leave_game', {'locationSlug': game.location.slug, 'gameSlug': game.slug}) }}" class="nk-btn link-effect-4">
-                            {{ 'game.text.cancel_group'|trans }}
-                        </a>
+                    {% if anyPersonaInPendingGame(game)  %}
+                        <div class="col-3">
+                            <a href="{{ path('rpg_leave_game', {'locationSlug': game.location.slug, 'gameSlug': game.slug}) }}" class="nk-btn link-effect-4">
+                                {{ 'game.text.cancel_group'|trans }}
+                            </a>
+                        </div>
                     {% elseif personaJoinedGame(game) %}
-                        <a href="{{ path('rpg_leave_game', {'locationSlug': game.location.slug, 'gameSlug': game.slug}) }}" class="nk-btn link-effect-4">
-                            {{ 'game.text.leave_group'|trans }}
-                        </a>
+                        <div class="col-3">
+                            <a href="{{ path('rpg_leave_game', {'locationSlug': game.location.slug, 'gameSlug': game.slug}) }}" class="nk-btn link-effect-4">
+                                {{ 'game.text.leave_group'|trans }}
+                            </a>
+                        </div>
                     {% else %}
-                    {{ form_start(joiningForm) }}
-                        {{ form_widget(joiningForm.persona) }}
-                        <button type="submit" class="nk-btn link-effect-4">
-                            {{ 'game.text.join_group'|trans }}
-                        </button>
-                    {{ form_end(joiningForm) }}
+                    <div class="col-4">
+                        {{ form_start(joiningForm) }}
+                            <div class="float-left mr-5">{{ form_widget(joiningForm.persona) }}</div>
+                            <div class="float-left">
+                                <button type="submit" class="nk-btn link-effect-4">
+                                    {{ 'game.text.join_group'|trans }}
+                                </button>
+                            </div>
+                        {{ form_end(joiningForm) }}
+                    </div>
                     {% endif %}
                 {% endif %}
             {% endif %}
-        </div>
     </div>
 
     <div class="row game-group-members">
@@ -65,7 +72,7 @@
                 <small>{{ persona.name }}</small>
             </div>
         {% endfor %}
-        {% for persona in game.pendingPersonas if isGameMaster(game) or personaInPendingGame(game) %}
+        {% for persona in game.pendingPersonas if isGameMaster(game) or userPersonaInPendingGame(game, persona) %}
             <div class="col-1 pending">
                 <img src="{{ asset('build/images/avatar-3-sm.jpg') }}">
                 <small>{{ persona.name }}</small>

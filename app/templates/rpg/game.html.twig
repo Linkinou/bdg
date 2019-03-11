@@ -2,7 +2,6 @@
 
 {% block body %}
     <div class="nk-main">
-
         {% embed '_common/head_banner.html.twig' %}
             {% block banner_title %}{{ game.title }}{% endblock %}
         {% endembed %}
@@ -18,183 +17,24 @@
 
         {% include '_common/alert.html.twig' %}
 
-
         <div class="container">
-
-            <!-- START: Pagination -->
-            <div class="row">
-                <div class="col-md-9 ">
-                    {{ knp_pagination_render(rolePlays) }}
-                </div>
-            </div>
-            <!-- END: Pagination -->
+            {% include '_common/paginate.html.twig' with {'class': 'col-md-9', 'object': rolePlays} only %}
 
             {% include 'rpg/_includes/game_description.html.twig' %}
 
-            <!-- START: Forums List -->
-            {#<ul class="nk-forum nk-forum-topic">#}
-{##}
-                {#<li>#}
-                    {#<a name="game-details"></a>#}
-                    {#<div class="nk-forum-topic-author">#}
-                        {#<img src="{{ asset('build/images/avatar-1-sm.jpg') }}" alt="Lesa Cruz">#}
-                        {#<div class="nk-forum-topic-author-name" title="Lesa Cruz">#}
-                            {#<a href="#">{{ game.gameMaster.username }}</a>#}
-                        {#</div>#}
-                        {#<div class="nk-forum-topic-author-role">Maitre du jeu</div>#}
-                    {#</div>#}
-                    {#<div class="nk-forum-topic-content">#}
-                        {#<div class="nk-social-profile">#}
-                            {#<div class="row">#}
-                                {#<div class="col-12">#}
-                                    {#<div class="nk-social-profile-info">#}
-                                        {#<div class="nk-social-profile-info-last-seen">Place restantes : {{ game.maxPlayingPersonas - game.pendingPersonas|length }}</div>#}
-                                        {#<h1 class="nk-social-profile-info-name">{{ game.title }}</h1>#}
-                                        {#<div class="nk-social-profile-info-username">État : {{ game.state }}</div>#}
-                                        {#{% if app.user %}#}
-                                            {#<div class="nk-social-profile-info-actions">#}
-                                                {#{% if game.gameMaster != app.user and 'published' in workflow_marked_places(game) %}#}
-                                                    {#{% if personaInPendingGame(game)  %}#}
-                                                        {#<a href="{{ path('rpg_leave_game', {'locationSlug': game.location.slug, 'gameSlug': game.slug}) }}" class="nk-btn link-effect-4">#}
-                                                            {#Annuler la demande#}
-                                                        {#</a>#}
-                                                    {#{% elseif personaJoinedGame(game) %}#}
-                                                        {#<a href="{{ path('rpg_leave_game', {'locationSlug': game.location.slug, 'gameSlug': game.slug}) }}" class="nk-btn link-effect-4">#}
-                                                            {#Quitter le groupe#}
-                                                        {#</a>#}
-                                                    {#{% else %}#}
-                                                        {#{{ form_start(joiningForm) }}#}
-                                                            {#{{ form_widget(joiningForm.persona) }}#}
-                                                            {#<button type="submit" class="nk-btn link-effect-4">#}
-                                                                {#Rejoindre le groupe#}
-                                                            {#</button>#}
-                                                        {#{{ form_end(joiningForm) }}#}
-                                                    {#{% endif %}#}
-                                                {#{% elseif game.gameMaster == app.user and 'draft' in workflow_marked_places(game) %}#}
-                                                    {#<a href="{{ path('rpg_publish_game', {'locationSlug': game.location.slug, 'gameSlug': game.slug}) }}" class="nk-btn link-effect-4">#}
-                                                        {#Publier la partie#}
-                                                    {#</a>#}
-                                                {#{% elseif game.gameMaster == app.user and 'published' in workflow_marked_places(game) %}#}
-                                                    {#<a href="{{ path('rpg_start_game', {'locationSlug': game.location.slug, 'gameSlug': game.slug}) }}" class="nk-btn link-effect-4">#}
-                                                        {#Démarrer la partie#}
-                                                    {#</a>#}
-                                                {#{% endif %}#}
-                                            {#</div>#}
-                                        {#{% endif %}#}
-                                        {#{% if gmSortingForm is not null %}#}
-                                            {#<div class="row">#}
-                                                {#<h4>En attente de validation :</h4>#}
-                                                {#{{ form_start(gmSortingForm) }}#}
-                                                {#<div class="">#}
-                                                    {#{{ form_row(gmSortingForm.personas) }}#}
-                                                {#</div>#}
-                                                {#<button type="submit"#}
-                                                        {#formaction="{{ path('rpg_accept_personas', {'gameSlug': game.slug, 'locationSlug': game.location.slug}) }}"#}
-                                                        {#class="nk-btn link-effect-4">#}
-                                                    {#Accepter#}
-                                                {#</button>#}
-                                                {#<button type="submit"#}
-                                                        {#formaction="{{ path('rpg_reject_personas', {'gameSlug': game.slug, 'locationSlug': game.location.slug}) }}"#}
-                                                        {#class="nk-btn link-effect-4">#}
-                                                    {#Refuser#}
-                                                {#</button>#}
-                                                {#{{ form_end(gmSortingForm) }}#}
-                                            {#</div>#}
-                                        {#{% endif %}#}
-                                        {#<div class="nk-social-profile-info-description">#}
-                                            {#{{ game.description|raw }}#}
-                                        {#</div>#}
-                                    {#</div>#}
-                                {#</div>#}
-                            {#</div>#}
-                            {#<div class="nk-gap-2"></div>#}
-                            {#<div class="row">#}
-                                {#<div class="col-12">#}
-                                    {#<blockquote class="nk-blockquote">#}
-                                        {#<div class="nk-blockquote-icon">&ldquo;</div>#}
-                                        {#<em>{{ game.story|raw }}</em>#}
-                                    {#</blockquote>#}
-                                {#</div>#}
-                            {#</div>#}
-                        {#</div>#}
-                    {#</div>#}
-                    {#<div class="nk-forum-topic-footer">#}
-                        {#<span class="nk-forum-topic-date">{{ game.createdAt|localizeddate }}</span>#}
-
-                        {#<span class="nk-forum-action-btn">#}
-                                {#{% if app.user is not empty and app.user.id is same as(game.gameMaster.id) %}#}
-                                    {#<a href="#" class="nk-anchor"><span class="fa fa-reply"></span> {{ 'post.action.edit'|trans }}</a>#}
-                                {#{% endif %}#}
-                            {#</span>#}
-                    {#</div>#}
-                {#</li>#}
-
-                {#{% for rolePlay in rolePlays %}#}
-                    {#<li>#}
-                        {#<a name="{{ rolePlay.id }}"></a>#}
-                        {#{% if loop.last %}#}
-                            {#<a name="last"></a>#}
-                        {#{% endif %}#}
-                        {#<div class="nk-forum-topic-author">#}
-                            {#<img src="{{ asset('build/images/avatar-1-sm.jpg') }}" alt="Lesa Cruz">#}
-                            {#<div class="nk-forum-topic-author-name" title="Lesa Cruz">#}
-                                {#<a href="#">{{ rolePlay.persona.name }}</a>#}
-                            {#</div>#}
-                            {#<div class="nk-forum-topic-author-role">Keymaster</div>#}
-                            {#<div class="nk-forum-topic-author-since">#}
-                                {#Member since {{ rolePlay.persona.createdAt|localizeddate }}#}
-                            {#</div>#}
-                        {#</div>#}
-                        {#<div class="nk-forum-topic-content">#}
-                            {#{{ rolePlay.content|raw }}#}
-                        {#</div>#}
-                        {#<div class="nk-forum-topic-footer">#}
-                            {#<span class="nk-forum-topic-date">{{ rolePlay.createdAt|localizeddate }}</span>#}
-
-                            {#<span class="nk-forum-action-btn">#}
-                                {#{% if app.user is not empty and app.user.id is same as(rolePlay.persona.user.id) %}#}
-                                    {#<a href="#" class="nk-anchor"><span class="fa fa-reply"></span> {{ 'post.action.edit'|trans }}</a>#}
-                                {#{% endif %}#}
-                            {#</span>#}
-                        {#</div>#}
-                    {#</li>#}
-                {#{% endfor %}#}
-            {#</ul>#}
-            <!-- END: Forums List -->
-
-            {#<div class="nk-gap-3"></div>#}
-
-            {#{% if app.user and 'in_progress' in workflow_marked_places(game) %}#}
-                {#{% if personaJoinedGame(game) %}#}
-                    {#<a href="#" class="nk-btn nk-btn-x4 nk-btn-block nk-btn-rounded nk-btn-color-dark-1 nk-btn-bg-white">Jouer votre tour</a>#}
-                {#{% elseif game.gameMaster == app.user %}#}
-                    {#<a href="#" class="nk-btn nk-btn-x4 nk-btn-block nk-btn-rounded nk-btn-color-dark-1 nk-btn-bg-white">Jouer un évenement</a>#}
-                {#{% endif %}#}
-            {#{% endif %}#}
-
-            <div class="nk-gap-3"></div>
-
-            <!-- START: Pagination -->
-            <div class="row">
-                <div class="col-md-9 ">
-                    {{ knp_pagination_render(rolePlays) }}
-                </div>
-            </div>
-            <!-- END: Pagination -->
+            {% include '_common/paginate.html.twig' with {'class': 'col-md-9', 'object': rolePlays} only %}
         </div>
 
-        <div class="nk-gap-6"></div>
+        <div class="nk-gap-5"></div>
     </div>
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('game') }}
-    {#<script src="{{ asset('build/vendor/readmore/readmore.min.js') }}"></script>#}
 {% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
     {{ encore_entry_link_tags('game') }}
-    {#<link rel="stylesheet" href="{{ asset('build/vendor/readmore/readmore.min.css') }}">#}
 {% endblock %}

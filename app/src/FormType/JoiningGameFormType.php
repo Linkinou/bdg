@@ -35,6 +35,9 @@ class JoiningGameFormType extends AbstractType
                 'choice_value' => function(Persona $persona = null) {
                     return $persona ? $persona->getId() : '';
                 },
+                'attr' => [
+                    'class' => 'form-control'
+                ]
             ])
             ->setAction($actionUrl)
             ->setMethod('POST')
