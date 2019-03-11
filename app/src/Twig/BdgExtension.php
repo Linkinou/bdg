@@ -29,7 +29,8 @@ class BdgExtension extends AbstractExtension
     {
         return [
             new TwigFunction('personaInPendingGame', [$this, 'isPersonaInPendingGame']),
-            new TwigFunction('personaJoinedGame', [$this, 'didPersonaJoinGame'])
+            new TwigFunction('personaJoinedGame', [$this, 'didPersonaJoinGame']),
+            new TwigFunction('isGameMaster', [$this, 'isGameMaster'])
         ];
     }
 
@@ -67,6 +68,26 @@ class BdgExtension extends AbstractExtension
         }
 
         if (empty(array_intersect($user->getPersonas()->toArray(), $game->getPlayingPersonas()->toArray()))) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param Game $game
+     * @return bool
+     */
+    public function isGameMaster(Game $game)
+    {
+        /** @var User $user */
+        $user = $this->security->getUser();
+
+        if (null === $user) {
+            return false;
+        }
+
+        if (!$game->isGameMaster($user)) {
             return false;
         }
 

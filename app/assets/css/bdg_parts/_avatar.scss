@@ -1,0 +1,5 @@
+ @mixin round-avatar-sm($radius: 30px) {
+  width: 60px;
+  height: auto;
+  border-radius: $radius;
+}

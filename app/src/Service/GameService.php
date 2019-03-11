@@ -149,4 +149,56 @@ class GameService
 
         return true;
     }
+
+    public function acceptPersona(Game $game, User $user, Persona $persona)
+    {
+        // Not GM
+        if (!$game->isGameMaster($user)) {
+            $this->flashBag->add('danger', $this->translator->trans('workflow.guard.start_game.not_gamemaster'));
+
+            return false;
+        }
+
+        // Group is full
+        if (count($game->getPlayingPersonas()) >= $game->getMaxPlayingPersonas()) {
+            $this->flashBag->add('danger', $this->translator->trans('game.flash.not_enough_space'));
+
+            return false;
+        }
+
+        // Not in pending list
+        if (!$game->getPendingPersonas()->contains($persona)) {
+            $this->flashBag->add('danger', $this->translator->trans('game.flash.not_pending_persona'));
+
+            return false;
+        }
+
+        $game->removePendingPersona($persona);
+        $game->addPlayingPersona($persona);
+        $this->em->flush();
+
+        return true;
+    }
+
+    public function refusePersona(Game $game, User $user, Persona $persona)
+    {
+        // Not GM
+        if (!$game->isGameMaster($user)) {
+            $this->flashBag->add('danger', $this->translator->trans('workflow.guard.start_game.not_gamemaster'));
+
+            return false;
+        }
+
+        // Not in pending list
+        if (!$game->getPendingPersonas()->contains($persona)) {
+            $this->flashBag->add('danger', $this->translator->trans('game.flash.not_pending_persona'));
+
+            return false;
+        }
+
+        $game->removePendingPersona($persona);
+        $this->em->flush();
+
+        return true;
+    }
 }
