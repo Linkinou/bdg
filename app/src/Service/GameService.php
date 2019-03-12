@@ -102,6 +102,16 @@ class GameService
             ->setGameMaster($user);
     }
 
+    public function edit(Game $game, GameModel $gameModel) : Game
+    {
+        return $game
+            ->setTitle($gameModel->getTitle())
+            ->setDescription($gameModel->getDescription())
+            ->setMaxPlayingPersonas($gameModel->getMaxPlayingPersonas())
+            ->setLocation($gameModel->getLocation())
+            ->setStory($gameModel->getStory());
+    }
+
     /**
      * @param Game $game
      * @param User $user

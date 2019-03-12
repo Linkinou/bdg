@@ -69,6 +69,8 @@ game:
         group_number: 'Groupe: %current%/%max%'
         proposed_by: 'proposé par '
     flash:
+        game_created: 'Votre partie a bien été créée'
+        game_edited: 'Votre partie a bien été éditée'
         already_joined: 'Votre personnage est déjà inscrit'
         joined: 'Votre demande est maintenant en attente de validation'
         persona_accepted: '%name% fait maintenant parti du groupe.'
@@ -80,6 +82,15 @@ game:
         players_required: 'Il vous faut un minimum de 2 joueurs pour démarrer la partie'
         not_enough_space: 'Vous avez atteint le nombre maximum de joueurs dans votre groupe.'
         not_pending_persona: "Ce personnage n'est pas en attente de validation"
+role_play:
+    flash:
+        rp_created: 'Votre RP a bien été posté'
+        rp_edited: 'Votre RP a bien été édité'
+    breadcrumbs:
+        creating: "RP en cours d'écriture"
+    actions:
+        create: Poster
+        edit: Éditer
 exception:
     not_found: La ressource que vous demandez n'existe pas
 404:

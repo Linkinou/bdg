@@ -25,7 +25,11 @@ class GameCreationFormType extends AbstractType
                     'class' => 'form-control'
                 ]
             ])
-            ->add('maxPlayingPersonas', NumberType::class)
+            ->add('maxPlayingPersonas', NumberType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ]
+            ])
             ->add('location', EntityType::class, [
                 'class' => Location::class,
                 'choice_label' => 'name',

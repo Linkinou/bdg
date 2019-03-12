@@ -53,7 +53,7 @@ class SecurityController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-            $this->addFlash('success', $translator->trans('common.register_success'));
+            $this->addFlash('success', $translator->trans('register.success'));
             return $this->redirectToRoute('home');
         }
 

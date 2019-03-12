@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Entity\Game;
 use App\Entity\Location;
 
 class GameModel
@@ -20,6 +21,19 @@ class GameModel
 
     /** @var int */
     private $maxPlayingPersonas;
+
+    public static function createFromGame(Game $game)
+    {
+        $gameModel = new self();
+
+        return $gameModel
+            ->setTitle($game->getTitle())
+            ->setDescription($game->getDescription())
+            ->setLocation($game->getLocation())
+            ->setMaxPlayingPersonas($game->getMaxPlayingPersonas())
+            ->setStory($game->getStory())
+        ;
+    }
 
     /**
      * @return string

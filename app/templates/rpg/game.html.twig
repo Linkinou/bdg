@@ -13,7 +13,7 @@
             {% endblock %}
         {% endembed %}
 
-        <div class="nk-gap-3"></div>
+        <div class="nk-gap-2"></div>
 
         {% include '_common/alert.html.twig' %}
 
@@ -21,6 +21,10 @@
             {% include '_common/paginate.html.twig' with {'class': 'col-md-9', 'object': rolePlays} only %}
 
             {% include 'rpg/_includes/game_description.html.twig' %}
+
+            {% include 'rpg/_includes/role_plays.html.twig' %}
+
+            {% include 'rpg/_includes/players_actions.html.twig' %}
 
             {% include '_common/paginate.html.twig' with {'class': 'col-md-9', 'object': rolePlays} only %}
         </div>

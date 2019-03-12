@@ -60,7 +60,7 @@
                         <span class="ion-pin"></span>
                     </div>
                     <div class="nk-forum-title">
-                        <h3><a href="{{ path('rpg_view_game', {'locationSlug': location.slug, 'gameSlug': game.slug}) }}">{{ game.title }} ({{ game.state }})</a></h3>
+                        <h3><a href="{{ path('rpg_game_view', {'locationSlug': location.slug, 'gameSlug': game.slug}) }}">{{ game.title }} ({{ game.state }})</a></h3>
                         <div class="nk-forum-title-sub">Started by <a href="#">{{ game.gameMaster.username }}</a> on {{ game.createdAt|localizeddate }}</div>
                     </div>
                     <div class="nk-forum-count">

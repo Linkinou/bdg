@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Website;
+namespace App\Controller;
 
 use App\Entity\Post;
 use App\Entity\Topic;
