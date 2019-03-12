@@ -54,7 +54,7 @@
         <div class="nk-gap-2"></div>
 
         <ul class="nk-forum">
-            {% for game in games if game.gameMaster.id == app.user.id or not workflow_has_marked_place(game, 'draft') %}
+            {% for game in games if isGameMaster(game) or not workflow_has_marked_place(game, 'draft') %}
                 <li>
                     <div class="nk-forum-icon">
                         <span class="ion-pin"></span>
