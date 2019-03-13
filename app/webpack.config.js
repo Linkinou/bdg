@@ -23,6 +23,7 @@ Encore
     .addEntry('login', './assets/js/login.js')
     .addEntry('register', './assets/js/register.js')
     .addEntry('game', './assets/js/game.js')
+    .addEntry('test', './assets/js/location_permission.js')
     .copyFiles([
       {from: './node_modules/ckeditor/', to: 'ckeditor/[path][name].[ext]', pattern: /\.(js|css)$/, includeSubdirectories: false},
       {from: './node_modules/ckeditor/adapters', to: 'ckeditor/adapters/[path][name].[ext]'},
@@ -37,7 +38,7 @@ Encore
     // will require an extra script tag for runtime.js
     // but, you probably want this, unless you're building a single-page app
     .enableSingleRuntimeChunk()
-
+    .enableReactPreset()
     /*
      * FEATURE CONFIG
      *
