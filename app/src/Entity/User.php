@@ -68,11 +68,17 @@ class User implements UserInterface
      */
     private $personas;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\RolePlay", mappedBy="user")
+     */
+    private $rolePlays;
+
     public function __construct()
     {
         $this->topics = new ArrayCollection();
         $this->posts = new ArrayCollection();
         $this->personas = new ArrayCollection();
+        $this->rolePlays = new ArrayCollection();
     }
 
     /**
@@ -286,6 +292,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($persona->getUser() === $this) {
                 $persona->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|RolePlay[]
+     */
+    public function getRolePlays(): Collection
+    {
+        return $this->rolePlays;
+    }
+
+    public function addRolePlay(RolePlay $rolePlay): self
+    {
+        if (!$this->rolePlays->contains($rolePlay)) {
+            $this->rolePlays[] = $rolePlay;
+            $rolePlay->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRolePlay(RolePlay $rolePlay): self
+    {
+        if ($this->rolePlays->contains($rolePlay)) {
+            $this->rolePlays->removeElement($rolePlay);
+            // set the owning side to null (unless already changed)
+            if ($rolePlay->getUser() === $this) {
+                $rolePlay->setUser(null);
             }
         }
 

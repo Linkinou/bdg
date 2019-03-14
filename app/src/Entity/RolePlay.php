@@ -12,6 +12,9 @@ class RolePlay
 {
     const MAX_PER_PAGE = 5;
 
+    const TYPE_EVENT = 'event';
+    const TYPE_ROLEPLAY = 'roleplay';
+
     use TimestampableEntity;
 
     /**
@@ -28,14 +31,31 @@ class RolePlay
 
     /**
      * @ORM\ManyToOne(targetEntity="Persona", inversedBy="rolePlays")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $persona;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $type = self::TYPE_ROLEPLAY;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Game", inversedBy="rolePlays")
      * @ORM\JoinColumn(nullable=false)
      */
     private $game;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="rolePlays")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Event", cascade={"persist", "remove"})
+     */
+    private $event;
 
     public function getId(): ?int
     {
@@ -74,6 +94,48 @@ class RolePlay
     public function setGame(?Game $game): self
     {
         $this->game = $game;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param mixed $type
+     * @return RolePlay
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    public function getEvent(): ?Event
+    {
+        return $this->event;
+    }
+
+    public function setEvent(?Event $event): self
+    {
+        $this->event = $event;
 
         return $this;
     }

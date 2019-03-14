@@ -8,10 +8,12 @@ use App\Entity\Persona;
 use App\Entity\RolePlay;
 use App\Entity\User;
 use App\Exception\ForbiddenAccessException;
+use App\FormType\EventRolePlayFormType;
 use App\FormType\GmSortingFormType;
 use App\FormType\GameCreationFormType;
 use App\FormType\JoiningGameFormType;
 use App\FormType\RolePlayFormType;
+use App\Model\EventRolePlayModel;
 use App\Model\GameModel;
 use App\Model\JoiningGameModel;
 use App\Model\RolePlayModel;
@@ -335,6 +337,47 @@ class GameController extends AbstractController
 
         return $this->render('rpg/role_play/new.html.twig', [
             'submitValue' => $translator->trans('role_play.actions.edit'),
+            'game' => $game,
+            'location' => $location,
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/post-event", name="post_event", methods={"GET", "POST"})
+     */
+    public function postEventRolePlay(
+        Request $request,
+        EntityManagerInterface $em,
+        TranslatorInterface $translator,
+        RolePlayService $rolePlayService,
+        Location $location,
+        Game $game
+    ){
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $eventRolePlayModel = new EventRolePlayModel();
+        $form = $this->createForm(EventRolePlayFormType::class, $eventRolePlayModel);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $eventRolePlay = $rolePlayService->createEventRolePlay($eventRolePlayModel, $game, $this->getUser());
+
+
+            $em->persist($eventRolePlay);
+            $em->flush();
+
+            $this->addFlash('success', $translator->trans('role_play.flash.rp_created'));
+
+            return $this->redirectToRoute('rpg_game_view', [
+                'locationSlug' => $location->getSlug(),
+                'gameSlug' => $game->getSlug()
+            ]);
+        }
+
+        return $this->render('rpg/role_play/new_event.html.twig', [
+            'submitValue' => $translator->trans('role_play.actions.create'),
             'game' => $game,
             'location' => $location,
             'form' => $form->createView()

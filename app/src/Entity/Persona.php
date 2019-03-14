@@ -15,6 +15,9 @@ class Persona
 {
     use TimestampableEntity;
 
+    const TYPE_PC = 'PC';
+    const TYPE_NPC = 'NPC';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -34,35 +37,15 @@ class Persona
     private $user;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Game", mappedBy="pendingPersonas")
-     */
-    private $pendingGames;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Game", mappedBy="playingPersonas")
-     */
-    private $games;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\RolePlay", mappedBy="persona")
-     */
-    private $rolePlays;
-
-    /**
      * @Gedmo\Slug(fields={"name", "id"})
      * @ORM\Column(type="string", length=128, unique=true)
      */
     private $slug;
 
     /**
-     * Persona constructor.
+     * @ORM\Column(type="string", length=255)
      */
-    public function __construct()
-    {
-        $this->pendingGames = new ArrayCollection();
-        $this->games = new ArrayCollection();
-        $this->rolePlays = new ArrayCollection();
-    }
+    private $type = self::TYPE_PC;
 
     public function __toString()
     {
@@ -97,92 +80,6 @@ class Persona
 
         return $this;
     }
-    /**
-     * @return Collection|Game[]
-     */
-    public function getPendingGames(): Collection
-    {
-        return $this->pendingGames;
-    }
-
-    public function addPendingGame(Game $pendingGame): self
-    {
-        if (!$this->pendingGames->contains($pendingGame)) {
-            $this->pendingGames[] = $pendingGame;
-            $pendingGame->addPendingPersona($this);
-        }
-
-        return $this;
-    }
-
-    public function removePendingGame(Game $pendingGame): self
-    {
-        if ($this->pendingGames->contains($pendingGame)) {
-            $this->pendingGames->removeElement($pendingGame);
-            $pendingGame->removePendingPersona($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Game[]
-     */
-    public function getGames(): Collection
-    {
-        return $this->games;
-    }
-
-    public function addGame(Game $game): self
-    {
-        if (!$this->games->contains($game)) {
-            $this->games[] = $game;
-            $game->addPlayingPersona($this);
-        }
-
-        return $this;
-    }
-
-    public function removeGame(Game $game): self
-    {
-        if ($this->games->contains($game)) {
-            $this->games->removeElement($game);
-            $game->removePlayingPersona($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|RolePlay[]
-     */
-    public function getRolePlays(): Collection
-    {
-        return $this->rolePlays;
-    }
-
-    public function addRolePlay(RolePlay $rolePlay): self
-    {
-        if (!$this->rolePlays->contains($rolePlay)) {
-            $this->rolePlays[] = $rolePlay;
-            $rolePlay->setPersona($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRolePlay(RolePlay $rolePlay): self
-    {
-        if ($this->rolePlays->contains($rolePlay)) {
-            $this->rolePlays->removeElement($rolePlay);
-            // set the owning side to null (unless already changed)
-            if ($rolePlay->getPersona() === $this) {
-                $rolePlay->setPersona(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return string
@@ -199,6 +96,18 @@ class Persona
     public function setSlug($slug) : self
     {
         $this->slug = $slug;
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
         return $this;
     }
 }

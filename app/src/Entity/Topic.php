@@ -55,13 +55,14 @@ class Topic
     private $slug;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $lastPostCreatedAt;
 
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+        $this->lastPostCreatedAt = new \DateTime();
     }
 
     /**
