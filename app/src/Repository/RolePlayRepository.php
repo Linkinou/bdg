@@ -38,10 +38,13 @@ class RolePlayRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('rp')
             ->addSelect('persona')
-            ->innerJoin('rp.persona', 'persona')
+            ->leftJoin('rp.persona', 'persona')
             ->where('rp.game = :game')
             ->setParameter('game', $game)
         ;
+
+//        var_dump($qb);die();
+
 
         return $this->createPaginator($qb->getQuery(), $page);
     }

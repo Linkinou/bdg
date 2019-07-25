@@ -21,6 +21,11 @@
         <div class="container">
             {{ form_start(form) }}
             <div class="bg-dark-1 p-60 row">
+                {% if type is defined and type == constant('App\\Entity\\RolePlay::TYPE_EVENT') %}
+                    <div class="col-12 p-4">
+                        {{ form_widget(form.title) }}
+                    </div>
+                {% endif %}
                 <div class="col-12 p-4">
                     {{ form_widget(form.content) }}
                 </div>

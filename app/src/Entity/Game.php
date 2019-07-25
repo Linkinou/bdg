@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\GameRepository")
@@ -30,17 +31,20 @@ class Game
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"game"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"game"})
      */
     private $state;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Location", inversedBy="games")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"game"})
      */
     private $location;
 
@@ -56,18 +60,21 @@ class Game
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"game"})
      */
     private $maxPlayingPersonas;
 
     /**
      * @ORM\ManyToMany(targetEntity="Persona", inversedBy="pendingGames")
      * @ORM\JoinTable(name="games_pendingPersonas")
+     * @Groups({"game"})
      */
     private $pendingPersonas;
 
     /**
      * @ORM\ManyToMany(targetEntity="Persona", inversedBy="games")
      * @ORM\JoinTable(name="games_playingPersonas")
+     * @Groups({"game"})
      */
     private $playingPersonas;
 
@@ -75,6 +82,7 @@ class Game
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(nullable=false)
      * @var User
+     * @Groups({"game"})
      */
     private $gameMaster;
 
@@ -345,4 +353,5 @@ class Game
     {
         return $this->gameMaster->getId() === $user->getId();
     }
+
 }

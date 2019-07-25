@@ -2,14 +2,15 @@
 
 namespace App\FormType;
 
-use App\Model\EventRolePlayModel;
+use App\Model\EventModel;
+use App\Model\RolePlayModel;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EventRolePlayFormType extends AbstractType
+class EventFormType extends AbstractType
 {
     /**
      * @inheritDoc
@@ -23,12 +24,6 @@ class EventRolePlayFormType extends AbstractType
                     'placeholder' => 'Titre de l\'évènement'
                 ]
             ])
-            ->add('description', TextType::class, [
-                'attr' => [
-                    'placeholder' => 'Description de l\'évènement',
-                    'class' => 'form-control'
-                ]
-            ])
             ->add('content', CKEditorType::class)
         ;
     }
@@ -39,7 +34,7 @@ class EventRolePlayFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => EventRolePlayModel::class
+            'data_class' => RolePlayModel::class
         ]);
     }
 }

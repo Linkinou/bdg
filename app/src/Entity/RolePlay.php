@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RolePlayRepository")
@@ -30,8 +31,7 @@ class RolePlay
     private $content;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Persona", inversedBy="rolePlays")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Persona")
      */
     private $persona;
 

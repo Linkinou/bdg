@@ -85,7 +85,9 @@ game:
 role_play:
     flash:
         rp_created: 'Votre RP a bien été posté'
+        event_created: 'Votre évènement a bien été posté'
         rp_edited: 'Votre RP a bien été édité'
+        event_edited: 'Votre évènement a bien été édité'
     breadcrumbs:
         creating: "RP en cours d'écriture"
     actions:

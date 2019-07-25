@@ -2,19 +2,30 @@
     <a name="{{ rolePlay.id }}"></a>
     <div class="nk-gap-1"></div>
     <div class="role-play bg-dark-1 p-30">
-        <div class="row">
-            <div class="col-3 align-center">
-                <h4>{{ rolePlay.persona.name }}</h4>
-                <img src="{{ asset('build/images/avatar-1-sm.jpg') }}" alt="{{ rolePlay.persona.name }}">
+        {% if rolePlay.type == constant('App\\Entity\\RolePlay::TYPE_EVENT') %}
+            <div class="row">
+                <div class="col-12">
+                    <h4>{{ rolePlay.event.title }}</h4>
+                </div>
+                <div class="col-12 p-15">
+                    {{ rolePlay.content|raw }}
+                </div>
             </div>
-            <div class="col-9 p-15">
-                {{ rolePlay.content|raw }}
+        {% else %}
+            <div class="row">
+                <div class="col-3 align-center">
+                    <h4>{{ rolePlay.persona.name }}</h4>
+                    <img src="{{ asset('build/images/avatar-1-sm.jpg') }}" alt="{{ rolePlay.persona.name }}">
+                </div>
+                <div class="col-9 p-15">
+                    {{ rolePlay.content|raw }}
+                </div>
             </div>
-        </div>
+        {% endif %}
         <div class="row mt-30 justify-content-between">
             <div class="col-3"><small>{{ rolePlay.createdAt|localizeddate }}</small></div>
             <div class="col-1">
-                {% if app.user is not empty and app.user.id is same as(rolePlay.persona.user.id) %}
+                {% if app.user is not empty and app.user.id is same as(rolePlay.user.id) %}
                     <a href="{{ path('rpg_game_roleplay_edit', {'locationSlug': game.location.slug, 'gameSlug': game.slug, 'rolePlayId': rolePlay.id}) }}" class="nk-anchor"><span class="fa fa-reply"></span> {{ 'post.action.edit'|trans }}</a>
                 {% endif %}
             </div>

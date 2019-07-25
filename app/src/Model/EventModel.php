@@ -6,7 +6,7 @@ namespace App\Model;
 
 use App\Entity\RolePlay;
 
-class RolePlayModel
+class EventModel
 {
     /**
      * @var string
@@ -20,18 +20,15 @@ class RolePlayModel
 
     /**
      * @param RolePlay $rolePlay
-     * @return RolePlayModel
+     * @return EventModel
      */
     public static function createFromRolePlay(RolePlay $rolePlay)
     {
-        $rolePlayModel = new self();
+        $eventModel = new self();
 
-        if (null !== $rolePlay->getEvent()) {
-            $rolePlayModel->setTitle($rolePlay->getEvent()->getTitle());
-        }
-
-        return $rolePlayModel
-            ->setContent($rolePlay->getContent());
+        return $eventModel
+            ->setContent($rolePlay->getContent())
+            ->setTitle($rolePlay->getEvent()->getTitle());
     }
 
     /**
@@ -44,9 +41,9 @@ class RolePlayModel
 
     /**
      * @param string $content
-     * @return RolePlayModel
+     * @return EventModel
      */
-    public function setContent(string $content): RolePlayModel
+    public function setContent(string $content): EventModel
     {
         $this->content = $content;
         return $this;
@@ -55,16 +52,16 @@ class RolePlayModel
     /**
      * @return string
      */
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
     /**
      * @param string $title
-     * @return RolePlayModel
+     * @return EventModel
      */
-    public function setTitle(string $title): RolePlayModel
+    public function setTitle(string $title): EventModel
     {
         $this->title = $title;
         return $this;

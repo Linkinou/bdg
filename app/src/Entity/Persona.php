@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PersonaRepository")
@@ -22,17 +23,20 @@ class Persona
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"game"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"game"})
      */
     private $name;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="personas")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"game"})
      */
     private $user;
 

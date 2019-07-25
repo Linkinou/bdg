@@ -22,7 +22,6 @@ Encore
     .addEntry('login', './assets/js/login.js')
     .addEntry('register', './assets/js/register.js')
     .addEntry('game', './assets/js/game.js')
-    .addEntry('test', './assets/js/location_permission.js')
   //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 

@@ -8,17 +8,15 @@ use App\Entity\Persona;
 use App\Entity\RolePlay;
 use App\Entity\User;
 use App\Exception\ForbiddenAccessException;
-use App\FormType\EventRolePlayFormType;
+use App\FormType\EventFormType;
 use App\FormType\GmSortingFormType;
 use App\FormType\GameCreationFormType;
 use App\FormType\JoiningGameFormType;
 use App\FormType\RolePlayFormType;
-use App\Model\EventRolePlayModel;
+use App\Model\EventModel;
 use App\Model\GameModel;
 use App\Model\JoiningGameModel;
 use App\Model\RolePlayModel;
-use App\Repository\GameRepository;
-use App\Repository\LocationRepository;
 use App\Repository\RolePlayRepository;
 use App\Service\GameService;
 use App\Service\RolePlayService;
@@ -28,6 +26,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -45,15 +44,11 @@ class GameController extends AbstractController
         TranslatorInterface $translator,
         RolePlayRepository $rolePlayRepository,
         Location $location,
-        Game $game
+        Game $game,
+        SerializerInterface $serializer
     ){
         /** @var User $user */
         $user = $this->getUser();
-
-        // If draft and not owner
-        if ($game->getState() === 'draft' && !$game->isGameMaster($user)) {
-            throw $this->createNotFoundException($translator->trans('common.flash.not_found'));
-        }
 
         $page = $request->query->get('page', 1);
         $rolePlays = $rolePlayRepository->findLatest($game, $page);
@@ -73,6 +68,8 @@ class GameController extends AbstractController
 
         return $this->render('rpg/game.html.twig', [
             'game' => $game,
+            'location' => $game->getLocation(),
+            'title' => $game->getTitle(),
             'joiningForm' => $joiningForm ? $joiningForm->createView() : null,
             'gmSortingForm' => $gmSortingForm ? $gmSortingForm->createView() : null,
             'rolePlays' => $rolePlays,
@@ -236,7 +233,7 @@ class GameController extends AbstractController
 
     /**
      * @Route("/reject/{personaId}", name="reject_persona", methods={"GET"})
-     * @ParamConverter("persona", options={"mapping": {"personaId": "slug"}})
+     * @ParamConverter("persona", options={"mapping": {"personaId": "id"}})
      */
     public function rejectPersona(
         GameService $gameService,
@@ -295,6 +292,7 @@ class GameController extends AbstractController
         return $this->render('rpg/role_play/new.html.twig', [
             'submitValue' => $translator->trans('role_play.actions.create'),
             'game' => $game,
+            'type' => RolePlay::TYPE_ROLEPLAY,
             'location' => $location,
             'form' => $form->createView()
         ]);
@@ -302,6 +300,7 @@ class GameController extends AbstractController
 
     /**
      * @Route("/{rolePlayId}/edit", name="roleplay_edit", methods={"GET", "POST"})
+     * @ParamConverter("rolePlay", options={"mapping": {"rolePlayId": "id"}})
      */
     public function editRolePlay(
         Request $request,
@@ -314,12 +313,16 @@ class GameController extends AbstractController
     ){
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        if ($rolePlay->getPersona()->getUser() !== $this->getUser()) {
+        if ($rolePlay->getType() !== RolePlay::TYPE_EVENT && $rolePlay->getPersona()->getUser() !== $this->getUser()) {
             throw new ForbiddenAccessException('Player tried editing other user RP');
         }
 
         $rolePlayModel = RolePlayModel::createFromRolePlay($rolePlay);
-        $form = $this->createForm(RolePlayFormType::class, $rolePlayModel);
+        if ($rolePlay->getType() === RolePlay::TYPE_EVENT) {
+            $form = $this->createForm(EventFormType::class, $rolePlayModel);
+        } else {
+            $form = $this->createForm(RolePlayFormType::class, $rolePlayModel);
+        }
 
         $form->handleRequest($request);
 
@@ -336,6 +339,7 @@ class GameController extends AbstractController
         }
 
         return $this->render('rpg/role_play/new.html.twig', [
+            'type' => $rolePlay->getType(),
             'submitValue' => $translator->trans('role_play.actions.edit'),
             'game' => $game,
             'location' => $location,
@@ -346,7 +350,7 @@ class GameController extends AbstractController
     /**
      * @Route("/post-event", name="post_event", methods={"GET", "POST"})
      */
-    public function postEventRolePlay(
+    public function postEvent(
         Request $request,
         EntityManagerInterface $em,
         TranslatorInterface $translator,
@@ -356,19 +360,18 @@ class GameController extends AbstractController
     ){
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $eventRolePlayModel = new EventRolePlayModel();
-        $form = $this->createForm(EventRolePlayFormType::class, $eventRolePlayModel);
+        $eventModel = new RolePlayModel();
+        $form = $this->createForm(EventFormType::class, $eventModel);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $eventRolePlay = $rolePlayService->createEventRolePlay($eventRolePlayModel, $game, $this->getUser());
+            $rolePlay = $rolePlayService->createEvent($eventModel, $game, $this->getUser());
 
-
-            $em->persist($eventRolePlay);
+            $em->persist($rolePlay);
             $em->flush();
 
-            $this->addFlash('success', $translator->trans('role_play.flash.rp_created'));
+            $this->addFlash('success', $translator->trans('role_play.flash.event_created'));
 
             return $this->redirectToRoute('rpg_game_view', [
                 'locationSlug' => $location->getSlug(),
@@ -376,8 +379,9 @@ class GameController extends AbstractController
             ]);
         }
 
-        return $this->render('rpg/role_play/new_event.html.twig', [
+        return $this->render('rpg/role_play/new.html.twig', [
             'submitValue' => $translator->trans('role_play.actions.create'),
+            'type' => RolePlay::TYPE_EVENT,
             'game' => $game,
             'location' => $location,
             'form' => $form->createView()

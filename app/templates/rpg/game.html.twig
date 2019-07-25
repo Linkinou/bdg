@@ -3,13 +3,13 @@
 {% block body %}
     <div class="nk-main">
         {% embed '_common/head_banner.html.twig' %}
-            {% block banner_title %}{{ game.title }}{% endblock %}
+            {% block banner_title %}{{ title }}{% endblock %}
         {% endembed %}
 
         {% embed '_common/breadcrumbs.html.twig' %}
             {% block items %}
-                <li><a href="{{ path('rpg_location_view', {'slug': game.location.slug}) }}">{{ game.location.name }}</a></li>
-                <li><span>{{ game.title }}</span></li>
+                <li><a href="{{ path('rpg_location_view', {'slug': location.slug}) }}">{{ location.name }}</a></li>
+                <li><span>{{ title }}</span></li>
             {% endblock %}
         {% endembed %}
 
@@ -35,6 +35,11 @@
 
 {% block javascripts %}
     {{ parent() }}
+    {#<script>#}
+      {#window.gameRoom={{ gameRoom|json_encode|raw }};#}
+      {#window.isAuthenticated={{ is_granted('IS_AUTHENTICATED_FULLY')|json_encode|raw }};#}
+      {#window.isCurrentGameMaster={{ isGameMaster(game)|json_encode|raw }};#}
+    {#</script>#}
     {{ encore_entry_script_tags('game') }}
 {% endblock %}
 

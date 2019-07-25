@@ -4,6 +4,7 @@
 namespace App\Service;
 
 
+use App\Entity\Event;
 use App\Entity\EventRolePlay;
 use App\Entity\Game;
 use App\Entity\GameEvent;
@@ -12,10 +13,12 @@ use App\Entity\NpcRolePlay;
 use App\Entity\RolePlay;
 use App\Entity\User;
 use App\Exception\MissingPersonaException;
+use App\Model\EventModel;
 use App\Model\EventRolePlayModel;
 use App\Model\NpcRolePlayModel;
 use App\Model\RolePlayModel;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Security\Core\Role\Role;
 
 class RolePlayService
 {
@@ -38,8 +41,30 @@ class RolePlayService
         return $rolePlay
             ->setContent($rolePlayModel->getContent())
             ->setPersona($persona)
-            ->setGame($game);
+            ->setGame($game)
+            ->setUser($user);
+    }
 
+    /**
+     * @param RolePlayModel $eventModel
+     * @param Game $game
+     * @param User $user
+     * @return RolePlay
+     * @throws MissingPersonaException
+     */
+    public function createEvent(RolePlayModel $eventModel, Game $game, User $user)
+    {
+        $event = new Event();
+        $event->setTitle($eventModel->getTitle());
+
+        $rolePlay = new RolePlay();
+
+        return $rolePlay
+            ->setContent($eventModel->getContent())
+            ->setType(RolePlay::TYPE_EVENT)
+            ->setEvent($event)
+            ->setGame($game)
+            ->setUser($user);
     }
 
     /**
@@ -60,32 +85,20 @@ class RolePlayService
     }
 
     /**
-     * @param EventRolePlayModel $eventRolePlayModel
-     * @param Game $game
-     * @param User $user
-     * @return EventRolePlay
-     */
-    public function createEventRolePlay(EventRolePlayModel $eventRolePlayModel, Game $game, User $user) : EventRolePlay
-    {
-        $eventRolePlay = new EventRolePlay();
-
-        return $eventRolePlay
-            ->setContent($eventRolePlayModel->getContent())
-            ->setDescription($eventRolePlayModel->getDescription())
-            ->setTitle($eventRolePlayModel->getTitle())
-            ->setGameMaster($user)
-            ->setGame($game);
-    }
-
-    /**
      * @param RolePlayModel $rolePlayModel
      * @param RolePlay $rolePlay
      * @return RolePlay
      */
     public function editRolePlay(RolePlayModel $rolePlayModel, RolePlay $rolePlay)
     {
+        $event = $rolePlay->getEvent();
+        if (null !== $event) {
+            $event->setTitle($rolePlayModel->getTitle());
+        }
+
         return $rolePlay
-            ->setContent($rolePlayModel->getContent());
+            ->setContent($rolePlayModel->getContent())
+            ->setEvent($event);
     }
 
     private function findPersonaInGame(Game $game, Collection $personas)
