@@ -12,6 +12,7 @@ use App\FormType\EventFormType;
 use App\FormType\GmSortingFormType;
 use App\FormType\GameCreationFormType;
 use App\FormType\JoiningGameFormType;
+use App\FormType\NpcRolePlayFormType;
 use App\FormType\RolePlayFormType;
 use App\Model\EventModel;
 use App\Model\GameModel;
@@ -350,7 +351,7 @@ class GameController extends AbstractController
     /**
      * @Route("/post-event", name="post_event", methods={"GET", "POST"})
      */
-    public function postEvent(
+    public function postEventRolePlay(
         Request $request,
         EntityManagerInterface $em,
         TranslatorInterface $translator,
@@ -359,6 +360,10 @@ class GameController extends AbstractController
         Game $game
     ){
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        if (!$game->isGameMaster($this->getUser())) {
+            throw new ForbiddenAccessException('Cette action est reservée au maître du jeu');
+        }
 
         $eventModel = new RolePlayModel();
         $form = $this->createForm(EventFormType::class, $eventModel);
@@ -382,6 +387,51 @@ class GameController extends AbstractController
         return $this->render('rpg/role_play/new.html.twig', [
             'submitValue' => $translator->trans('role_play.actions.create'),
             'type' => RolePlay::TYPE_EVENT,
+            'game' => $game,
+            'location' => $location,
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/post-npc", name="post_npc", methods={"GET", "POST"})
+     */
+    public function postNpcRolePlay(
+        Request $request,
+        EntityManagerInterface $em,
+        TranslatorInterface $translator,
+        RolePlayService $rolePlayService,
+        Location $location,
+        Game $game
+    ){
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        if (!$game->isGameMaster($this->getUser())) {
+            throw new ForbiddenAccessException('Cette action est reservée au maître du jeu');
+        }
+
+        $npcRolePlay = new RolePlayModel();
+        $form = $this->createForm(NpcRolePlayFormType::class, $npcRolePlay);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $rolePlay = $rolePlayService->createNpcRolePlay($npcRolePlay, $game, $this->getUser());
+
+            $em->persist($rolePlay);
+            $em->flush();
+
+            $this->addFlash('success', $translator->trans('role_play.flash.rp_created'));
+
+            return $this->redirectToRoute('rpg_game_view', [
+                'locationSlug' => $location->getSlug(),
+                'gameSlug' => $game->getSlug()
+            ]);
+        }
+
+        return $this->render('rpg/role_play/new.html.twig', [
+            'submitValue' => $translator->trans('role_play.actions.create'),
+            'type' => RolePlay::TYPE_NPC_ROLEPLAY,
             'game' => $game,
             'location' => $location,
             'form' => $form->createView()

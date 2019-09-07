@@ -5,20 +5,13 @@ namespace App\Service;
 
 
 use App\Entity\Event;
-use App\Entity\EventRolePlay;
 use App\Entity\Game;
-use App\Entity\GameEvent;
-use App\Entity\GameNpc;
-use App\Entity\NpcRolePlay;
 use App\Entity\RolePlay;
 use App\Entity\User;
 use App\Exception\MissingPersonaException;
-use App\Model\EventModel;
-use App\Model\EventRolePlayModel;
 use App\Model\NpcRolePlayModel;
 use App\Model\RolePlayModel;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Security\Core\Role\Role;
 
 class RolePlayService
 {
@@ -40,6 +33,7 @@ class RolePlayService
 
         return $rolePlay
             ->setContent($rolePlayModel->getContent())
+            ->setType(RolePlay::TYPE_ROLEPLAY)
             ->setPersona($persona)
             ->setGame($game)
             ->setUser($user);
@@ -68,19 +62,20 @@ class RolePlayService
     }
 
     /**
-     * @param NpcRolePlayModel $npcRolePlayModel
+     * @param RolePlayModel $npcRolePlayModel
      * @param Game $game
      * @param User $user
-     * @return NpcRolePlay
+     * @return RolePlay
      */
-    public function createNpcRolePlay(NpcRolePlayModel $npcRolePlayModel, Game $game, User $user) : NpcRolePlay
+    public function createNpcRolePlay(RolePlayModel $npcRolePlayModel, Game $game, User $user) : RolePlay
     {
-        $npcRolePlay = new NpcRolePlay();
+        $npcRolePlay = new RolePlay();
 
         return $npcRolePlay
             ->setContent($npcRolePlayModel->getContent())
-            ->setNpc($npcRolePlayModel->getNpc())
-            ->setGameMaster($user)
+            ->setPersona($npcRolePlayModel->getNpc())
+            ->setType(RolePlay::TYPE_NPC_ROLEPLAY)
+            ->setUser($user)
             ->setGame($game);
     }
 
@@ -101,6 +96,11 @@ class RolePlayService
             ->setEvent($event);
     }
 
+    /**
+     * @param Game $game
+     * @param Collection $personas
+     * @return mixed|null
+     */
     private function findPersonaInGame(Game $game, Collection $personas)
     {
         foreach ($personas as $persona) {

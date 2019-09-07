@@ -35,7 +35,6 @@ class Persona
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="personas")
-     * @ORM\JoinColumn(nullable=false)
      * @Groups({"game"})
      */
     private $user;

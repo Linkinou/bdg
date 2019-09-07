@@ -4,13 +4,13 @@
 namespace App\Model;
 
 
-use App\Entity\GameNpc;
-use App\Entity\NpcRolePlay;
+use App\Entity\Persona;
+use App\Entity\RolePlay;
 
 class NpcRolePlayModel
 {
     /**
-     * @var GameNpc
+     * @var Persona
      */
     private $npc;
 
@@ -20,16 +20,16 @@ class NpcRolePlayModel
     private $content;
 
     /**
-     * @param NpcRolePlay $npcRolePlay
+     * @param RolePlay $npcRolePlay
      * @return NpcRolePlayModel
      */
-    public static function createFromEventRolePlay(NpcRolePlay $npcRolePlay)
+    public static function createFromEventRolePlay(RolePlay $npcRolePlay)
     {
-        $eventRolePlayModel = new self();
+        $npcRolePlayModel = new self();
 
-        return $eventRolePlayModel
+        return $npcRolePlayModel
             ->setContent($npcRolePlay->getContent())
-            ->setNpc($npcRolePlay->getNpc());
+            ->setNpc($npcRolePlay->getPersona());
     }
 
     /**
@@ -51,18 +51,18 @@ class NpcRolePlayModel
     }
 
     /**
-     * @return GameNpc
+     * @return Persona
      */
-    public function getNpc(): ?GameNpc
+    public function getNpc(): ?Persona
     {
         return $this->npc;
     }
 
     /**
-     * @param GameNpc $npc
+     * @param Persona $npc
      * @return NpcRolePlayModel
      */
-    public function setNpc(GameNpc $npc): NpcRolePlayModel
+    public function setNpc(Persona $npc): NpcRolePlayModel
     {
         $this->npc = $npc;
         return $this;

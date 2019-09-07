@@ -26,10 +26,16 @@
                         {{ form_widget(form.title) }}
                     </div>
                 {% endif %}
+                {% if type is defined and type == constant('App\\Entity\\RolePlay::TYPE_NPC_ROLEPLAY') %}
+                    <div class="col-12 p-4">
+                        {{ form_widget(form.npc) }}
+                    </div>
+                {% endif %}
                 <div class="col-12 p-4">
                     {{ form_widget(form.content) }}
                 </div>
                 <div class="col-12 p-4 text-right">
+                    <a href="{{ path('rpg_game_view', {'gameSlug': game.slug, 'locationSlug': location.slug}) }}" type="button" class="nk-btn nk-btn-lg link-effect-4 nk-anchor">{{ 'action.cancel'|trans }}</a>
                     <button type="submit" class="nk-btn nk-btn-lg link-effect-4 nk-anchor">{{ submitValue }}</button>
                 </div>
             </div>

@@ -4,6 +4,7 @@
 namespace App\Model;
 
 
+use App\Entity\Persona;
 use App\Entity\RolePlay;
 
 class RolePlayModel
@@ -16,7 +17,12 @@ class RolePlayModel
     /**
      * @var string
      */
-    private $title;
+    private $title = null;
+
+    /**
+     * @var Persona
+     */
+    private $npc = null;
 
     /**
      * @param RolePlay $rolePlay
@@ -28,6 +34,10 @@ class RolePlayModel
 
         if (null !== $rolePlay->getEvent()) {
             $rolePlayModel->setTitle($rolePlay->getEvent()->getTitle());
+        }
+
+        if (Persona::TYPE_NPC === $rolePlay->getPersona()->getType()) {
+            $rolePlayModel->setNpc($rolePlay->getPersona());
         }
 
         return $rolePlayModel
@@ -55,7 +65,7 @@ class RolePlayModel
     /**
      * @return string
      */
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -67,6 +77,24 @@ class RolePlayModel
     public function setTitle(string $title): RolePlayModel
     {
         $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * @return Persona
+     */
+    public function getNpc(): ?Persona
+    {
+        return $this->npc;
+    }
+
+    /**
+     * @param Persona $npc
+     * @return RolePlayModel
+     */
+    public function setNpc(Persona $npc): RolePlayModel
+    {
+        $this->npc = $npc;
         return $this;
     }
 }

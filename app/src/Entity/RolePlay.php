@@ -15,6 +15,7 @@ class RolePlay
 
     const TYPE_EVENT = 'event';
     const TYPE_ROLEPLAY = 'roleplay';
+    const TYPE_NPC_ROLEPLAY = 'npc_roleplay';
 
     use TimestampableEntity;
 

@@ -12,7 +12,7 @@
                 </div>
             </div>
         {% else %}
-            <div class="row">
+            <div class="row mb-30">
                 <div class="col-3 align-center">
                     <h4>{{ rolePlay.persona.name }}</h4>
                     <img src="{{ asset('build/images/avatar-1-sm.jpg') }}" alt="{{ rolePlay.persona.name }}">
@@ -22,7 +22,7 @@
                 </div>
             </div>
         {% endif %}
-        <div class="row mt-30 justify-content-between">
+        <div class="row justify-content-between">
             <div class="col-3"><small>{{ rolePlay.createdAt|localizeddate }}</small></div>
             <div class="col-1">
                 {% if app.user is not empty and app.user.id is same as(rolePlay.user.id) %}

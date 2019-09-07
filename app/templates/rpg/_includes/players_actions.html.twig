@@ -9,7 +9,7 @@
                 <a href="{{ path('rpg_game_post_event', {'locationSlug': game.location.slug, 'gameSlug': game.slug}) }}" class="nk-btn nk-btn-x4 nk-btn-block nk-btn-rounded nk-btn-color-dark-1 nk-btn-bg-white">{{ 'game.text.play_event'|trans }}</a>
             </div>
             <div class="col-6">
-                <a href="#" class="nk-btn nk-btn-x4 nk-btn-block nk-btn-rounded nk-btn-color-dark-1 nk-btn-bg-white">{{ 'game.text.play_npc'|trans }}</a>
+                <a href="{{ path('rpg_game_post_npc', {'locationSlug': game.location.slug, 'gameSlug': game.slug}) }}" class="nk-btn nk-btn-x4 nk-btn-block nk-btn-rounded nk-btn-color-dark-1 nk-btn-bg-white">{{ 'game.text.play_npc'|trans }}</a>
             </div>
         </div>
     {% endif %}

@@ -3,7 +3,10 @@
 namespace App\FormType;
 
 use App\Entity\GameNpc;
+use App\Entity\Persona;
 use App\Model\NpcRolePlayModel;
+use App\Model\RolePlayModel;
+use App\Repository\PersonaRepository;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -19,7 +22,13 @@ class NpcRolePlayFormType extends AbstractType
     {
         $builder
             ->add('npc', EntityType::class, [
-                'class' => GameNpc::class,
+                'class' => Persona::class,
+                'query_builder' => function (PersonaRepository $er) {
+                    return $er->createQueryBuilder('p')
+                        ->andWhere('p.type = :type')
+                        ->setParameter('type', Persona::TYPE_NPC)
+                        ->orderBy('p.name', 'ASC');
+                },
                 'choice_label' => 'name',
                 'attr' => [
                     'class' => 'form-control'
@@ -35,7 +44,7 @@ class NpcRolePlayFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => NpcRolePlayModel::class
+            'data_class' => RolePlayModel::class
         ]);
     }
 }
