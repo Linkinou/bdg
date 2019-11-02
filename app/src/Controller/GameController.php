@@ -78,6 +78,29 @@ class GameController extends AbstractController
     }
 
     /**
+     * @Route("/finish", name="finish")
+     */
+    public function endGame(
+        TranslatorInterface $translator,
+        GameService $gameService,
+        Location $location,
+        Game $game
+    ){
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        if (!$game->isGameMaster($this->getUser())) {
+            throw new ForbiddenAccessException('Cette action est reservée au maître du jeu');
+        }
+
+        if ($gameService->applyTransition($game, 'finish')) {
+            $this->addFlash('success', $translator->trans('game.flash.game_ended'));
+        }
+
+        return $this->redirectToRoute('rpg_game_view', [
+            'locationSlug' => $location->getSlug(),
+            'gameSlug' => $game->getSlug()
+        ]);    }
+
+    /**
      * @Route("/edit", name="edit")
      */
     public function editGame(
@@ -89,6 +112,9 @@ class GameController extends AbstractController
         Game $game
     ){
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        if (!$game->isGameMaster($this->getUser())) {
+            throw new ForbiddenAccessException('Cette action est reservée au maître du jeu');
+        }
         $gameModel = GameModel::createFromGame($game);
 
         $form = $this->createForm(GameCreationFormType::class, $gameModel);
@@ -123,6 +149,10 @@ class GameController extends AbstractController
     ){
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
+        if (!$game->isGameMaster($this->getUser())) {
+            throw new ForbiddenAccessException('Cette action est reservée au maître du jeu');
+        }
+
         if ($gameService->applyTransition($game, 'start')) {
             $this->addFlash('success', $translator->trans('game.flash.game_started'));
         }
@@ -143,6 +173,10 @@ class GameController extends AbstractController
         Game $game
     ){
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        if (!$game->isGameMaster($this->getUser())) {
+            throw new ForbiddenAccessException('Cette action est reservée au maître du jeu');
+        }
 
         if ($gameService->applyTransition($game, 'publish')) {
             $this->addFlash('success', $translator->trans('game.flash.game_published'));
@@ -222,6 +256,10 @@ class GameController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
+        if (!$game->isGameMaster($user)) {
+            throw new ForbiddenAccessException('Cette action est reservée au maître du jeu');
+        }
+
         if ($gameService->acceptPersona($game, $user, $persona)) {
             $this->addFlash('success', $translator->trans('game.flash.persona_accepted', ['%name%' => $persona->getName()]));
         }
@@ -247,6 +285,10 @@ class GameController extends AbstractController
 
         /** @var User $user */
         $user = $this->getUser();
+
+        if (!$game->isGameMaster($user)) {
+            throw new ForbiddenAccessException('Cette action est reservée au maître du jeu');
+        }
 
         if ($gameService->refusePersona($game, $user, $persona)) {
             $this->addFlash('success', $translator->trans('game.flash.persona_rejected', ['%name%' => $persona->getName()]));

@@ -102,6 +102,11 @@ class GameService
             ->setGameMaster($user);
     }
 
+    /**
+     * @param Game $game
+     * @param GameModel $gameModel
+     * @return Game
+     */
     public function edit(Game $game, GameModel $gameModel) : Game
     {
         return $game

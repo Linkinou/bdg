@@ -10,6 +10,9 @@
             {% if isGameMaster(game) and ('draft' in workflow_marked_places(game) or 'published' in workflow_marked_places(game)) %}
                 <a href="{{ path('rpg_game_edit', {'locationSlug': game.location.slug, 'gameSlug': game.slug}) }}" class="nk-btn nk-btn-sm nk-btn-rounded nk-btn-outline nk-btn-color-main-1">{{ 'action.edit'|trans }}</a>
             {% endif %}
+            {% if isGameMaster(game) and ('in_progress' in workflow_marked_places(game)) %}
+                <a href="{{ path('rpg_game_finish', {'locationSlug': game.location.slug, 'gameSlug': game.slug}) }}" class="nk-btn nk-btn-sm nk-btn-rounded nk-btn-outline nk-btn-color-main-1">{{ 'game.actions.complete'|trans }}</a>
+            {% endif %}
         </div>
         <div class="col-12 mt-20 lead">
             <p>{{ game.description|raw }}</p>

@@ -57,6 +57,7 @@ game:
     actions:
         new: 'Nouvelle partie'
         submit: 'Créer la partie'
+        complete: 'Terminer'
     text:
         leave_group: 'Quitter le groupe'
         join_group: 'Rejoindre'
@@ -79,6 +80,7 @@ game:
         left: 'Votre personnage a bien été retiré du groupe'
         game_published: 'La partie est mainteant ouverte aux joueurs'
         game_started: 'La partie commence, bon RP !'
+        game_ended: "La partie est terminé, merci d'avoir joué !"
         players_required: 'Il vous faut un minimum de 2 joueurs pour démarrer la partie'
         not_enough_space: 'Vous avez atteint le nombre maximum de joueurs dans votre groupe.'
         not_pending_persona: "Ce personnage n'est pas en attente de validation"
