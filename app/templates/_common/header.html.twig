@@ -142,6 +142,11 @@ data-video-pause-on-page-leave - pause video when the page not in focus (true/fa
                     <li class="nk-drop-item">
                         <a href="{{ path('rpg_homepage') }}">Jeu de rôle</a>
                     </li>
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <li class="nk-drop-item">
+                            <a href="{{ path('profile', {'slug': app.user.slug}) }}">Profil</a>
+                        </li>
+                    {% endif %}
                 </ul>
 
                 <ul class="nk-nav nk-nav-right nk-nav-icons">

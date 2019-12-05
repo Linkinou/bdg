@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -50,6 +51,12 @@ class User implements UserInterface
      * @Groups({"game"})
      */
     private $username;
+
+    /**
+     * @Gedmo\Slug(fields={"username", "id"})
+     * @ORM\Column(type="string", length=256, unique=true)
+     */
+    private $slug;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -330,5 +337,13 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug() : string
+    {
+        return $this->slug;
     }
 }
