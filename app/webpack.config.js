@@ -21,13 +21,14 @@ Encore
     .addEntry('template', './assets/js/godlike-init.js')
     .addEntry('login', './assets/js/login.js')
     .addEntry('register', './assets/js/register.js')
-    //.addEntry('page1', './assets/js/page1.js')
+    .addEntry('game', './assets/js/game.js')
+  //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 
     // will require an extra script tag for runtime.js
     // but, you probably want this, unless you're building a single-page app
     .enableSingleRuntimeChunk()
-
+    .enableReactPreset()
     /*
      * FEATURE CONFIG
      *
@@ -42,7 +43,7 @@ Encore
     .enableVersioning(Encore.isProduction())
     .addPlugin(new CopyWebpackPlugin([
       { from: './assets/images', to: 'images' },
-      { from: './assets/js/vendor', to: 'vendor' },
+      { from: './assets/js/vendor/revolution', to: 'vendor/revolution' },
       { from: './assets/static/assets/mp3', to: 'mp3' }
     ]))
     // enables Sass/SCSS support

@@ -1,0 +1,18 @@
+App\Entity\Game:
+    game_{1..20}:
+        title: <catchPhrase()>
+        state: <randomElement(['draft', 'published', 'in_progress', 'completed'])>
+        location: '@location_*'
+        description: <paragraph()>
+        story: <realText(500)>
+        maxPlayingPersonas: <randomDigitNotNull()>
+        gameMaster: '@user_*'
+    game_21:
+        title: "J'ai vu de la lumiere, alors je suis entré..."
+        state: 'in_progress'
+        location: '@location_6'
+        description: <paragraph()>
+        story: <realText(1000)>
+        maxPlayingPersonas: 5
+        gameMaster: '@user_1'
+        playingPersonas: ['@persona_21', '@persona_22', '@persona_23']

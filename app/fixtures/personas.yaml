@@ -1,0 +1,16 @@
+App\Entity\Persona:
+    persona_{1..10}:
+        name: <name()>
+        user: '@user_*'
+    persona_{11..20}:
+        name: <name()>
+        type: 'NPC'
+    persona_21:
+        name: <name()>
+        user: '@user_2'
+    persona_22:
+        name: <name()>
+        user: '@user_3'
+    persona_23:
+        name: <name()>
+        user: '@user_4'

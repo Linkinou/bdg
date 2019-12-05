@@ -11,6 +11,9 @@ common:
     submit: Confirmer
     logout: Se déconnecter
     reply: Répondre
+    read_mode: Lire la suite
+    flash:
+        not_found: Je pense que vous vous êtes perdu... Mais on ne dira rien, cela reste entre nous.
 register:
     success: Votre compte a bien été créé ! Vous pouvez vous connecter avec vos identifiants.
 forgotten_password:
@@ -42,3 +45,64 @@ topic:
         current: "Écriture d'un nouveau sujet"
     alert:
         success: Votre sujet a bien été créé !
+game:
+    breadcrumbs:
+        new: "Nouvelle partie"
+    label:
+        title: 'Titre de la partie : '
+        max_players: 'Nombre maximum de joueurs : '
+        location: 'Lieu de la partie :'
+        description: 'Introduction :'
+        story: 'Histoire :'
+    actions:
+        new: 'Nouvelle partie'
+        submit: 'Créer la partie'
+        complete: 'Terminer'
+    text:
+        leave_group: 'Quitter le groupe'
+        join_group: 'Rejoindre'
+        cancel_group: 'Annuler la demande'
+        pending_validation: 'En attente de validation'
+        play_turn: 'Jouer votre tour'
+        play_event: 'Jouer un évènement'
+        play_npc: 'Jouer un Personnage Non Joueur'
+        accepted: 'En groupe'
+        group_number: 'Groupe: %current%/%max%'
+        proposed_by: 'proposé par '
+    flash:
+        game_created: 'Votre partie a bien été créée'
+        game_edited: 'Votre partie a bien été éditée'
+        already_joined: 'Votre personnage est déjà inscrit'
+        joined: 'Votre demande est maintenant en attente de validation'
+        persona_accepted: '%name% fait maintenant parti du groupe.'
+        persona_rejected: '%name% a bien été retiré du groupe.'
+        joined_without_persona: 'Merci de choisir un de vos personnages pour rejoindre la partie'
+        left: 'Votre personnage a bien été retiré du groupe'
+        game_published: 'La partie est mainteant ouverte aux joueurs'
+        game_started: 'La partie commence, bon RP !'
+        game_ended: "La partie est terminé, merci d'avoir joué !"
+        players_required: 'Il vous faut un minimum de 2 joueurs pour démarrer la partie'
+        not_enough_space: 'Vous avez atteint le nombre maximum de joueurs dans votre groupe.'
+        not_pending_persona: "Ce personnage n'est pas en attente de validation"
+role_play:
+    flash:
+        rp_created: 'Votre RP a bien été posté'
+        event_created: 'Votre évènement a bien été posté'
+        rp_edited: 'Votre RP a bien été édité'
+        event_edited: 'Votre évènement a bien été édité'
+    breadcrumbs:
+        creating: "RP en cours d'écriture"
+    actions:
+        create: Poster
+        edit: Éditer
+exception:
+    not_found: La ressource que vous demandez n'existe pas
+404:
+    title: 'Oops, vous avez trêbuché sur un caillou...'
+    description: La page que vous recherche n'existe pas ou plus. Cela peut-être dû à une erreur de notre part. Mais nous nous penchons plus sur un abus d'hydromel de votre part.
+    go_home: Page d'accueil
+workflow:
+    guard:
+        start_game:
+            not_gamemaster: 'Seul le Maître du Jeu est autorisé à effectuer cette action'
+            not_enough_players: 'Vous devez avoir au minimum %min% joueurs dans votre groupe pour démarrer la partie'

@@ -22,7 +22,7 @@ class Topic
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    public $id;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -54,9 +54,15 @@ class Topic
      */
     private $slug;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastPostCreatedAt;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+        $this->lastPostCreatedAt = new \DateTime();
     }
 
     /**
@@ -148,6 +154,18 @@ class Topic
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getLastPostCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->lastPostCreatedAt;
+    }
+
+    public function setLastPostCreatedAt(\DateTimeInterface $lastPostCreatedAt): self
+    {
+        $this->lastPostCreatedAt = $lastPostCreatedAt;
 
         return $this;
     }

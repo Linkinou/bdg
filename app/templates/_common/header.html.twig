@@ -39,7 +39,7 @@ data-video-start-time - video start time in seconds
 data-video-end-time - video end time in seconds
 data-video-pause-on-page-leave - pause video when the page not in focus (true/false)
 -->
-<div class="nk-page-background op-5" data-video="#" data-video-loop="true" data-video-mute="true" data-video-volume="0" data-video-start-time="0" data-video-end-time="0" data-video-pause-on-page-leave="true" style="background-image: url('{{ asset('build/images/page-background.jpg') }}');"></div>
+<div class="nk-page-background op-5" data-video="#" data-video-loop="true" data-video-mute="true" data-video-volume="0" data-video-start-time="0" data-video-end-time="0" data-video-pause-on-page-leave="true" style="background-image: url('{{ asset('build/images/page-background-2.jpg') }}');"></div>
 <!-- END: Page Background -->
 
 <!--
@@ -131,26 +131,22 @@ data-video-pause-on-page-leave - pause video when the page not in focus (true/fa
             <div class="nk-nav-table">
 
                 <a href="{{ path('home') }}" class="nk-nav-logo">
-                    <img src="{{ asset('build/images/logo.svg') }}" alt="" width="90">
+                    <img src="{{ asset('build/images/logo.png') }}" alt="" width="90">
                 </a>
 
 
                 <ul class="nk-nav nk-nav-right d-none d-lg-block" data-nav-mobile="#nk-nav-mobile">
                     <li class="nk-drop-item">
-                        <a href="index.html">Forum</a>
-                        <ul class="dropdown">
-                            <li class="  ">
-                                <a href="index.html">
-                                    Landing</a>
-                            </li><li class="  ">
-                                <a href="index-main.html">
-                                    Main</a>
-                            </li><li class="  ">
-                                <a href="index-game-promo.html">
-                                    Game Promo</a>
-                            </li>
-                        </ul>
+                        <a href="{{ path('home') }}">Forum</a>
                     </li>
+                    <li class="nk-drop-item">
+                        <a href="{{ path('rpg_homepage') }}">Jeu de rôle</a>
+                    </li>
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <li class="nk-drop-item">
+                            <a href="{{ path('profile', {'slug': app.user.slug}) }}">Profil</a>
+                        </li>
+                    {% endif %}
                 </ul>
 
                 <ul class="nk-nav nk-nav-right nk-nav-icons">

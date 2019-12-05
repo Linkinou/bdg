@@ -12,5 +12,5 @@ easy_admin:
                 fields:
                     - name
                     - description
-                    - { property: type, type: choice, type_options: { expanded: true, choices: '%game_categories%' } }
+                    - { property: type, type: choice, type_options: { expanded: true, choices: '%category_types%' } }
                     - { property: parent, type_options: { choice_label: name } }

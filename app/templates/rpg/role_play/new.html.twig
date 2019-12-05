@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="nk-main">
+
+        {% embed '_common/breadcrumbs.html.twig' %}
+            {% block items %}
+                {% if location.parent %}
+                    <li><a href="{{ path('rpg_location_view', {'slug': location.parent.slug}) }}">{{ location.parent.name }}</a></li>
+                {% endif %}
+                <li><a href="{{ path('rpg_location_view', {'slug': location.slug}) }}">{{ location.name }}</a></li>
+                <li><span>{{ 'role_play.breadcrumbs.creating'|trans }}</span></li>
+            {% endblock %}
+        {% endembed %}
+
+        <div class="nk-gap-2"></div>
+
+        {% include '_common/alert.html.twig' %}
+
+
+        <div class="container">
+            {{ form_start(form) }}
+            <div class="bg-dark-1 p-60 row">
+                {% if type is defined and type == constant('App\\Entity\\RolePlay::TYPE_EVENT') %}
+                    <div class="col-12 p-4">
+                        {{ form_widget(form.title) }}
+                    </div>
+                {% endif %}
+                {% if type is defined and type == constant('App\\Entity\\RolePlay::TYPE_NPC_ROLEPLAY') %}
+                    <div class="col-12 p-4">
+                        {{ form_widget(form.npc) }}
+                    </div>
+                {% endif %}
+                <div class="col-12 p-4">
+                    {{ form_widget(form.content) }}
+                </div>
+                <div class="col-12 p-4 text-right">
+                    <a href="{{ path('rpg_game_view', {'gameSlug': game.slug, 'locationSlug': location.slug}) }}" type="button" class="nk-btn nk-btn-lg link-effect-4 nk-anchor">{{ 'action.cancel'|trans }}</a>
+                    <button type="submit" class="nk-btn nk-btn-lg link-effect-4 nk-anchor">{{ submitValue }}</button>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+
+        <div class="nk-gap-4"></div>
+        <div class="nk-gap-4"></div>
+    </div>
+{% endblock %}

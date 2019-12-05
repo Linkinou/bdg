@@ -1,0 +1,23 @@
+@import "../bdg_parts/avatar";
+
+.game-group-members {
+  text-align: center;
+
+  > div {
+    margin-top: 1em;
+  }
+
+  img {
+    @include round-avatar-sm()
+  }
+
+  .pending {
+    img, small {
+      opacity: 0.3;
+    }
+
+    .gm-action {
+      font-size: larger;
+    }
+  }
+}

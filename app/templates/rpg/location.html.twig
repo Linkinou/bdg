@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="nk-main">
+
+    {% embed '_common/head_banner.html.twig' %}
+        {% block banner_title %}{{ location.name }}{% endblock %}
+    {% endembed %}
+
+    {% embed '_common/breadcrumbs.html.twig' %}
+        {% block items %}
+            <li><a href="{{ path('rpg_homepage') }}">JDR</a></li>
+            {% if location.parent %}
+                <li><a href="{{ path('rpg_location_view', {'slug': location.parent.slug}) }}">{{ location.parent.name }}</a></li>
+            {% endif %}
+            <li><span>{{ location.name }}</span></li>
+        {% endblock %}
+    {% endembed %}
+
+    {% include '_common/alert.html.twig' %}
+
+
+    <div class="container">
+
+        <ul class="nk-forum">
+            {% for loc in location.children %}
+                <li>
+                    <div class="nk-forum-icon">
+                        <span class="ion-pin"></span>
+                    </div>
+                    <div class="nk-forum-title">
+                        <h3><a href="{{ path('rpg_location_view', {'slug': loc.slug}) }}">{{ loc.name }}</a></h3>
+                    </div>
+                    <div class="nk-forum-activity-avatar">
+                        <img src="{{ asset('build/images/avatar-1-sm.jpg') }}" alt="Lesa Cruz">
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="nk-gap-2"></div>
+
+    <div class="container">
+        <!-- START: Pagination -->
+        <div class="row">
+            <div class="col-md-3 order-md-2 text-right">
+                <a href="{{ path('rpg_new_game_from_location', {'slug': location.slug}) }}" class="nk-btn nk-btn-lg link-effect-1 nk-btn-color-warning">{{ 'game.actions.new'|trans }}</a>
+            </div>
+            <div class="col-md-9 ">
+                {{ knp_pagination_render(games) }}
+            </div>
+        </div>
+        <!-- END: Pagination -->
+        <div class="nk-gap-2"></div>
+
+        <ul class="nk-forum">
+            {% for game in games if isGameMaster(game) or not workflow_has_marked_place(game, 'draft') %}
+                <li>
+                    <div class="nk-forum-icon">
+                        <span class="ion-pin"></span>
+                    </div>
+                    <div class="nk-forum-title">
+                        <h3><a href="{{ path('rpg_game_view', {'locationSlug': location.slug, 'gameSlug': game.slug}) }}">{{ game.title }} ({{ game.state }})</a></h3>
+                        <div class="nk-forum-title-sub">Started by <a href="#">{{ game.gameMaster.username }}</a> on {{ game.createdAt|localizeddate }}</div>
+                    </div>
+                    <div class="nk-forum-count">
+                        {{ game.rolePlays|length }} posts
+                    </div>
+                    <div class="nk-forum-activity-avatar">
+                        <img src="{{ asset('build/images/avatar-1-sm.jpg') }}" alt="Lesa Cruz">
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="nk-gap-4"></div>
+</div>
+{% endblock %}

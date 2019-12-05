@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -19,8 +21,9 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"game"})
      */
-    private $id;
+    public $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
@@ -45,8 +48,15 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"game"})
      */
     private $username;
+
+    /**
+     * @Gedmo\Slug(fields={"username", "id"})
+     * @ORM\Column(type="string", length=256, unique=true)
+     */
+    private $slug;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -63,10 +73,22 @@ class User implements UserInterface
      */
     private $posts;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Persona", mappedBy="user")
+     */
+    private $personas;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\RolePlay", mappedBy="user")
+     */
+    private $rolePlays;
+
     public function __construct()
     {
         $this->topics = new ArrayCollection();
         $this->posts = new ArrayCollection();
+        $this->personas = new ArrayCollection();
+        $this->rolePlays = new ArrayCollection();
     }
 
     /**
@@ -76,6 +98,11 @@ class User implements UserInterface
     public function isSameAs(User $user)
     {
         return $user->getEmail() === $this->email;
+    }
+
+    public function hasPersona()
+    {
+        return ($this->getPersonas()->count() > 0);
     }
 
     public function getId(): ?int
@@ -248,5 +275,75 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Persona[]
+     */
+    public function getPersonas(): Collection
+    {
+        return $this->personas;
+    }
+
+    public function addPersona(Persona $persona): self
+    {
+        if (!$this->personas->contains($persona)) {
+            $this->personas[] = $persona;
+            $persona->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePersona(Persona $persona): self
+    {
+        if ($this->personas->contains($persona)) {
+            $this->personas->removeElement($persona);
+            // set the owning side to null (unless already changed)
+            if ($persona->getUser() === $this) {
+                $persona->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|RolePlay[]
+     */
+    public function getRolePlays(): Collection
+    {
+        return $this->rolePlays;
+    }
+
+    public function addRolePlay(RolePlay $rolePlay): self
+    {
+        if (!$this->rolePlays->contains($rolePlay)) {
+            $this->rolePlays[] = $rolePlay;
+            $rolePlay->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRolePlay(RolePlay $rolePlay): self
+    {
+        if ($this->rolePlays->contains($rolePlay)) {
+            $this->rolePlays->removeElement($rolePlay);
+            // set the owning side to null (unless already changed)
+            if ($rolePlay->getUser() === $this) {
+                $rolePlay->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug() : string
+    {
+        return $this->slug;
     }
 }

@@ -1,0 +1,47 @@
+App\Entity\Event:
+    event_1:
+      title: "L'attaque de la tornade !"
+
+App\Entity\RolePlay:
+    role_play_1:
+        content: <realText()>
+        persona: '@persona_21'
+        game: '@game_21'
+        user: '@user_2'
+    role_play_2:
+        content: <realText()>
+        persona: '@persona_22'
+        game: '@game_21'
+        user: '@user_3'
+    role_play_3:
+        content: <realText()>
+        persona: '@persona_23'
+        game: '@game_21'
+        user: '@user_4'
+    role_play_4:
+        content: <realText()>
+        event: '@event_1'
+        type: 'event'
+        game: '@game_21'
+        user: '@user_1'
+    role_play_5:
+        content: <realText()>
+        persona: '@persona_22'
+        game: '@game_21'
+        user: '@user_2'
+    role_play_6:
+        content: <realText()>
+        persona: '@persona_23'
+        game: '@game_21'
+        user: '@user_3'
+    role_play_8:
+        content: <realText()>
+        persona: '@persona_23'
+        game: '@game_21'
+        user: '@user_4'
+    role_play_9:
+        content: <realText()>
+        type: 'npc_roleplay'
+        persona: '@persona_12'
+        game: '@game_21'
+        user: '@user_1'

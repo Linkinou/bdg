@@ -1,0 +1,13 @@
+easy_admin:
+    entities:
+        Persona:
+            class: App\Entity\Persona
+            list:
+                fields:
+                    - id
+                    - name
+                    - { property: user, type_options: { choice_label: username } }
+            form:
+                fields:
+                    - name
+                    - { property: user, type_options: { choice_label: username } }

@@ -3,3 +3,5 @@ easy_admin:
 imports:
     - { resource: ./admin/user.yaml }
     - { resource: ./admin/category.yaml }
+    - { resource: ./admin/location.yaml }
+    - { resource: ./admin/persona.yaml }

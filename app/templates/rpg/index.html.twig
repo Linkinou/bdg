@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="nk-main">
+
+        <div class="nk-gap-2"></div>
+
+        {% include '_common/alert.html.twig' %}
+
+
+        <div class="container">
+            <div class="row vertical-gap lg-gap">
+                {% for location in locations %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="nk-image-box-1 nk-no-effect hover">
+                            <a href="{{ path('rpg_location_view', {'slug': location.slug })}}" class="nk-image-box-link"></a>
+                            <img src="{{ asset('build/images/image-2-600x600.jpg') }}" alt="">
+                            <div class="nk-image-box-overlay nk-image-box-center">
+                                <div>
+                                    <h3 class="nk-image-box-title h4">{{ location.name }}</h3>
+                                    <div class="nk-image-box-sub-title"></div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="nk-gap-4"></div>
+        <div class="nk-gap-4"></div>
+    </div>
+{% endblock %}

@@ -1,0 +1,13 @@
+easy_admin:
+    entities:
+        Location:
+            class: App\Entity\Location
+            list:
+                fields:
+                    - id
+                    - name
+                    - parent
+            form:
+                fields:
+                    - name
+                    - { property: parent, type_options: { choice_label: name } }

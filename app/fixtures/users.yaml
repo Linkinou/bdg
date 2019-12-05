@@ -4,7 +4,23 @@ App\Entity\User:
         username: Link
         plainPassword: 'password'
         roles: ["ROLE_ADMIN"]
-    user_{2..11}:
+    user_2:
+        email: player2@epotato.net
+        username: Player2
+        personas: ['@persona_11']
+        rolePlays: ['@role_play_1']
+        plainPassword: 'password'
+    user_3:
+        email: player3@epotato.net
+        username: Player3
+        personas: ['@persona_12']
+        plainPassword: 'password'
+    user_4:
+        email: player4@epotato.net
+        username: Player4
+        personas: ['@persona_13']
+        plainPassword: 'password'
+    user_{5..16}:
         email: <email()>
         username: <username()>
         plainPassword: 'password'

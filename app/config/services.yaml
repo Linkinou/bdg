@@ -6,7 +6,7 @@
 parameters:
     locale: 'en'
     contact_email: cedric.merouani@gmail.com
-    game_categories:
+    category_types:
         Category: 'category'
         Forum: 'forum'
         Link: 'link'
@@ -34,3 +34,13 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    serializer.handler.circular_reference:
+        class: App\Serializer\EntityCircularReferenceHandler
+
+    workflow.game_start.guard_subscriber:
+        class: App\EventListener\GameLifeGuard
+        arguments:
+            - "@security.helper"
+        tags:
+            - { name: kernel.event_subscriber }

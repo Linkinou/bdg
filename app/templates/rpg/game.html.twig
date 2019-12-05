@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="nk-main">
+        {% embed '_common/head_banner.html.twig' %}
+            {% block banner_title %}{{ title }}{% endblock %}
+        {% endembed %}
+
+        {% embed '_common/breadcrumbs.html.twig' %}
+            {% block items %}
+                <li><a href="{{ path('rpg_location_view', {'slug': location.slug}) }}">{{ location.name }}</a></li>
+                <li><span>{{ title }}</span></li>
+            {% endblock %}
+        {% endembed %}
+
+        <div class="nk-gap-2"></div>
+
+        {% include '_common/alert.html.twig' %}
+
+        <div class="container">
+            {% include '_common/paginate.html.twig' with {'class': 'col-md-9', 'object': rolePlays} only %}
+
+            {% include 'rpg/_includes/game_description.html.twig' %}
+
+            {% include 'rpg/_includes/role_plays.html.twig' %}
+
+            {% include 'rpg/_includes/players_actions.html.twig' %}
+
+            {% include '_common/paginate.html.twig' with {'class': 'col-md-9', 'object': rolePlays} only %}
+        </div>
+
+        <div class="nk-gap-5"></div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {#<script>#}
+      {#window.gameRoom={{ gameRoom|json_encode|raw }};#}
+      {#window.isAuthenticated={{ is_granted('IS_AUTHENTICATED_FULLY')|json_encode|raw }};#}
+      {#window.isCurrentGameMaster={{ isGameMaster(game)|json_encode|raw }};#}
+    {#</script>#}
+    {{ encore_entry_script_tags('game') }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('game') }}
+{% endblock %}

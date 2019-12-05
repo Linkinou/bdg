@@ -36,10 +36,6 @@ class CategoryControllerTest extends WebTestCase
         $crawler = $this->client->submit($form);
         $crawler = $this->client->followRedirect();
 
-        // Unfortunately we can't be redirected to the last page automatically
-        $lastPageLink = $crawler->filterXPath('//*[@id=\'last-page\']')->link();
-        $crawler = $this->client->click($lastPageLink);
-
         $this->assertGreaterThan(
             0,
             $crawler->filter('html:contains("Mon nouveau sujet de test")')->count()

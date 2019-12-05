@@ -21,8 +21,8 @@ yarn-install:
 yarn-add:
 	$(YARN) yarn add $(lib)
 
-npm-install:
-	$(YARN) npm install
+yarn-remove:
+	$(YARN) yarn remove $(lib)
 
 encore:
 	$(YARN) yarn encore dev
