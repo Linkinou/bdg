@@ -35,11 +35,6 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {#<script>#}
-      {#window.gameRoom={{ gameRoom|json_encode|raw }};#}
-      {#window.isAuthenticated={{ is_granted('IS_AUTHENTICATED_FULLY')|json_encode|raw }};#}
-      {#window.isCurrentGameMaster={{ isGameMaster(game)|json_encode|raw }};#}
-    {#</script>#}
     {{ encore_entry_script_tags('game') }}
 {% endblock %}
 

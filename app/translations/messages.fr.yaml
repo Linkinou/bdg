@@ -84,6 +84,11 @@ game:
         players_required: 'Il vous faut un minimum de 2 joueurs pour démarrer la partie'
         not_enough_space: 'Vous avez atteint le nombre maximum de joueurs dans votre groupe.'
         not_pending_persona: "Ce personnage n'est pas en attente de validation"
+persona:
+    flash:
+        persona_created: 'Votre persona a bien été créé'
+    actions:
+        create: 'Créer le persona'
 role_play:
     flash:
         rp_created: 'Votre RP a bien été posté'

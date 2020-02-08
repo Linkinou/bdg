@@ -14,7 +14,7 @@
         {% else %}
             <div class="row mb-30">
                 <div class="col-3 align-center">
-                    <h4>{{ rolePlay.persona.name }}</h4>
+                    <h4><a href="{{ path('profile', {'slug': rolePlay.user.slug}) }}">{{ rolePlay.persona.name }}</a></h4>
                     <img src="{{ asset('build/images/avatar-1-sm.jpg') }}" alt="{{ rolePlay.persona.name }}">
                 </div>
                 <div class="col-9 p-15">
