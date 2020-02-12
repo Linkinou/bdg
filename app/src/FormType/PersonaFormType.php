@@ -5,6 +5,7 @@ namespace App\FormType;
 
 
 use App\Model\PersonaModel;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,7 +23,14 @@ class PersonaFormType extends AbstractType
                 'attr' => [
                     'class' => 'form-control'
                 ]
-            ]);
+            ])
+            ->add('age', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control'
+                ]
+            ])
+            ->add('bio', CKEditorType::class)
+        ;
     }
 
     /**

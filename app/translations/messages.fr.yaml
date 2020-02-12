@@ -89,6 +89,10 @@ persona:
         persona_created: 'Votre persona a bien été créé'
     actions:
         create: 'Créer le persona'
+    label:
+        name: 'Nom complet :'
+        bio: 'Biographie'
+        age: 'Âge :'
 role_play:
     flash:
         rp_created: 'Votre RP a bien été posté'
