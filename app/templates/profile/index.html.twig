@@ -130,7 +130,7 @@
                             {% for persona in user.personas%}
                                 <div class="col-2">
                                     <img src="{{ asset('build/images/avatar-3-sm.jpg') }}">
-                                    <small>{{ persona.name }}</small>
+                                    <a href="{{ path('persona_view', {'slug':persona.slug}) }}"><small>{{ persona.name }}</small></a>
                                 </div>
                             {% endfor %}
                         </div>

@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Persona;
 use App\FormType\PersonaFormType;
 use App\Model\PersonaModel;
 use App\Service\PersonaService;
@@ -46,9 +47,19 @@ class PersonaController extends AbstractController
             ]);
         }
 
-        return $this->render('persona/index.html.twig', [
+        return $this->render('persona/new.html.twig', [
             'form' => $form->createView(),
             'submitValue' => $translator->trans('persona.actions.create'),
+        ]);
+    }
+
+    /**
+     * @Route("/{slug}", name="persona_view")
+     */
+    public function index(Persona $persona)
+    {
+        return $this->render('persona/index.html.twig',[
+            'persona' => $persona
         ]);
     }
 }
