@@ -87,8 +87,10 @@ game:
 persona:
     flash:
         persona_created: 'Votre persona a bien été créé'
+        persona_edited: 'Votre persona a bien été édité'
     actions:
         create: 'Créer le persona'
+        edit: 'Editer le persona'
     label:
         name: 'Nom complet :'
         bio: 'Biographie'

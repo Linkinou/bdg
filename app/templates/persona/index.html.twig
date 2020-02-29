@@ -30,6 +30,9 @@
                                 <div class="col-lg-8">
                                     <div class="nk-gap-5 d-none + d-lg-block"></div>
                                     <h1 class="nk-title">{{ persona.name}}</h1>
+                                    {% if app.user is not empty and app.user.id is same as(persona.user.id) %}
+                                        <a href="{{ path('persona_edit', {'slug': persona.slug}) }}" class="nk-anchor"><span class="fa fa-reply"></span> {{ 'post.action.edit'|trans }}</a>
+                                    {% endif %}
                                     <div class="nk-gap-3 d-none + d-lg-block"></div>
                                     <div class="nk-gap-5 d-none + d-lg-block"></div>
                                 </div>

@@ -30,4 +30,18 @@ class PersonaService
             ->setType(Persona::TYPE_PC)
             ->setUser($user);
     }
+
+    /**
+     * @param PersonaModel $rolePlayModel
+     * @param Persona $rolePlay
+     * @return Persona
+     */
+    public function editPersona(PersonaModel $personaModel, Persona $persona)
+    {
+        return $persona
+            ->setAge($personaModel->getAge())
+            ->setName($personaModel->getName())
+            ->setBio($personaModel->getBio())
+        ;
+    }
 }

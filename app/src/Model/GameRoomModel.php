@@ -48,7 +48,7 @@ class GameRoomModel
             ->setIsCurrentGameMaster($user !== null ?? $game->isGameMaster($user))
             ->setCurrentState($game->getState())
             ->setCurrentPlayerPersonas($user !== null ?? $user->getPersonas())
-            ->setUrls()
+            ->setUrls($urls)
         ;
     }
 
