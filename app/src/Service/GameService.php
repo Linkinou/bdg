@@ -143,6 +143,12 @@ class GameService
         return false;
     }
 
+    /**
+     * @param Game $game
+     * @param User $user
+     * @param Persona $persona
+     * @return bool
+     */
     public function join(Game $game, User $user, Persona $persona)
     {
         $errors = $this->validator->validate($game, new JoiningGame());
@@ -165,6 +171,12 @@ class GameService
         return true;
     }
 
+    /**
+     * @param Game $game
+     * @param User $user
+     * @param Persona $persona
+     * @return bool
+     */
     public function acceptPersona(Game $game, User $user, Persona $persona)
     {
         // Not GM
@@ -195,6 +207,12 @@ class GameService
         return true;
     }
 
+    /**
+     * @param Game $game
+     * @param User $user
+     * @param Persona $persona
+     * @return bool
+     */
     public function refusePersona(Game $game, User $user, Persona $persona)
     {
         // Not GM

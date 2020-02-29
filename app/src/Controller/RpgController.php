@@ -35,23 +35,9 @@ class RpgController extends AbstractController
     }
 
     /**
-     * @Route("/{slug}", name="rpg_location_view")
-     */
-    public function viewLocation(Request $request, GameRepository $gameRepository, Location $location)
-    {
-        $page = $request->query->get('page', 1);
-        $games = $gameRepository->findLatest($location->getId(), $page);
-
-        return $this->render('rpg/location.html.twig', [
-            'location' => $location,
-            'games' => $games
-        ]);
-    }
-
-    /**
      * @Route("/new-game", name="rpg_new_game")
-     * @Route("/{slug}/new-game", name="rpg_new_game_from_location")
-     *
+     * @Route("/new-game/{slug}", name="rpg_new_game_from_location")
+
      * @param Request $request
      * @param TranslatorInterface $translator
      * @param GameService $gameService
@@ -92,6 +78,20 @@ class RpgController extends AbstractController
         return $this->render('rpg/new_game.html.twig', [
             'form' => $form->createView(),
             'location' => $location
+        ]);
+    }
+
+    /**
+     * @Route("/{slug}", name="rpg_location_view")
+     */
+    public function viewLocation(Request $request, GameRepository $gameRepository, Location $location)
+    {
+        $page = $request->query->get('page', 1);
+        $games = $gameRepository->findLatest($location->getId(), $page);
+
+        return $this->render('rpg/location.html.twig', [
+            'location' => $location,
+            'games' => $games
         ]);
     }
 }

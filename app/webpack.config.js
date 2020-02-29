@@ -22,8 +22,7 @@ Encore
     .addEntry('login', './assets/js/login.js')
     .addEntry('register', './assets/js/register.js')
     .addEntry('game', './assets/js/game.js')
-  //.addEntry('page1', './assets/js/page1.js')
-    //.addEntry('page2', './assets/js/page2.js')
+    .addEntry('profile', './assets/js/profile.js')
 
     // will require an extra script tag for runtime.js
     // but, you probably want this, unless you're building a single-page app

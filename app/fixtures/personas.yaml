@@ -1,16 +1,26 @@
 App\Entity\Persona:
     persona_{1..10}:
         name: <name()>
+        bio: <realText(10000, 4)>
+        age: <numberBetween(10, 99)>
         user: '@user_*'
     persona_{11..20}:
         name: <name()>
+        bio: <realText(10000, 4)>
+        age: <numberBetween(10, 99)>
         type: 'NPC'
     persona_21:
         name: <name()>
+        bio: <realText(10000, 4)>
+        age: <numberBetween(10, 99)>
         user: '@user_2'
     persona_22:
         name: <name()>
+        bio: <realText(10000, 4)>
+        age: <numberBetween(10, 99)>
         user: '@user_3'
     persona_23:
         name: <name()>
+        bio: <realText(10000, 4)>
+        age: <numberBetween(10, 99)>
         user: '@user_4'
