@@ -38,7 +38,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 class GameController extends AbstractController
 {
     /**
-     * @Route("/", name="view")
+     * @Route("/view", name="view")
      */
     public function viewGame(
         Request $request,
