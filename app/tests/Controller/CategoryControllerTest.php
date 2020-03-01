@@ -3,38 +3,28 @@
 
 namespace App\tests\Controller;
 
-
-use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\BrowserKit\AbstractBrowser;
 use Symfony\Component\DomCrawler\Crawler;
 
 class CategoryControllerTest extends WebTestCase
 {
     /**
-     * @var Client
-     */
-    private $client = null;
-
-    public function setUp()
-    {
-        $this->client = static::createClient();
-    }
-
-    /**
      * @group legacy
      */
     public function testTopicCreation()
     {
-        $crawler = $this->logIn();
-        $crawler = $this->client->request('GET', '/category/mycategorytest/new-topic');
+        $client = static::createClient();
+        $crawler = $this->logIn($client);
+        $crawler = $client->request('GET', '/category/mycategorytest/new-topic');
 
         $form = $crawler->selectButton('Créer le sujet')->form();
 
         $form['topic_creation_form[topicTitle]'] = 'Mon nouveau sujet de test';
         $form['topic_creation_form[content]'] = 'Mon contenu de test';
 
-        $crawler = $this->client->submit($form);
-        $crawler = $this->client->followRedirect();
+        $crawler = $client->submit($form);
+        $crawler = $client->followRedirect();
 
         $this->assertGreaterThan(
             0,
@@ -42,16 +32,16 @@ class CategoryControllerTest extends WebTestCase
         );
     }
 
-    private function logIn($username = 'rootkid@epotato.net', $password = 'password') : Crawler
+    private function logIn(AbstractBrowser $client, $username = 'rootkid@epotato.net', $password = 'password') : Crawler
     {
-        $crawler = $this->client->request('GET', '/');
+        $crawler = $client->request('GET', '/');
         $form = $crawler->selectButton('Connexion')->form();
 
         $form['email'] = 'rootkid@epotato.net';
         $form['password'] = 'password';
 
-        $crawler = $this->client->submit($form);
-        $crawler = $this->client->followRedirect();
+        $crawler = $client->submit($form);
+        $crawler = $client->followRedirect();
 
         return $crawler;
     }

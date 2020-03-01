@@ -3,17 +3,14 @@
 
 namespace App\tests\Controller;
 
-
-use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\BrowserKit\AbstractBrowser;
 use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class PostControllerTest extends WebTestCase
 {
     /**
-     * @var Client
+     * @var AbstractBrowser
      */
     private $client = null;
 

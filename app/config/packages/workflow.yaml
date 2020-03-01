@@ -5,12 +5,11 @@ framework:
             audit_trail:
                 enabled: true
             marking_store:
-                type: 'single_state'
-                arguments:
-                    - 'state'
+                type: 'method'
+                property: 'state'
             supports:
                 - App\Entity\Game
-            initial_place: draft
+            initial_marking: draft
             places:
                 - draft
                 - published
