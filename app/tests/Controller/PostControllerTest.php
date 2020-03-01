@@ -46,8 +46,8 @@ class PostControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
 
         // Unfortunately we can't be redirected to the last page automatically
-//        $lastPageLink = $crawler->filterXPath('//*[@id=\'last-page\']')->link();
-//        $crawler = $this->client->click($lastPageLink);
+        $lastPageLink = $crawler->filterXPath('//*[@id=\'last-page\']')->link();
+        $crawler = $this->client->click($lastPageLink);
 
         $this->assertGreaterThan(
             0,
