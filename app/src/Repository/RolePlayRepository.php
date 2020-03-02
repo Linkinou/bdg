@@ -8,7 +8,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method RolePlay|null find($id, $lockMode = null, $lockVersion = null)
@@ -23,7 +23,7 @@ class RolePlayRepository extends ServiceEntityRepository
      */
     protected $paginator;
 
-    public function __construct(RegistryInterface $registry, PaginatorInterface $paginator)
+    public function __construct(ManagerRegistry $registry, PaginatorInterface $paginator)
     {
         $this->paginator = $paginator;
         parent::__construct($registry, RolePlay::class);

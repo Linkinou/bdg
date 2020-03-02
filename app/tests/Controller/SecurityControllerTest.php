@@ -4,8 +4,8 @@
 namespace App\tests\Controller;
 
 
-use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\BrowserKit\AbstractBrowser;
 use Symfony\Component\DomCrawler\Crawler;
 
 class SecurityControllerTest extends WebTestCase
@@ -45,7 +45,7 @@ class SecurityControllerTest extends WebTestCase
         );
     }
 
-    private function login(Client $client, Crawler $crawler, $username = 'rootkid@epotato.net', $password = 'password') : Crawler
+    private function login(AbstractBrowser $client, Crawler $crawler, $username = 'rootkid@epotato.net', $password = 'password') : Crawler
     {
         $form = $crawler->selectButton('Connexion')->form();
 

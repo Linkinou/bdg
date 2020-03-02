@@ -5,14 +5,14 @@ namespace App\tests\Controller;
 
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\BrowserKit\Client;
+use Symfony\Component\BrowserKit\AbstractBrowser;
 use Symfony\Component\DomCrawler\Crawler;
 
 class RpgControllerTest extends WebTestCase
 {
 
     /**
-     * @var Client
+     * @var AbstractBrowser
      */
     private $client = null;
 
