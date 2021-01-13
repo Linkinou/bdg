@@ -36,7 +36,7 @@
         "jquery": "^3.4.0",
         "jquery-countdown": "^2.2.0",
         "jquery-datetimepicker": "^2.5.20",
-        "jquery-validation": "^1.19.0",
+        "jquery-validation": "^1.19.3",
         "keymaster": "^1.6.2",
         "moment": "^2.22.2",
         "moment-timezone": "^0.5.23",
